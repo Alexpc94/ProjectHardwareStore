@@ -1,0 +1,15 @@
+{
+	"sistemUsers": [
+		{
+			"id": "123",
+			"state": 1,
+			"name": "Alex",
+			"ap": "Perez",
+			"am": "Castillo",
+			"email": "alex.9407.ap@gmail.com",
+			"gender": "M",
+			"birthDate": "2010-07-26T04:00:00.000Z",
+			"phone": "78238189"
+		}
+	]
+}
