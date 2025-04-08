@@ -1,29 +1,37 @@
-# InventoryProject
+<p align="center">
+    <img src="src/assets/preview/logo.png" width="150">
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.17.
+<a href="https://angular.io"><img height= "24" src= "https://img.shields.io/badge/Angular 19-DD0031?style=for-the-badge&logo=angular&logoColor=white"></a> <a href="https://tailwindcss.com"><img height= "24" src= "https://img.shields.io/badge/Tailwind 4-0ea5e9?style=for-the-badge&logo=tailwind-css&logoColor=white"></a>
 
-## Development server
+#### Commands
 
-Run `ng serve --open` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+| command                   | What it does?                                 |
+| ------------------------- | :-------------------------------------------- |
+| `npm start`               | Starts the server in dev mode                 |
+| `npm run lint`            | Runs ESLint on project                        |
+| `npm run prettier`        | Runs prettier on entire src folder            |
+| `npm run prettier:verify` | Runs prettier-check and throws error if fails |
+| `npm run prettier:staged` | Runs prettier on only staged (changed) files  |
+| `npm run test:e2e`        | Runs playwright e2e test with UI              |
 
-## Code scaffolding
+#### Dependencies
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+| Package            | What it does?                                                                               | Link                                                   |
+| ------------------ | :------------------------------------------------------------------------------------------ | :----------------------------------------------------- |
+| `angular-svg-icon` | Provides a means to inline SVG files to allow for them to be easily styled by CSS and code. | [Here](https://www.npmjs.com/package/angular-svg-icon) |
+| `apexcharts`       | Modern & Interactive Open-source Charts                                                     | [Here](https://www.npmjs.com/package/apexcharts)       |
+| `ng-apexcharts`    | Angular wrapper for ApexCharts to build interactive visualizations in Angular.              | [Here](https://www.npmjs.com/package/ng-apexcharts)    |
 
-## Build
+#### Dev Dependencies
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+| Package                       | What it does?                                                                                            | Link                                                              |
+| ----------------------------- | :------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------- |
+| `prettier`                    | An opinionated code formatter                                                                            | [Here](https://www.npmjs.com/package/prettier)                    |
+| `prettier-plugin-tailwindcss` | A Prettier plugin for Tailwind CSS that automatically sorts classes based on our recommended class order | [Here](https://www.npmjs.com/package/prettier-plugin-tailwindcss) |
+| `tailwind-scrollbar`          | Tailwind plugin for styling scrollbars.                                                                  | [Here](https://www.npmjs.com/package/tailwind-scrollbar)          |
+| `tailwindcss`                 | A utility-first CSS framework for rapidly building custom user interfaces.                               | [Here](https://www.npmjs.com/package/tailwindcss)                 |
 
-## Running unit tests
+#### Icons and Patterns
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
-
+This project use [Hero Icons](https://heroicons.com/) , [Hero Patterns](https://heropatterns.com/) and [Popsys illustrations](https://popsy.co/)
