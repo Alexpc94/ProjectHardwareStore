@@ -3,8 +3,8 @@ import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { ThemeService } from '../../../../../core/services/theme.service';
-import { ClickOutsideDirective } from '../../../../../shared/directives/click-outside.directive';
+import { ThemeService } from 'src/app/core/services/theme.service';
+import { ClickOutsideDirective } from 'src/app/shared/directives/click-outside.directive';
 
 @Component({
   selector: 'app-profile-menu',
