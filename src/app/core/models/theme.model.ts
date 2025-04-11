@@ -1,4 +1,4 @@
 export interface Theme {
-  mode: string;
-  color: string;
+	mode: string;
+	color: string;
 }

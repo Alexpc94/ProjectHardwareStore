@@ -16,10 +16,7 @@ export class Menu {
           icon: 'assets/icons/heroicons/outline/lock-closed.svg',
           label: 'Auth',
           route: '/auth',
-          children: [
-            { label: 'Sign up', route: '/auth/sign-up' },
-            { label: 'Sign in', route: '/auth/sign-in' },
-          ],
+          children: [{ label: 'Sign in', route: '/auth/sign-in' }],
         },
         {
           icon: 'assets/icons/heroicons/outline/exclamation-triangle.svg',
