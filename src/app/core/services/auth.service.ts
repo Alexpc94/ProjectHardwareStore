@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Data } from './../models/data.interface';
@@ -12,27 +12,39 @@ export class AuthService {
 	private http = inject(HttpClient);
 
 	// Obtener token de autenticación
-	// getToken(xlogin: string, xpass: string): Observable<Data> {
-	// 	const body = new HttpParams().set('email', xlogin).set('password', xpass);
-	// 	const httpOptions = {
-	// 		headers: new HttpHeaders({
-	// 			'Content-Type': 'application/x-www-form-urlencoded',
-	// 			Accept: 'application/json',
-	// 		}),
-	// 	};
-	// 	return this.http.post<Data>(`${this.apiURL}/login`, body.toString(), httpOptions);
-	// }
-
-	// Cerrar sesión
-	setLogout(): Observable<any> {
+	getToken(xlogin: string, xpass: string): Observable<Data> {
+		const body = {
+			username: xlogin,
+			password: xpass,
+		};
 		const httpOptions = {
 			headers: new HttpHeaders({
-				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Type': 'application/json',
 				Accept: 'application/json',
 			}),
 		};
-		return this.http.post(`${this.apiURL}/logout`, {}, httpOptions);
+		return this.http.post<Data>(`${this.apiURL}/auth/log-in`, body, httpOptions);
 	}
+
+	//datos de prueba
+	// setLogout(): Observable<any> {
+	// 	// Simulación: elimina al "currentUser" del localStorage
+	// 	localStorage.removeItem('currentUser');
+	// 	// Simula una respuesta exitosa del servidor
+	// 	return of({ success: true, message: 'Logged out successfully' });
+	// }
+
+	// Cerrar sesión
+	// setLogout(): Observable<any> {
+	// 	const httpOptions = {
+	// 		headers: new HttpHeaders({
+	// 			'Content-Type': 'application/json',
+	// 			Accept: 'application/json',
+	// 		}),
+	// 	};
+	// 	return this.http.post(`${this.apiURL}/logout`, {}, httpOptions);
+	// }
+	//datos de prueba
 
 	// Obtener el token del usuario actual
 	getToken2(): string {
@@ -41,15 +53,13 @@ export class AuthService {
 	}
 
 	// Establecer la sesión en storage
-	// setCurrentSession(sessionName: string, data: Data): void {
-	// 	sessionStorage.setItem(sessionName, JSON.stringify(data));
-	// }
-	getToken(xlogin: string, xpass: string): Observable<Data> {
-		return this.http.get<Data>('assets/mock-login.json');
-	}
 	setCurrentSession(sessionName: string, data: string): void {
 		sessionStorage.setItem(sessionName, data);
 	}
+
+	// setCurrentSession(sessionName: string, data: Data): void {
+	// 	sessionStorage.setItem(sessionName, JSON.stringify(data));
+	// }
 
 	// Obtener la sesión desde el storage
 	getCurrentSession<T = any>(sessionName: string): T | null {
@@ -66,6 +76,7 @@ export class AuthService {
 	deleteCurrentSession(sessionName: string): void {
 		if (this.isAuthenticated(sessionName)) {
 			sessionStorage.removeItem(sessionName);
+			console.log(`✅ Sesión "${sessionName}" eliminada.`);
 		}
 	}
 }

@@ -31,8 +31,8 @@ export class SignInComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.form = this._formBuilder.group({
-			email: ['', [Validators.required]],
-			password: ['', Validators.required],
+			user: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(3)]],
+			password: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(3)]],
 		});
 	}
 
@@ -46,16 +46,14 @@ export class SignInComponent implements OnInit {
 
 	onSubmit() {
 		this.submitted = true;
-		const { email, password } = this.form.value;
-
+		const { user, password } = this.form.value;
+		console.log('Enviando datos:', { user, password });
 		if (this.form.invalid) {
 			return;
 		}
-		console.log('Formulario válido:', this.form.value);
-		let xloging: any = 'alex';
-		let xpassword: any = 123;
-		this._loginAccessService.getToken(xloging, xpassword).subscribe({
+		this._loginAccessService.getToken(user, password).subscribe({
 			next: (data: Data) => {
+				console.log('Respuesta del servicio:', data);
 				if (data) {
 					this._loginAccessService.setCurrentSession('currentUser', JSON.stringify(data));
 					this._router.navigate(['/']);

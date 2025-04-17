@@ -15,20 +15,22 @@
 			<div class="relative">
 				<input
 					type="text"
-					id="email"
-					[ngClass]="{ 'is__invalid-input': submitted && f['email'].errors }"
+					id="user"
+					[ngClass]="{ 'is__invalid-input': submitted && f['user'].errors }"
 					class="peer block"
 					placeholder=" "
-					formControlName="email" />
+					formControlName="user" />
 				<label
-					for="email"
-					[ngClass]="{ 'peer-focus:text-destructive!': submitted && f['email'].errors }"
+					for="user"
+					[ngClass]="{ 'peer-focus:text-destructive!': submitted && f['user'].errors }"
 					class="bg-background text-muted-foreground peer-focus:text-primary absolute top-2 z-10 origin-[0] -translate-y-4 scale-95 transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
-					Email address
+					Usuario
 				</label>
 			</div>
-			<div *ngIf="submitted && f['email'].errors" class="is__invalid-error">
-				<div *ngIf="f['email'].errors['required']">Required field</div>
+			<div *ngIf="submitted && f['user'].errors" class="is__invalid-error">
+				<div *ngIf="f['user'].errors['required']">Campo obligatorio</div>
+				<div *ngIf="f['user'].errors['minlength']">Debe tener al menos 3 caracteres</div>
+				<div *ngIf="f['user'].errors['maxlength']">No puede exceder 50 caracteres</div>
 			</div>
 		</div>
 
@@ -45,7 +47,7 @@
 					for="password"
 					[ngClass]="{ 'peer-focus:text-destructive!': submitted && f['password'].errors }"
 					class="bg-background text-muted-foreground peer-focus:text-primary absolute top-2 z-10 origin-[0] -translate-y-4 scale-95 transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
-					Password
+					Contraseña
 				</label>
 				<span
 					class="text-muted-foreground absolute top-2 cursor-pointer ltr:right-3 rtl:left-3"
@@ -60,8 +62,12 @@
 					</svg-icon>
 				</span>
 			</div>
+
+			<!-- Mensajes de error -->
 			<div *ngIf="submitted && f['password'].errors" class="is__invalid-error">
-				<div *ngIf="f['password'].errors['required']">Required field</div>
+				<div *ngIf="f['password'].errors['required']">Campo obligatorio</div>
+				<div *ngIf="f['password'].errors['minlength']">Debe tener al menos 3 caracteres</div>
+				<div *ngIf="f['password'].errors['maxlength']">No puede exceder 50 caracteres</div>
 			</div>
 		</div>
 	</div>

@@ -4,7 +4,9 @@
 
 export const environment = {
 	production: false,
-	apiUrl: 'http://192.168.1.14:82/api/v1',
+	// apiUrl: 'http://192.168.1.14:82/api/v1',
+	// apiUrl: 'tallerweb.uajms.edu.bo/swagger-ui/index.html',
+	apiUrl: 'http://tallerweb.uajms.edu.bo:8080',
 };
 
 /*

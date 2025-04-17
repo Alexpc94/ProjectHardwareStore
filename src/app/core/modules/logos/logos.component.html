@@ -1,0 +1,9 @@
+<div class="p-4">
+	<h2 class="mb-6 text-center text-2xl font-bold">Logos</h2>
+	<div class="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7">
+		<div *ngFor="let logo of logos" class="flex flex-col items-center text-center">
+			<img [src]="logo.src" alt="{{ logo.name }}" class="mb-2 h-8 w-auto" />
+			<span class="text-muted-foreground text-sm font-medium">{{ logo.name }}</span>
+		</div>
+	</div>
+</div>
