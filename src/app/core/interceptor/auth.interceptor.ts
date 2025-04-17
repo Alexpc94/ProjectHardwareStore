@@ -12,15 +12,22 @@ export const authInterceptorFn: HttpInterceptorFn = (
 	const authService = inject(AuthService);
 	const router = inject(Router);
 
+	// Lista de URLs que no necesitan token
+	const excludedUrls = ['https://www.freetestapi.com/api/v1/users'];
+
+	// Si la URL está en la lista, no modifica la petición
+	const isExcluded = excludedUrls.some((url) => req.url.startsWith(url));
+
 	const token = authService.getToken2();
 
-	const cloned = authService.isAuthenticated('currentUser')
-		? req.clone({
-				setHeaders: {
-					Authorization: `Bearer ${token}`,
-				},
-		  })
-		: req;
+	const cloned =
+		!isExcluded && authService.isAuthenticated('currentUser')
+			? req.clone({
+					setHeaders: {
+						Authorization: `Bearer ${token}`,
+					},
+			  })
+			: req;
 
 	return next(cloned).pipe(
 		catchError((err: HttpErrorResponse) => {
