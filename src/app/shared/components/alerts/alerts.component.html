@@ -1,7 +1,9 @@
 <div
 	*ngIf="visible"
 	class="bg-primary fixed top-4 right-4 flex min-w-[200px] items-center justify-between gap-4 rounded px-4 py-2 text-white shadow-lg">
-	<img [src]="iconPath" alt="Alerta" class="h-6 w-6 flex-shrink-0" />
+	<span class="text-white">
+		<svg-icon src="{{ iconPath }}" [svgClass]="'h-6 w-6 flex-shrink-0'"></svg-icon>
+	</span>
 	<h1 class="flex-grow text-xs font-light">{{ message }}</h1>
 	<button (click)="visible = false" class="text-lg leading-none text-white focus:outline-none">&times;</button>
 </div>

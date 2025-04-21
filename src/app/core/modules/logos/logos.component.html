@@ -2,7 +2,9 @@
 	<h2 class="mb-6 text-center text-2xl font-bold">Logos</h2>
 	<div class="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7">
 		<div *ngFor="let logo of logos" class="flex flex-col items-center text-center">
-			<img [src]="logo.src" alt="{{ logo.name }}" class="mb-2 h-8 w-auto" />
+			<span class="text-muted-foreground/50 ltr:mr-2 rtl:ml-2" *ngIf="logo.name">
+				<svg-icon src="{{ logo.src }}" [svgClass]="'mb-2 h-5 w-5'"> </svg-icon>
+			</span>
 			<span class="text-muted-foreground text-sm font-medium">{{ logo.name }}</span>
 		</div>
 	</div>

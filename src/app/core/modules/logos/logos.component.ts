@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // 👈 Importa esto
-
+import { CommonModule } from '@angular/common';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
 	selector: 'app-logos',
 	standalone: true,
-	imports: [CommonModule], // 👈 Asegúrate de agregarlo aquí
+	imports: [CommonModule, AngularSvgIconModule],
 	templateUrl: './logos.component.html',
 	styleUrls: ['./logos.component.scss'],
 })
@@ -115,15 +115,9 @@ export class LogosComponent {
 			name: 'avatar-profile-user-account-person-svgrepo-com',
 			src: 'assets/icons/usericons/avatar-profile-user-account-person-svgrepo-com.svg',
 		},
-		{ name: 'check-circle-svgrepo-com-white', src: 'assets/icons/usericons/check-circle-svgrepo-com-white.svg' },
-		{ name: 'check-circle-svgrepo-com', src: 'assets/icons/usericons/check-circle-svgrepo-com.svg' },
 		{
 			name: 'check-person-profile-user-group-people-svgrepo-com',
 			src: 'assets/icons/usericons/check-person-profile-user-group-people-svgrepo-com.svg',
-		},
-		{
-			name: 'warning-circle-svgrepo-com-white',
-			src: 'assets/icons/usericons/warning-circle-svgrepo-com-white.svg',
 		},
 	];
 }

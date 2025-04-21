@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
 	selector: 'app-alerts',
 	standalone: true,
-	imports: [CommonModule],
+	imports: [CommonModule, AngularSvgIconModule],
 	templateUrl: './alerts.component.html',
 	styleUrls: ['./alerts.component.css'],
 })
@@ -29,15 +30,15 @@ export class AlertsComponent implements OnChanges {
 		switch (type) {
 			case 'success':
 				this.message = 'Operación realizada con éxito.';
-				this.iconPath = 'assets/icons/usericons/check-circle-svgrepo-com-white.svg';
+				this.iconPath = 'assets/icons/usericons/check-circle-svgrepo-com.svg';
 				break;
 			case 'error':
 				this.message = 'Ha ocurrido un error inesperado.';
-				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com-white.svg';
+				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
 				break;
 			case 'login-error':
 				this.message = 'Error al iniciar sesión. Verifica tus datos.';
-				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com-white.svg';
+				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
 				break;
 			case 'info':
 				this.message = 'Información general.';
