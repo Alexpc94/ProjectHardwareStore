@@ -32,7 +32,7 @@ export class SignInComponent implements OnInit {
 
 	private _loginAccessService = inject(AuthService);
 	private _router = inject(Router);
-	constructor(private readonly _formBuilder: FormBuilder) {}
+	private _formBuilder = inject(FormBuilder);
 
 	onClick() {
 		console.log('Button clicked');

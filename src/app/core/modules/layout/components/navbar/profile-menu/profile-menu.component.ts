@@ -49,6 +49,11 @@ export class ProfileMenuComponent implements OnInit {
 			data: 'yourProfile',
 		},
 		{
+			title: 'Cambiar Contraseña',
+			icon: './assets/icons/heroicons/outline/shield-check.svg',
+			data: 'ChangePassword',
+		},
+		{
 			title: 'Cerrar Sesión',
 			icon: './assets/icons/heroicons/outline/logout.svg',
 			data: 'logOut',
@@ -82,8 +87,7 @@ export class ProfileMenuComponent implements OnInit {
 		},
 	];
 
-	public themeMode = ['light', 'dark'];
-	public themeDirection = ['ltr', 'rtl'];
+	public themeMode = ['Claro', 'Oscuro'];
 
 	ngOnInit(): void {
 		this.userData = this._loginAccessService.getCurrentSession('currentUser');
@@ -114,6 +118,9 @@ export class ProfileMenuComponent implements OnInit {
 				break;
 			case 'yourProfile':
 				this._router.navigate(['/profile']);
+				break;
+			case 'ChangePassword':
+				this._router.navigate(['/passUpdate']);
 				break;
 
 			default:

@@ -18,6 +18,13 @@ const routes: Routes = [
 				path: 'logos',
 				loadComponent: () => import('./core/modules/logos/logos.component').then((m) => m.LogosComponent),
 			},
+			{
+				path: 'passUpdate',
+				loadComponent: () =>
+					import('./core/modules/auth/pages/update-password/update-password.component').then(
+						(m) => m.UpdatePasswordComponent,
+					),
+			},
 		],
 	},
 	{ path: 'home', redirectTo: '' },
