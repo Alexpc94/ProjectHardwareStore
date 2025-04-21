@@ -49,7 +49,7 @@ export class AuthService {
 	// Obtener el token del usuario actual
 	getToken2(): string {
 		const session = this.getCurrentSession<Data>('currentUser');
-		return session?.token ?? '';
+		return session?.otherParams.token ?? '';
 	}
 
 	// Establecer la sesión en storage

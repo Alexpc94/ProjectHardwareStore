@@ -100,5 +100,30 @@ export class LogosComponent {
 		{ name: 'upload-folder-svgrepo-com', src: 'assets/icons/usericons/upload-folder-svgrepo-com.svg' },
 		{ name: 'upload-square-svgrepo-com', src: 'assets/icons/usericons/upload-square-svgrepo-com.svg' },
 		{ name: 'upload-svgrepo-com', src: 'assets/icons/usericons/upload-svgrepo-com.svg' },
+		{ name: 'warning-circle-svgrepo-com', src: 'assets/icons/usericons/warning-circle-svgrepo-com.svg' },
+		{ name: 'check-circle-svgrepo-com', src: 'assets/icons/usericons/check-circle-svgrepo-com.svg' },
+		{ name: 'user-profile-avatar-svgrepo-com', src: 'assets/icons/usericons/user-profile-avatar-svgrepo-com.svg' },
+		{
+			name: 'account-out-person-profile-user-group-svgrepo-com',
+			src: 'assets/icons/usericons/account-out-person-profile-user-group-svgrepo-com.svg',
+		},
+		{
+			name: 'account-person-profile-uncheck-user-group-svgrepo-com',
+			src: 'assets/icons/usericons/account-person-profile-uncheck-user-group-svgrepo-com.svg',
+		},
+		{
+			name: 'avatar-profile-user-account-person-svgrepo-com',
+			src: 'assets/icons/usericons/avatar-profile-user-account-person-svgrepo-com.svg',
+		},
+		{ name: 'check-circle-svgrepo-com-white', src: 'assets/icons/usericons/check-circle-svgrepo-com-white.svg' },
+		{ name: 'check-circle-svgrepo-com', src: 'assets/icons/usericons/check-circle-svgrepo-com.svg' },
+		{
+			name: 'check-person-profile-user-group-people-svgrepo-com',
+			src: 'assets/icons/usericons/check-person-profile-user-group-people-svgrepo-com.svg',
+		},
+		{
+			name: 'warning-circle-svgrepo-com-white',
+			src: 'assets/icons/usericons/warning-circle-svgrepo-com-white.svg',
+		},
 	];
 }

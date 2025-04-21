@@ -1,4 +1,9 @@
 export interface Data {
-	message: string;
-	token: string;
+	data: {};
+	otherParams: {
+		cedula: string;
+		token: string;
+		user: string;
+		username: string;
+	};
 }
