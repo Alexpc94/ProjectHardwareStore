@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Data } from './../models/data.interface';
-import { UpdatePasswordComponent } from '../modules/auth/pages/update-password/update-password.component';
 
 @Injectable({
 	providedIn: 'root',

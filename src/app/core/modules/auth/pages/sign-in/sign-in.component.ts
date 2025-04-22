@@ -19,20 +19,21 @@ import { Data } from 'src/app/core/models/data.interface';
 	providers: [AuthService],
 })
 export class SignInComponent implements OnInit {
+	private _loginAccessService = inject(AuthService);
+	private _router = inject(Router);
+	private _formBuilder = inject(FormBuilder);
+
 	form!: FormGroup;
 	submitted = false;
 	passwordTextType!: boolean;
 	alertType: '' | 'success' | 'error' | 'login-error' | 'info' = '';
+
 	showAlert(type: 'success' | 'error' | 'login-error' | 'info') {
 		this.alertType = ''; // Reiniciar para forzar cambio
 		setTimeout(() => {
 			this.alertType = type;
 		}, 0);
 	}
-
-	private _loginAccessService = inject(AuthService);
-	private _router = inject(Router);
-	private _formBuilder = inject(FormBuilder);
 
 	onClick() {
 		console.log('Button clicked');
