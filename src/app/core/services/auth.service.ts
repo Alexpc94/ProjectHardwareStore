@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Data } from './../models/data.interface';
+import { UpdatePasswordComponent } from '../modules/auth/pages/update-password/update-password.component';
 
 @Injectable({
 	providedIn: 'root',
@@ -25,26 +26,6 @@ export class AuthService {
 		};
 		return this.http.post<Data>(`${this.apiURL}/auth/log-in`, body, httpOptions);
 	}
-
-	//datos de prueba
-	// setLogout(): Observable<any> {
-	// 	// Simulación: elimina al "currentUser" del localStorage
-	// 	localStorage.removeItem('currentUser');
-	// 	// Simula una respuesta exitosa del servidor
-	// 	return of({ success: true, message: 'Logged out successfully' });
-	// }
-
-	// Cerrar sesión
-	// setLogout(): Observable<any> {
-	// 	const httpOptions = {
-	// 		headers: new HttpHeaders({
-	// 			'Content-Type': 'application/json',
-	// 			Accept: 'application/json',
-	// 		}),
-	// 	};
-	// 	return this.http.post(`${this.apiURL}/logout`, {}, httpOptions);
-	// }
-	//datos de prueba
 
 	// Obtener el token del usuario actual
 	getToken2(): string {
@@ -76,7 +57,21 @@ export class AuthService {
 	deleteCurrentSession(sessionName: string): void {
 		if (this.isAuthenticated(sessionName)) {
 			sessionStorage.removeItem(sessionName);
-			console.log(`✅ Sesión "${sessionName}" eliminada.`);
+			console.log(`Sesión "${sessionName}" eliminada.`);
 		}
+	}
+
+	UpdatePassword(xlogin: string, xpass: string): Observable<Data> {
+		console.log('Datos:', xlogin, xpass);
+		const body = new HttpParams().set('username', xlogin).set('newPassword', xpass);
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/x-www-form-urlencoded',
+				Accept: 'application/json',
+			}),
+			responseType: 'text' as 'json',
+		};
+		const url = `${this.apiURL}/reset/password/change`;
+		return this.http.post<Data>(url, body.toString(), httpOptions);
 	}
 }

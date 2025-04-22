@@ -55,11 +55,10 @@ export class SignInComponent implements OnInit {
 
 	onSubmit() {
 		this.submitted = true;
-		const { user, password } = this.form.value;
-		console.log('Enviando datos:', { user, password });
 		if (this.form.invalid) {
 			return;
 		}
+		const { user, password } = this.form.value;
 		this._loginAccessService.getToken(user, password).subscribe({
 			next: (data: Data) => {
 				console.log('Respuesta del servicio:', data);
@@ -72,7 +71,7 @@ export class SignInComponent implements OnInit {
 			},
 			error: (error: any) => {
 				if (error.error && error.error.errors) {
-					// console.error('error detail:', error.error.errors);
+					console.error('error detail:', error.error.errors);
 				}
 			},
 		});
