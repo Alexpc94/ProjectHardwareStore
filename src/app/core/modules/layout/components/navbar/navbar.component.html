@@ -35,7 +35,12 @@
 						class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute top-2 origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
 						Rol Usuario
 					</label>
-					<select id="role" name="order" class="text-muted-foreground w-40! mt-5 rounded border p-2">
+					<select
+						id="role"
+						name="order"
+						class="text-muted-foreground w-40! mt-5 rounded border p-2"
+						[value]="selectedRole"
+						(change)="onRoleChange($event)">
 						<option *ngFor="let item of userData.data2" [value]="item.id_role">
 							{{ item.name }}
 						</option>

@@ -119,5 +119,17 @@ export class LogosComponent {
 			name: 'check-person-profile-user-group-people-svgrepo-com',
 			src: 'assets/icons/usericons/check-person-profile-user-group-people-svgrepo-com.svg',
 		},
+		{
+			name: 'calendar-days-svgrepo-com',
+			src: 'assets/icons/usericons/calendar-days-svgrepo-com.svg',
+		},
+		{
+			name: 'calendar-xmark-svgrepo-com',
+			src: 'assets/icons/usericons/calendar-xmark-svgrepo-com.svg',
+		},
+		{
+			name: 'calendar-lines-pen-svgrepo-com',
+			src: 'assets/icons/usericons/calendar-lines-pen-svgrepo-com.svg',
+		},
 	];
 }
