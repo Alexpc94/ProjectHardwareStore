@@ -1,0 +1,32 @@
+<ng-container>
+	<td>
+		<div class="flex items-center gap-2.5">
+			<img
+				alt="user avatar"
+				class="h-9 w-9 shrink-0 rounded-full"
+				[src]="user.photo && user.photo.trim() !== '' ? ensureHttps(user.photo) : 'assets/profiles/default profile.png'"
+				(error)="onImageError($event)" />
+			<div class="flex flex-col items-start">
+				<span class="text-foreground text-sm font-semibold"> {{ user.name }} {{ user.lastname }} </span>
+				<span class="text-muted-foreground/70 text-xs font-medium">
+					{{ user.email }}
+				</span>
+			</div>
+		</div>
+	</td>
+	<td>{{ user.username }}</td>
+	<td>
+		<span
+			class="rounded-[30px] px-2 py-0.5 text-xs font-medium"
+			[class]="user.status ? 'bg-green-500/10 text-green-800' : 'bg-red-500/10 text-red-800'">
+			{{ user.status ? 'Activo' : 'Inactivo' }}
+		</span>
+	</td>
+	<td>{{ user.phone }}</td>
+	<td class="text-center">
+		<button
+			class="text-muted-foreground hover:bg-card hover:text-foreground flex h-7 w-7 items-center justify-center rounded-md">
+			<svg-icon src="./assets/icons/heroicons/outline/ellipsis-vertical.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+		</button>
+	</td>
+</ng-container>
