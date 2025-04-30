@@ -1,4 +1,4 @@
 export const environment = {
-	production: false,
-	apiUrl: 'http://192.168.1.14:82/api/v1',
+	production: true,
+	apiUrl: 'https://tallerweb.uajms.edu.bo',
 };

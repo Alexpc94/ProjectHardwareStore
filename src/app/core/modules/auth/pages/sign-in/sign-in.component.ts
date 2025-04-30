@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -15,7 +16,15 @@ import { Data } from 'src/app/core/models/data.interface';
 	selector: 'app-sign-in',
 	templateUrl: './sign-in.component.html',
 	styleUrls: ['./sign-in.component.css'],
-	imports: [FormsModule, ReactiveFormsModule, AngularSvgIconModule, NgIf, ButtonComponent, NgClass, AlertsComponent],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		AngularSvgIconModule,
+		ButtonComponent,
+		NgClass,
+		AlertsComponent,
+		ValidationComponent,
+	],
 	providers: [AuthService],
 })
 export class SignInComponent implements OnInit {

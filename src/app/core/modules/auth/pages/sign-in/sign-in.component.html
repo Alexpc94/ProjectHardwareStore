@@ -27,11 +27,7 @@
 					Usuario
 				</label>
 			</div>
-			<div *ngIf="submitted && f['user'].errors" class="is__invalid-error">
-				<div *ngIf="f['user'].errors['required']">Campo obligatorio</div>
-				<div *ngIf="f['user'].errors['minlength']">Debe tener al menos 3 caracteres</div>
-				<div *ngIf="f['user'].errors['maxlength']">No puede exceder 50 caracteres</div>
-			</div>
+			<app-validation [control]="f['user']" [submitted]="submitted"></app-validation>
 		</div>
 
 		<div class="form__group">
@@ -62,13 +58,8 @@
 					</svg-icon>
 				</span>
 			</div>
-
 			<!-- Mensajes de error -->
-			<div *ngIf="submitted && f['password'].errors" class="is__invalid-error">
-				<div *ngIf="f['password'].errors['required']">Campo obligatorio</div>
-				<div *ngIf="f['password'].errors['minlength']">Debe tener al menos 3 caracteres</div>
-				<div *ngIf="f['password'].errors['maxlength']">No puede exceder 50 caracteres</div>
-			</div>
+			<app-validation [control]="f['password']" [submitted]="submitted"></app-validation>
 		</div>
 	</div>
 

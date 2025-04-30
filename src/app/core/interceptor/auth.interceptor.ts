@@ -13,7 +13,7 @@ export const authInterceptorFn: HttpInterceptorFn = (
 	const router = inject(Router);
 
 	// Lista de URLs que no necesitan token
-	const excludedUrls = ['https://www.freetestapi.com/api/v1/users'];
+	const excludedUrls = [''];
 
 	// Si la URL está en la lista, no modifica la petición
 	const isExcluded = excludedUrls.some((url) => req.url.startsWith(url));

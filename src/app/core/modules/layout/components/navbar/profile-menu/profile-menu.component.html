@@ -6,7 +6,9 @@
 			clickOutside
 			(clickOutside)="isOpen = false"
 			class="size-9 shrink-0 rounded-md"
-			[src]="userData.otherParams?.image ? userData.otherParams.image : 'assets/profiles/default profile.png'"
+			[src]="
+				userData.otherParams?.photo ? 'https://' + userData.otherParams.photo : 'assets/profiles/default profile.png'
+			"
 			alt="User profile" />
 	</button>
 	<!-- Dropdown -->
@@ -15,7 +17,14 @@
 		class="bg-background shadow-custom border-muted absolute z-20 mt-2 w-60 origin-top-right transform rounded-md border border-dashed py-4 ring-1 ring-transparent ring-opacity-5 transition focus:outline-hidden ltr:right-0 rtl:left-0">
 		<div class="flext-row flex items-center px-4 pb-4">
 			<div class="w-10 shrink-0">
-				<img class="rounded-md" src="assets/profiles/default profile.png" alt="" />
+				<img
+					class="rounded-md"
+					[src]="
+						userData.otherParams?.photo
+							? 'https://' + userData.otherParams.photo
+							: 'assets/profiles/default profile.png'
+					"
+					alt="" />
 			</div>
 			<div class="text-foreground overflow-hidden px-2 text-sm font-semibold">
 				{{ userData.otherParams.user || 'Invitado' }}

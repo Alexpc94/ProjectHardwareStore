@@ -35,3 +35,9 @@
 #### Icons and Patterns
 
 This project use [Hero Icons](https://heroicons.com/) , [Hero Patterns](https://heropatterns.com/) and [Popsys illustrations](https://popsy.co/)
+
+#### to build
+
+ng build --base-href=/ProjectHardwareStore/
+npx angular-cli-ghpages --dir=dist/angular-tailwind/browser
+npm run deploy

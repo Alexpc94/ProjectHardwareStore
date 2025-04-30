@@ -15,6 +15,10 @@ const routes: Routes = [
 				loadChildren: () => import('./core/modules/uikit/uikit.module').then((m) => m.UikitModule),
 			},
 			{
+				path: 'sistem',
+				loadChildren: () => import('./features/sistem-data/sistem-data.module').then((m) => m.SistemDataModule),
+			},
+			{
 				path: 'logos',
 				loadComponent: () => import('./core/modules/logos/logos.component').then((m) => m.LogosComponent),
 			},

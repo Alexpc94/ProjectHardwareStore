@@ -22,6 +22,7 @@
     "ng": "ng",
     "start": "ng serve --open",
     "build": "ng build",
+    "deploy": "ng build --base-href=/ProjectHardwareStore/ && npx angular-cli-ghpages --dir=dist/angular-tailwind/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:e2e": "npx playwright test --ui",

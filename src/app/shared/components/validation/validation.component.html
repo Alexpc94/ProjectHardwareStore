@@ -1,0 +1,9 @@
+<div *ngIf="submitted && control?.errors as errors" class="is__invalid-error">
+	<div *ngIf="errors['required']">Campo obligatorio</div>
+	<div *ngIf="errors['minlength']">Debe tener al menos {{ errors['minlength'].requiredLength }} caracteres</div>
+	<div *ngIf="errors['maxlength']">No puede exceder {{ errors['maxlength'].requiredLength }} caracteres</div>
+	<div *ngIf="errors['passwordMismatch']">Las contraseñas no coinciden.</div>
+	<div *ngIf="errors['email']">Correo inválido</div>
+	<div *ngIf="errors['min']">Debe ser mayor o igual a {{ errors['min'].min }}</div>
+	<div *ngIf="errors['max']">Debe ser menor o igual a {{ errors['max'].max }}</div>
+</div>

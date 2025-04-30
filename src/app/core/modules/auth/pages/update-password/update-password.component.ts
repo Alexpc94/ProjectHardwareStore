@@ -1,17 +1,26 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-update-password',
-	imports: [FormsModule, AngularSvgIconModule, NgIf, ButtonComponent, ReactiveFormsModule, NgClass, AlertsComponent],
+	imports: [
+		FormsModule,
+		AngularSvgIconModule,
+		ButtonComponent,
+		ReactiveFormsModule,
+		NgClass,
+		AlertsComponent,
+		ValidationComponent,
+	],
 	templateUrl: './update-password.component.html',
 	styleUrl: './update-password.component.css',
 })
