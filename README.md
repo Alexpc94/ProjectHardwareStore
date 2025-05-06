@@ -41,3 +41,5 @@ This project use [Hero Icons](https://heroicons.com/) , [Hero Patterns](https://
 ng build --base-href=/ProjectHardwareStore/
 npx angular-cli-ghpages --dir=dist/angular-tailwind/browser
 npm run deploy
+
+in back render
