@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -19,5 +19,25 @@ export class TableRowComponent {
 
 	onImageError(event: Event) {
 		(event.target as HTMLImageElement).src = 'assets/profiles/default profile.png';
+	}
+
+	viewUser(user: any) {
+		// Lógica para ver todo el usuario
+		console.log('Ver Usuario:', user);
+	}
+
+	editUser(id: number) {
+		console.log('Editar usuario con id:', id);
+		// Lógica para editar al usuario
+	}
+
+	ActivateUser(userId: number, name: string) {
+		// Lógica para eliminar el usuario
+		console.log('Eliminar Usuario:', userId, name);
+	}
+
+	deleteUser(userId: number, name: string) {
+		// Lógica para eliminar el usuario
+		console.log('Eliminar Usuario:', userId, name);
 	}
 }

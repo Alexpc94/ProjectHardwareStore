@@ -1,0 +1,26 @@
+<div class="text-muted-foreground flex flex-wrap items-center justify-between gap-2 py-3 px-5 text-xs">
+	<div class="order-2 flex items-center gap-2 md:order-1">
+		Ver
+		<select class="w-16 p-2" (change)="onItemsPerPageChange($event)">
+			@for (option of [5, 10, 20, 50]; track option) {
+			<option [value]="option" [selected]="option === itemsPerPage">
+				{{ option }}
+			</option>
+			}
+		</select>
+		por página
+	</div>
+	<div class="order-1 flex items-center md:order-2">
+		<span>{{ (currentPage - 1) * itemsPerPage + 1 }}-{{ currentPage * itemsPerPage }} de {{ totalItems }}</span>
+		<button class="h-7 w-7" (click)="onPreviousPage()" [disabled]="currentPage === 1">←</button>
+		@for (page of pages; track page) {
+		<button
+			class="h-7 w-7 rounded-md"
+			[class]="page === currentPage ? 'bg-muted-foreground/10' : ''"
+			(click)="goToPage(page)">
+			{{ page }}
+		</button>
+		}
+		<button class="h-7 w-7" (click)="onNextPage()" [disabled]="currentPage === totalPages()">→</button>
+	</div>
+</div>

@@ -14,6 +14,8 @@ export class LogosComponent {
 		{ name: 'arrow-long-right', src: 'assets/icons/heroicons/outline/arrow-long-right.svg' },
 		{ name: 'arrow-sm-right', src: 'assets/icons/heroicons/outline/arrow-sm-right.svg' },
 		{ name: 'arrow-sm-up', src: 'assets/icons/heroicons/outline/arrow-sm-up.svg' },
+		{ name: 'arrow-up', src: 'assets/icons/heroicons/outline/arrow-up.svg' },
+		{ name: 'arrow-down', src: 'assets/icons/heroicons/outline/arrow-down.svg' },
 		{ name: 'bell', src: 'assets/icons/heroicons/outline/bell.svg' },
 		{ name: 'bookmark', src: 'assets/icons/heroicons/outline/bookmark.svg' },
 		{ name: 'chart-pie', src: 'assets/icons/heroicons/outline/chart-pie.svg' },

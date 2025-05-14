@@ -7,7 +7,7 @@
 				[src]="user.photo && user.photo.trim() !== '' ? ensureHttps(user.photo) : 'assets/profiles/default profile.png'"
 				(error)="onImageError($event)" />
 			<div class="flex flex-col items-start">
-				<span class="text-foreground text-sm font-semibold"> {{ user.name }} {{ user.lastname }} </span>
+				<span class="text-foreground text-sm font-semibold"> {{ user.lastname }} {{ user.name }}</span>
 				<span class="text-muted-foreground/70 text-xs font-medium">
 					{{ user.email }}
 				</span>
@@ -23,10 +23,32 @@
 		</span>
 	</td>
 	<td>{{ user.phone }}</td>
-	<td class="text-center">
-		<button
-			class="text-muted-foreground hover:bg-card hover:text-foreground flex h-7 w-7 items-center justify-center rounded-md">
-			<svg-icon src="./assets/icons/heroicons/outline/ellipsis-vertical.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
-		</button>
+	<td>
+		<div class="flex">
+			<div class="tooltip" data-tip="Ver Usuario">
+				<button (click)="viewUser(user)" class="block w-full px-2 py-1 text-left text-sm">
+					<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+				</button>
+			</div>
+			<div class="tooltip" data-tip="Modificar Usuario">
+				<button (click)="editUser(user.id)" class="block w-full px-2 py-1 text-left text-sm">
+					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+				</button>
+			</div>
+
+			@if (user.status) {
+			<div class="tooltip" data-tip="Dar de Baja">
+				<button (click)="deleteUser(user.id, user.name)" class="block w-full px-2 py-1 text-left text-sm">
+					<svg-icon src="./assets/icons/usericons/delete-2-svgrepo-com.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+				</button>
+			</div>
+			} @else {
+			<div class="tooltip" data-tip="Habilitar">
+				<button (click)="ActivateUser(user.id, user.name)" class="block w-full px-2 py-1 text-left text-sm">
+					<svg-icon src="./assets/icons/tablericons/repeat.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+				</button>
+			</div>
+			}
+		</div>
 	</td>
 </ng-container>

@@ -1,0 +1,11 @@
+<div
+	class="hover:text-foreground flex cursor-pointer select-none items-center gap-1 transition-colors"
+	(click)="sortData()">
+	{{ label }}
+
+	@if (sortService.activeSortField() === sortField) { @if (direction() === 'asc') {
+	<svg-icon src="./assets/icons/heroicons/outline/arrow-up.svg" [svgClass]="'h-4 w-4'"></svg-icon>
+	} @else {
+	<svg-icon src="./assets/icons/heroicons/outline/arrow-down.svg" [svgClass]="'h-4 w-4'"></svg-icon>
+	} }
+</div>
