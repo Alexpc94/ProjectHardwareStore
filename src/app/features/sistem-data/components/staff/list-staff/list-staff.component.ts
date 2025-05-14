@@ -31,6 +31,7 @@ export class ListStaffComponent implements OnInit {
 		return this.users().filter((user) => {
 			const fullName = `${user.name} ${user.lastname}`.toLowerCase();
 			const reverseFullName = `${user.lastname} ${user.name}`.toLowerCase();
+
 			return (
 				fullName.includes(search) ||
 				reverseFullName.includes(search) ||
