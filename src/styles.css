@@ -287,7 +287,6 @@ select {
   @apply w-full rounded-md border border-border bg-background text-xs text-foreground placeholder-muted-foreground focus:z-10 focus:border-primary focus:outline-hidden focus:ring-primary;
 }
 
-[type='checkbox'],
-[type='radio'] {
-  @apply h-4 w-4 rounded-sm border-border bg-background checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus:ring-2 focus:ring-primary;
+[class='checkbox'] {
+  @apply rounded-sm border-border bg-background checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus:ring-2 focus:ring-primary;
 }

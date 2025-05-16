@@ -1,17 +1,21 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 
 import { staff } from './../../../models/staff.model';
 
 @Component({
 	selector: '[app-table-row]',
-	imports: [FormsModule, AngularSvgIconModule],
+	imports: [FormsModule, AngularSvgIconModule, AddModStaffComponent],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
 })
 export class TableRowComponent {
 	@Input() user: staff = <staff>{};
+	selectedUser: any = null;
+	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 
 	ensureHttps(url: string): string {
 		return url.startsWith('http') ? url : 'https://' + url;
@@ -22,8 +26,14 @@ export class TableRowComponent {
 	}
 
 	viewUser(user: any) {
-		// Lógica para ver todo el usuario
-		console.log('Ver Usuario:', user);
+		this.selectedUser = { ...user }; // evita mutaciones
+		this.userModal.selectedUser = this.selectedUser;
+		this.userModal.open();
+	}
+
+	handleSave(user: any) {
+		console.log('Usuario guardado desde listado:', user);
+		// Aquí podrías hacer lógica de actualizar o crear
 	}
 
 	editUser(id: number) {

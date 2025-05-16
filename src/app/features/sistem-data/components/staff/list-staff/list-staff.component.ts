@@ -7,11 +7,12 @@ import { TableRowComponent } from '../table-row/table-row.component';
 import { dummyData } from 'src/app/shared/dummy/staff.dummy';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
+import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 
 import { TableFilterService } from '../../../services/table-filter.service';
 @Component({
 	selector: 'app-list-staff',
-	imports: [AngularSvgIconModule, TableRowComponent, TableFooterComponent, SortHeaderComponent],
+	imports: [AngularSvgIconModule, TableRowComponent, TableFooterComponent, SortHeaderComponent, ToggleSwitchComponent],
 	templateUrl: './list-staff.component.html',
 	styleUrl: './list-staff.component.css',
 })
@@ -21,6 +22,8 @@ export class ListStaffComponent implements OnInit {
 	totalUsers = computed(() => this.users().length);
 	itemsPerPage = signal(5);
 	currentPage = signal(1);
+	isActive = signal(true);
+
 	ngOnInit(): void {
 		this.users.set(dummyData);
 	}
@@ -32,12 +35,15 @@ export class ListStaffComponent implements OnInit {
 			const fullName = `${user.name} ${user.lastname}`.toLowerCase();
 			const reverseFullName = `${user.lastname} ${user.name}`.toLowerCase();
 
-			return (
+			const matchesSearch =
 				fullName.includes(search) ||
 				reverseFullName.includes(search) ||
 				user.username.toLowerCase().includes(search) ||
-				user.phone.includes(search)
-			);
+				user.phone.includes(search);
+
+			const matchesStatus = user.status === this.isActive();
+
+			return matchesSearch && matchesStatus;
 		});
 	});
 

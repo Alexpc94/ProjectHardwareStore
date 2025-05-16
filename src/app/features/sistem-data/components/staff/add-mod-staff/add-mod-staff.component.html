@@ -1,1 +1,17 @@
-<p>add-mod-staff works!</p>
+<dialog #userDialog class="modal">
+	<div class="modal-box">
+		<h3 class="text-lg font-bold">Detalles del usuario</h3>
+		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+		<p class="py-2"><strong>ID:</strong> {{ selectedUser?.id }}</p>
+		<div class="py-2">
+			<label class="block text-sm font-medium">Nombre:</label>
+			<input type="text" class="input input-bordered w-full" name="name" required ngModel />
+		</div>
+
+		<div class="modal-action">
+			<button type="button" class="btn" (click)="close()">Cerrar</button>
+			<button type="submit" class="btn btn-primary" (click)="saveUser()">Aceptar</button>
+		</div>
+	</div>
+</dialog>

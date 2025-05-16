@@ -1,0 +1,5 @@
+<label class="relative inline-flex cursor-pointer items-center">
+	<input type="checkbox" class="peer sr-only" [checked]="checked" (change)="onToggle($event)" [disabled]="disabled" />
+	<div class="peer-checked:bg-primary h-5 w-10 rounded-full bg-gray-300 transition-colors"></div>
+	<div class="absolute left-0.5 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-5"></div>
+</label>
