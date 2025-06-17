@@ -36,6 +36,9 @@
 
 This project use [Hero Icons](https://heroicons.com/) , [Hero Patterns](https://heropatterns.com/) and [Popsys illustrations](https://popsy.co/)
 
+#### Swagger
+https://astro-sp.onrender.com/swagger-ui/index.html
+
 #### to build
 
 ng build --base-href=/ProjectHardwareStore/

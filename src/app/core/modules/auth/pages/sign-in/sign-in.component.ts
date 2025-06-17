@@ -70,10 +70,10 @@ export class SignInComponent implements OnInit {
 		}
 		const { user, password } = this.form.value;
 		this._loginAccessService.getToken(user, password).subscribe({
-			next: (data: Data) => {
+			next: (data: any) => {
 				console.log('Respuesta del servicio:', data);
 				if (data.otherParams) {
-					this._loginAccessService.setCurrentSession('currentUser', JSON.stringify(data));
+					this._loginAccessService.setCurrentSession('currentUser', data);
 					this._router.navigate(['/']);
 				} else {
 					this.showAlert('login-error');

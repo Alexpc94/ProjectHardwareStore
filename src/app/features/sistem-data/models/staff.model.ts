@@ -1,10 +1,13 @@
 export interface staff {
 	id: number;
+	cedula: string;
 	name: string;
-	lastname: string;
-	username: string;
+	firstName: string;
+	secondName: string;
 	email: string;
-	phone: string;
-	status: boolean;
+	telephone: number;
+	gender: string;
 	photo: string;
+	datebirth: string;
+	status: boolean;
 }

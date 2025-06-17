@@ -4,12 +4,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { staff } from './../../../models/staff.model';
 import { TableRowComponent } from '../table-row/table-row.component';
 
-import { dummyData } from 'src/app/shared/dummy/staff.dummy';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 
 import { TableFilterService } from '../../../services/table-filter.service';
+import { StaffService } from '../../../services/staff.service';
 @Component({
 	selector: 'app-list-staff',
 	imports: [AngularSvgIconModule, TableRowComponent, TableFooterComponent, SortHeaderComponent, ToggleSwitchComponent],
@@ -18,6 +18,7 @@ import { TableFilterService } from '../../../services/table-filter.service';
 })
 export class ListStaffComponent implements OnInit {
 	private _filterService = inject(TableFilterService);
+	private _getStaffService = inject(StaffService);
 	users = signal<staff[]>([]);
 	totalUsers = computed(() => this.users().length);
 	itemsPerPage = signal(5);
@@ -25,21 +26,21 @@ export class ListStaffComponent implements OnInit {
 	isActive = signal(true);
 
 	ngOnInit(): void {
-		this.users.set(dummyData);
+		this._getStaffService.getUsers(this.isActive()).subscribe((users) => {
+			this.users.set(users);
+		});
 	}
 
 	filteredUsers = computed(() => {
 		const search = this._filterService.searchField().toLowerCase().trim();
 
 		return this.users().filter((user) => {
-			const fullName = `${user.name} ${user.lastname}`.toLowerCase();
-			const reverseFullName = `${user.lastname} ${user.name}`.toLowerCase();
+			const fullName = `${user.name} ${user.firstName} ${user.secondName}`.toLowerCase();
+			const reverseFullName = `${user.secondName} ${user.firstName} ${user.name}`.toLowerCase();
 
-			const matchesSearch =
-				fullName.includes(search) ||
-				reverseFullName.includes(search) ||
-				user.username.toLowerCase().includes(search) ||
-				user.phone.includes(search);
+			const matchesSearch = fullName.includes(search) || reverseFullName.includes(search);
+			user.cedula.toLowerCase().includes(search);
+			//user.telephone.includes(search);
 
 			const matchesStatus = user.status === this.isActive();
 

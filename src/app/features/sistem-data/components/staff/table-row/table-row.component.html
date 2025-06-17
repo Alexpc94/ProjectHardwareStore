@@ -1,20 +1,20 @@
 <ng-container>
 	<td>
 		<div class="flex items-center gap-2.5">
-			<img
-				alt="user avatar"
-				class="h-9 w-9 shrink-0 rounded-full"
-				[src]="user.photo && user.photo.trim() !== '' ? ensureHttps(user.photo) : 'assets/profiles/default profile.png'"
-				(error)="onImageError($event)" />
+			<img alt="user avatar" class="h-9 w-9 shrink-0 rounded-full" [src]="getUserPhoto(user.photo)" />
 			<div class="flex flex-col items-start">
-				<span class="text-foreground text-sm font-semibold"> {{ user.lastname }} {{ user.name }}</span>
+				<span class="text-foreground text-sm font-semibold">
+					{{ user.name }} {{ user.firstName }} {{ user.firstName }}</span
+				>
 				<span class="text-muted-foreground/70 text-xs font-medium">
 					{{ user.email }}
 				</span>
 			</div>
 		</div>
 	</td>
-	<td>{{ user.username }}</td>
+	<td>{{ user.cedula }}</td>
+	<td>{{ user.name }}</td>
+	<td>{{ user.telephone }}</td>
 	<td>
 		<span
 			class="rounded-[30px] px-2 py-0.5 text-xs font-medium"
@@ -22,20 +22,18 @@
 			{{ user.status ? 'Activo' : 'Inactivo' }}
 		</span>
 	</td>
-	<td>{{ user.phone }}</td>
 	<td>
 		<div class="flex">
 			<div class="tooltip" data-tip="Ver Usuario">
-				<button (click)="viewUser(user)" class="block w-full px-2 py-1 text-left text-sm">
+				<button (click)="viewUser(user.id)" class="block w-full px-2 py-1 text-left text-sm">
 					<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
 				</button>
 			</div>
 			<div class="tooltip" data-tip="Modificar Usuario">
-				<button (click)="editUser(user.id)" class="block w-full px-2 py-1 text-left text-sm">
+				<button (click)="addUpdateUser(user)" class="block w-full px-2 py-1 text-left text-sm">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
 				</button>
 			</div>
-
 			@if (user.status) {
 			<div class="tooltip" data-tip="Dar de Baja">
 				<button (click)="deleteUser(user.id, user.name)" class="block w-full px-2 py-1 text-left text-sm">
@@ -52,5 +50,5 @@
 		</div>
 	</td>
 
-	<app-add-mod-staff [selectedUser]="selectedUser" (save)="handleSave($event)"> </app-add-mod-staff>
+	<app-add-mod-staff [selectedData]="selectedData" (save)="handleSave($event)"> </app-add-mod-staff>
 </ng-container>

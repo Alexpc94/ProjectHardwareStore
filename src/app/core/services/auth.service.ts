@@ -34,7 +34,7 @@ export class AuthService {
 
 	// Establecer la sesión en storage
 	setCurrentSession(sessionName: string, data: string): void {
-		sessionStorage.setItem(sessionName, data);
+		sessionStorage.setItem(sessionName, JSON.stringify(data));
 	}
 
 	// setCurrentSession(sessionName: string, data: Data): void {

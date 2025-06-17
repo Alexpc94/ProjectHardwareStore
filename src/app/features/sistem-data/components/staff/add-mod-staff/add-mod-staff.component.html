@@ -1,17 +1,78 @@
 <dialog #userDialog class="modal">
-	<div class="modal-box">
-		<h3 class="text-lg font-bold">Detalles del usuario</h3>
+	<div class="modal-box bg-background border-border border">
+		<h3 class="mb-4 text-lg font-bold">Detalles del usuario</h3>
 		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-		<p class="py-2"><strong>ID:</strong> {{ selectedUser?.id }}</p>
-		<div class="py-2">
-			<label class="block text-sm font-medium">Nombre:</label>
-			<input type="text" class="input input-bordered w-full" name="name" required ngModel />
-		</div>
+		<form [formGroup]="form">
+			<div class="mb-4 flex gap-2">
+				<div class="form__group w-full">
+					<div class="relative">
+						<input type="text" id="name" class="peer block" placeholder=" " formControlName="name" />
+						<label for="name" class="floating-label"> Nombres </label>
+					</div>
+					<app-validation [control]="f['name']" [submitted]="submitted"></app-validation>
+				</div>
+				<div class="form__group w-full">
+					<div class="relative">
+						<input type="text" id="lastname" class="peer block" placeholder=" " formControlName="lastname" />
+						<label for="lastname" class="floating-label"> Apellidos </label>
+					</div>
+					<app-validation [control]="f['lastname']" [submitted]="submitted"></app-validation>
+				</div>
+				<div class="form__group w-full">
+					<div class="relative">
+						<input type="text" id="dni" class="peer block" placeholder=" " formControlName="dni" />
+						<label for="dni" class="floating-label"> Dni </label>
+					</div>
+					<app-validation [control]="f['dni']" [submitted]="submitted"></app-validation>
+				</div>
+			</div>
+			<div class="mb-4 flex gap-2">
+				<div class="form__group w-full">
+					<div class="relative">
+						<input
+							type="date"
+							id="birthdate"
+							class="peer block"
+							placeholder=" "
+							formControlName="birthdate"
+							onkeydown="return false"
+							onfocus="this.showPicker && this.showPicker()" />
+						<label for="birthdate" class="floating-label"> Fecha Nacimiento </label>
+					</div>
+					<app-validation [control]="f['birthdate']" [submitted]="submitted"></app-validation>
+				</div>
+			</div>
+			<div class="mb-4 flex gap-2">
+				<div class="form__group w-full">
+					<div class="relative">
+						<input
+							type="file"
+							id="photo"
+							class="file-input file-input-sm peer block"
+							placeholder=" "
+							accept="image/*"
+							(change)="onFileSelected($event)" />
+					</div>
+					<app-validation [control]="f['photo']" [submitted]="submitted"></app-validation>
+				</div>
+			</div>
 
-		<div class="modal-action">
-			<button type="button" class="btn" (click)="close()">Cerrar</button>
-			<button type="submit" class="btn btn-primary" (click)="saveUser()">Aceptar</button>
+			<div class="modal-action">
+				<button type="button" class="btn" (click)="close()">Cerrar</button>
+				<button type="submit" class="btn btn-primary" (click)="saveUser()">Aceptar</button>
+			</div>
+		</form>
+	</div>
+</dialog>
+
+<dialog #confirmDialog class="modal">
+	<div class="modal-box">
+		<h3 class="mb-4 text-lg font-bold">¿Confirmar envío?</h3>
+		<p>¿Estás seguro de que deseas enviar este formulario?</p>
+		<div class="modal-action mt-6">
+			<button class="btn" (click)="confirmDialog.close()">Cancelar</button>
+			<!-- <button class="btn btn-primary" (click)="confirmSubmit()">Sí, enviar</button> -->
 		</div>
 	</div>
 </dialog>

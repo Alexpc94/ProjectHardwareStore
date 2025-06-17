@@ -9,7 +9,7 @@
 	</div>
 	<div class="inline-flex items-center space-x-2">
 		<app-toggle-switch [(checked)]="isActive" (checkedChange)="isActive.set($event)"></app-toggle-switch>
-		<p>{{ isActive() ? 'Activos' : 'Inactivos' }}</p>
+		<p class="text-muted-foreground font-semibold">{{ isActive() ? 'Activos' : 'Inactivos' }}</p>
 	</div>
 
 	<div class="inline-block space-x-4">
@@ -58,16 +58,17 @@
 							[data]="users()"
 							(sortedData)="users.set($event)"></app-sort-header>
 					</th>
-					<th class="min-w-[180px]">
+					<th>Cedula</th>
+					<th>
 						<app-sort-header
 							[label]="'Nombre de Usuario'"
 							[sortField]="'username'"
 							[data]="users()"
 							(sortedData)="users.set($event)"></app-sort-header>
 					</th>
-					<th class="min-w-[180px]">Estado</th>
-					<th class="min-w-[150px]">Telefono</th>
-					<th class="w-[60px]">Acciones</th>
+					<th>Telefono</th>
+					<th>Estado</th>
+					<th class="min-w-[100px]">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -75,7 +76,7 @@
 				<tr class="hover:bg-card/50" app-table-row [user]="user"></tr>
 				} @empty {
 				<tr>
-					<td class="py-4 text-center text-sm" colspan="7">No users found</td>
+					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
 				</tr>
 				}
 			</tbody>
