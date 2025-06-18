@@ -26,8 +26,12 @@ export class TableRowComponent {
 
 	handleSave(user: any) {}
 
-	addUpdateUser(user: staff) {
-		this.selectedData = { ...user };
+	addUpdateUser(user?: staff) {
+		if (user) {
+			this.selectedData = { ...user };
+		} else {
+			this.selectedData = null;
+		}
 		this.userModal.selectedData = this.selectedData;
 		this.userModal.open();
 	}

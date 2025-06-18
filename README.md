@@ -34,10 +34,15 @@
 
 #### Icons and Patterns
 
-This project use [Hero Icons](https://heroicons.com/) , [Hero Patterns](https://heropatterns.com/) and [Popsys illustrations](https://popsy.co/)
+This project use [Hero Icons](https://heroicons.com/) , [Hero Patterns](https://heropatterns.com/) , [Popsys illustrations](https://popsy.co/) and [daysyUI](https://daisyui.com/docs/intro/)
+
 
 #### Swagger
 https://astro-sp.onrender.com/swagger-ui/index.html
+
+#### Server front 
+
+https://projecthardwarestore.onrender.com
 
 #### to build
 

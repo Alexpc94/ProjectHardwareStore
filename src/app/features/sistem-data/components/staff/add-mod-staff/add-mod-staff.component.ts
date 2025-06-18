@@ -7,7 +7,6 @@ import {
 	ViewChild,
 	inject,
 	OnInit,
-	OnChanges,
 	SimpleChanges,
 } from '@angular/core';
 import {
@@ -39,28 +38,35 @@ export class AddModStaffComponent implements OnInit {
 	get f() {
 		return this.form.controls;
 	}
-	submitted = false;
+	submitted: boolean = false;
 	ngOnInit() {
 		this.buildForm();
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		if (changes['selectedData'] && this.selectedData) {
-			this.patchForm();
+		if (changes['selectedData']) {
+			if (!this.form) this.buildForm(); // asegurar que el form ya exista
+			if (this.selectedData) {
+				this.patchForm();
+			}
 		}
 	}
 
 	buildForm(): void {
 		this.form = this._formBuilder.group({
 			name: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
-			lastname: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
-			dni: new FormControl('', [
+			firstName: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
+			secondName: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
+			cedula: new FormControl('', [
 				Validators.required,
 				Validators.maxLength(15),
 				Validators.minLength(4),
 				Validators.pattern('^[0-9]*$'),
 			]),
-			birthdate: new FormControl('', [Validators.required, this.ValidAgeDate()]),
+			datebirth: new FormControl('', [Validators.required, this.ValidAgeDate()]),
+			gender: new FormControl('', [Validators.required]),
+			telephone: new FormControl('', [Validators.pattern('^[0-9]*$')]),
+			email: new FormControl('', [Validators.email]),
 			photo: new FormControl('', [this.onlyImageFilesValidator(), this.maxFileSizeValidator(3)]),
 		});
 	}
@@ -68,18 +74,19 @@ export class AddModStaffComponent implements OnInit {
 	patchForm(): void {
 		console.log(this.selectedData);
 		if (this.selectedData) {
-			const birdthDate = new Date(this.selectedData.datebirth);
-			const formattedBirdthDate = this._datePipe.transform(birdthDate, 'yyyy-MM-dd', 'UTC');
-			// const formattedBirdthDate = this._datePipe.transform(birdthDate, 'dd-MM-yyyy', 'UTC');
-			console.log('Fecha formateada:', formattedBirdthDate);
+			//const birdthDate = new Date(this.selectedData.datebirth);
+			// const formattedBirdthDate = this._datePipe.transform(birdthDate, 'yyyy-MM-dd', 'UTC');
+			//const formattedBirdthDate = this._datePipe.transform(birdthDate, 'dd-MM-yyyy', 'UTC');
+			//console.log('Fecha formateada:', formattedBirdthDate);
 			this.form.patchValue({
-				dni: this.selectedData.cedula,
+				cedula: this.selectedData.cedula,
 				name: this.selectedData.name,
-				lastname: this.selectedData.firstName,
-				username: this.selectedData.name,
+				firstName: this.selectedData.firstName,
+				secondName: this.selectedData.secondName,
+				gender: this.selectedData.gender,
 				email: this.selectedData.email,
-				phone: this.selectedData.telephone,
-				birthdate: formattedBirdthDate,
+				telephone: this.selectedData.telephone,
+				datebirth: this.selectedData.datebirth,
 			});
 		}
 	}

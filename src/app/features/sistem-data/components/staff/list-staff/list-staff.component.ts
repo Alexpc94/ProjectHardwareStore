@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject, ViewChild } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { staff } from './../../../models/staff.model';
@@ -17,6 +17,7 @@ import { StaffService } from '../../../services/staff.service';
 	styleUrl: './list-staff.component.css',
 })
 export class ListStaffComponent implements OnInit {
+	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
 	private _filterService = inject(TableFilterService);
 	private _getStaffService = inject(StaffService);
 	users = signal<staff[]>([]);
@@ -24,6 +25,10 @@ export class ListStaffComponent implements OnInit {
 	itemsPerPage = signal(5);
 	currentPage = signal(1);
 	isActive = signal(true);
+
+	addUser(): void {
+		this.childComponent.addUpdateUser(); // sin argumentos
+	}
 
 	ngOnInit(): void {
 		this._getStaffService.getUsers(this.isActive()).subscribe((users) => {

@@ -17,9 +17,13 @@
 			class="bg-muted text-muted-foreground hover:text-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold">
 			Importar CSV
 		</button>
-		<button class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold">
-			Nuevo Usuario
-		</button>
+		<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
+			<button
+				class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
+				(click)="addUser()">
+				Nuevo Usuario
+			</button>
+		</div>
 	</div>
 </div>
 
@@ -54,7 +58,7 @@
 					<th class="min-w-[300px]">
 						<app-sort-header
 							[label]="'Nombres y Apellidos'"
-							[sortField]="'lastname'"
+							[sortField]="'firstName'"
 							[data]="users()"
 							(sortedData)="users.set($event)"></app-sort-header>
 					</th>
@@ -62,7 +66,7 @@
 					<th>
 						<app-sort-header
 							[label]="'Nombre de Usuario'"
-							[sortField]="'username'"
+							[sortField]="'name'"
 							[data]="users()"
 							(sortedData)="users.set($event)"></app-sort-header>
 					</th>

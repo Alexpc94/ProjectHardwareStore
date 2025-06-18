@@ -1,6 +1,6 @@
 <dialog #userDialog class="modal">
 	<div class="modal-box bg-background border-border border">
-		<h3 class="mb-4 text-lg font-bold">Detalles del usuario</h3>
+		<h3 class="mb-4 text-lg font-bold">Detalles del Personal</h3>
 		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
 		<form [formGroup]="form">
@@ -8,39 +8,75 @@
 				<div class="form__group w-full">
 					<div class="relative">
 						<input type="text" id="name" class="peer block" placeholder=" " formControlName="name" />
-						<label for="name" class="floating-label"> Nombres </label>
+						<label for="name" class="floating-label"> Nombre </label>
 					</div>
 					<app-validation [control]="f['name']" [submitted]="submitted"></app-validation>
 				</div>
 				<div class="form__group w-full">
 					<div class="relative">
-						<input type="text" id="lastname" class="peer block" placeholder=" " formControlName="lastname" />
-						<label for="lastname" class="floating-label"> Apellidos </label>
+						<input type="text" id="firstName" class="peer block" placeholder=" " formControlName="firstName" />
+						<label for="firstName" class="floating-label"> Primer Apellido </label>
 					</div>
-					<app-validation [control]="f['lastname']" [submitted]="submitted"></app-validation>
+					<app-validation [control]="f['firstName']" [submitted]="submitted"></app-validation>
 				</div>
 				<div class="form__group w-full">
 					<div class="relative">
-						<input type="text" id="dni" class="peer block" placeholder=" " formControlName="dni" />
-						<label for="dni" class="floating-label"> Dni </label>
+						<input type="text" id="secondName" class="peer block" placeholder=" " formControlName="secondName" />
+						<label for="secondName" class="floating-label"> Segundo Apellido </label>
 					</div>
-					<app-validation [control]="f['dni']" [submitted]="submitted"></app-validation>
+					<app-validation [control]="f['secondName']" [submitted]="submitted"></app-validation>
 				</div>
 			</div>
 			<div class="mb-4 flex gap-2">
 				<div class="form__group w-full">
 					<div class="relative">
+						<input type="text" id="cedula" class="peer block" placeholder=" " formControlName="cedula" />
+						<label for="cedula" class="floating-label"> Dni </label>
+					</div>
+					<app-validation [control]="f['cedula']" [submitted]="submitted"></app-validation>
+				</div>
+				<div class="form__group w-full">
+					<div class="relative">
 						<input
 							type="date"
-							id="birthdate"
+							id="datebirth"
 							class="peer block"
 							placeholder=" "
-							formControlName="birthdate"
+							formControlName="datebirth"
 							onkeydown="return false"
 							onfocus="this.showPicker && this.showPicker()" />
-						<label for="birthdate" class="floating-label"> Fecha Nacimiento </label>
+						<label for="datebirth" class="floating-label"> Fecha Nacimiento </label>
 					</div>
-					<app-validation [control]="f['birthdate']" [submitted]="submitted"></app-validation>
+					<app-validation [control]="f['datebirth']" [submitted]="submitted"></app-validation>
+				</div>
+			</div>
+			<div class="mb-4 flex gap-2">
+				<div class="form__group flex w-full flex-col gap-2">
+					<div class="relative">
+						<label class="flex items-center gap-2">
+							<input type="radio" formControlName="gender" value="M" class="radio radio-xs" />
+							<span>Masculino</span>
+						</label>
+						<label class="flex items-center gap-2">
+							<input type="radio" formControlName="gender" value="F" class="radio radio-xs" />
+							<span>Femenino</span>
+						</label>
+					</div>
+					<app-validation [control]="f['gender']" [submitted]="submitted"></app-validation>
+				</div>
+				<div class="form__group w-full">
+					<div class="relative">
+						<input type="text" id="telephone" class="peer block" placeholder=" " formControlName="telephone" />
+						<label for="telephone" class="floating-label"> Telefono </label>
+					</div>
+					<app-validation [control]="f['telephone']" [submitted]="submitted"></app-validation>
+				</div>
+				<div class="form__group w-full">
+					<div class="relative">
+						<input type="text" id="email" class="peer block" placeholder=" " formControlName="email" />
+						<label for="email" class="floating-label"> Correo </label>
+					</div>
+					<app-validation [control]="f['email']" [submitted]="submitted"></app-validation>
 				</div>
 			</div>
 			<div class="mb-4 flex gap-2">
