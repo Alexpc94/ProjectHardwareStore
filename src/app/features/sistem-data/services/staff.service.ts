@@ -15,4 +15,9 @@ export class StaffService {
 		const url = `${this.apiURL}/api/persons/${status}`;
 		return this._http.get<{ data: staff[] }>(url).pipe(map((response) => response.data));
 	}
+
+	addData(user: FormData): Observable<any> {
+		const url = `${this.apiURL}/api/persons`;
+		return this._http.post<staff>(url, user);
+	}
 }

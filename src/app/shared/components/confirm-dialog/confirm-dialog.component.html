@@ -1,0 +1,10 @@
+<dialog #dialogRef class="modal">
+	<div class="modal-box bg-background border-border max-w-xs border">
+		<h3 class="mb-4 text-lg font-bold">{{ title }}</h3>
+		<p>{{ message }}</p>
+		<div class="modal-action mt-6">
+			<button class="btn" (click)="cancel.emit(); close()">Cancelar</button>
+			<button class="btn btn-primary" (click)="confirm.emit(); close()">Confirmar</button>
+		</div>
+	</div>
+</dialog>

@@ -20,10 +20,12 @@ import {
 } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { staff } from '../../../models/staff.model';
+import { StaffService } from '../../../services/staff.service';
 @Component({
 	selector: 'app-add-mod-staff',
-	imports: [ReactiveFormsModule, ValidationComponent],
+	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent],
 	providers: [DatePipe],
 	templateUrl: './add-mod-staff.component.html',
 	styleUrl: './add-mod-staff.component.css',
@@ -32,6 +34,8 @@ export class AddModStaffComponent implements OnInit {
 	@Input() selectedData!: staff;
 	@Output() save = new EventEmitter<any>();
 	@ViewChild('userDialog') userDialog!: ElementRef<HTMLDialogElement>;
+	@ViewChild('confirmModal') confirmModal!: ConfirmDialogComponent;
+	private _getStaffService = inject(StaffService);
 	_formBuilder = inject(FormBuilder);
 	_datePipe = inject(DatePipe);
 	form!: FormGroup;
@@ -152,12 +156,44 @@ export class AddModStaffComponent implements OnInit {
 		this.userDialog.nativeElement.close();
 	}
 
-	saveUser(): void {
+	onPreSubmit(): void {
 		this.submitted = true;
-		if (this.form.invalid) {
-			return;
+		if (this.form.invalid) return;
+		this.confirmModal.open();
+	}
+
+	saveData(): void {
+		const { datebirth, photo, ...values } = this.form.value;
+		const staff = {
+			...values,
+			dateBirth: datebirth,
+		};
+		const formData = new FormData();
+		const file = this.form.value.photo;
+		formData.append('person', new Blob([JSON.stringify(staff)], { type: 'application/json' }));
+		if (file instanceof File) {
+			formData.append('file', file);
 		}
-		console.log(this.form.value);
+		// for (const [key, value] of (formData as any).entries()) {
+		// 	if (value instanceof File) {
+		// 		console.log(`${key}: [File] ${value.name}`);
+		// 	} else {
+		// 		console.log(`${key}:`, value);
+		// 	}
+		// }
+		if (this.selectedData) {
+			console.log('Modo: Modificar');
+		} else {
+			console.log('Modo: Adicionar');
+			this._getStaffService.addData(formData).subscribe({
+				next: (response) => {
+					console.log('Usuario agregado con éxito:', response);
+				},
+				error: (err) => {
+					console.error('Error al enviar los datos:', err);
+				},
+			});
+		}
 		this.save.emit(this.selectedData);
 		this.close();
 	}
