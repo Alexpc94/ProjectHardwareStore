@@ -8,6 +8,6 @@ export interface staff {
 	telephone: number;
 	gender: string;
 	photo: string;
-	datebirth: string;
+	dateBirth: string;
 	status: boolean;
 }

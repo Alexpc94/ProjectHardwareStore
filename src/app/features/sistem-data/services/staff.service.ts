@@ -20,4 +20,8 @@ export class StaffService {
 		const url = `${this.apiURL}/api/persons`;
 		return this._http.post<staff>(url, user);
 	}
+	modData(user: FormData, id: number): Observable<any> {
+		const url = `${this.apiURL}/api/persons/${id}`;
+		return this._http.put<staff>(url, user);
+	}
 }

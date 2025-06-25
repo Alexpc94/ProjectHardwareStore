@@ -82,3 +82,9 @@
 	</div>
 </form>
 <app-alerts [type]="alertType"></app-alerts>
+<div *ngIf="isLoading" class="fixed inset-0 z-50 flex items-center justify-center">
+	<div class="rounded-lg bg-white p-3 text-center shadow-lg">
+		<span class="loading loading-ring loading-xl"></span>
+		<p class="text-gray-700">Procesando...</p>
+	</div>
+</div>

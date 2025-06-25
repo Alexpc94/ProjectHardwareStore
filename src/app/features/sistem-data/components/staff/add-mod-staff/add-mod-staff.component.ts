@@ -78,10 +78,9 @@ export class AddModStaffComponent implements OnInit {
 	patchForm(): void {
 		console.log(this.selectedData);
 		if (this.selectedData) {
-			//const birdthDate = new Date(this.selectedData.datebirth);
-			// const formattedBirdthDate = this._datePipe.transform(birdthDate, 'yyyy-MM-dd', 'UTC');
+			const birdthDate = new Date(this.selectedData.dateBirth);
+			const formattedBirdthDate = this._datePipe.transform(birdthDate, 'yyyy-MM-dd', 'UTC');
 			//const formattedBirdthDate = this._datePipe.transform(birdthDate, 'dd-MM-yyyy', 'UTC');
-			//console.log('Fecha formateada:', formattedBirdthDate);
 			this.form.patchValue({
 				cedula: this.selectedData.cedula,
 				name: this.selectedData.name,
@@ -90,7 +89,7 @@ export class AddModStaffComponent implements OnInit {
 				gender: this.selectedData.gender,
 				email: this.selectedData.email,
 				telephone: this.selectedData.telephone,
-				datebirth: this.selectedData.datebirth,
+				datebirth: formattedBirdthDate,
 			});
 		}
 	}
@@ -183,6 +182,14 @@ export class AddModStaffComponent implements OnInit {
 		// }
 		if (this.selectedData) {
 			console.log('Modo: Modificar');
+			this._getStaffService.modData(formData, this.selectedData.id).subscribe({
+				next: (response) => {
+					console.log('Usuario modificado con éxito:', response);
+				},
+				error: (err) => {
+					console.error('Error al enviar los datos:', err);
+				},
+			});
 		} else {
 			console.log('Modo: Adicionar');
 			this._getStaffService.addData(formData).subscribe({

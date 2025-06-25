@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,8 +10,6 @@ import { ValidationComponent } from 'src/app/shared/components/validation/valida
 
 import { AuthService } from 'src/app/core/services/auth.service';
 
-import { Data } from 'src/app/core/models/data.interface';
-
 @Component({
 	selector: 'app-sign-in',
 	templateUrl: './sign-in.component.html',
@@ -22,6 +20,7 @@ import { Data } from 'src/app/core/models/data.interface';
 		AngularSvgIconModule,
 		ButtonComponent,
 		NgClass,
+		NgIf,
 		AlertsComponent,
 		ValidationComponent,
 	],
@@ -34,6 +33,7 @@ export class SignInComponent implements OnInit {
 
 	form!: FormGroup;
 	submitted = false;
+	isLoading = false;
 	passwordTextType!: boolean;
 	alertType: '' | 'success' | 'error' | 'login-error' | 'info' = '';
 
@@ -69,9 +69,11 @@ export class SignInComponent implements OnInit {
 			return;
 		}
 		const { user, password } = this.form.value;
+		this.isLoading = true;
 		this._loginAccessService.getToken(user, password).subscribe({
 			next: (data: any) => {
 				console.log('Respuesta del servicio:', data);
+				this.isLoading = false;
 				if (data.otherParams) {
 					this._loginAccessService.setCurrentSession('currentUser', data);
 					this._router.navigate(['/']);
@@ -80,6 +82,7 @@ export class SignInComponent implements OnInit {
 				}
 			},
 			error: (error: any) => {
+				this.isLoading = false;
 				if (error.error && error.error.errors) {
 					console.error('error detail:', error.error.errors);
 				}
