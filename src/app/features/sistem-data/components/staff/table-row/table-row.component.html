@@ -4,7 +4,7 @@
 			<img alt="user avatar" class="h-9 w-9 shrink-0 rounded-full" [src]="getUserPhoto(user.photo)" />
 			<div class="flex flex-col items-start">
 				<span class="text-foreground text-sm font-semibold">
-					{{ user.name }} {{ user.firstName }} {{ user.firstName }}</span
+					{{ user.firstName }} {{ user.secondName }} {{ user.name }}</span
 				>
 				<span class="text-muted-foreground/70 text-xs font-medium">
 					{{ user.email }}
@@ -30,7 +30,7 @@
 				</button>
 			</div>
 			<div class="tooltip" data-tip="Modificar Usuario">
-				<button (click)="addUpdateUser(user)" class="block w-full px-2 py-1 text-left text-sm">
+				<button (click)="addUpdateUser(user.id)" class="block w-full px-2 py-1 text-left text-sm">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
 				</button>
 			</div>
@@ -50,5 +50,6 @@
 		</div>
 	</td>
 
-	<app-add-mod-staff [selectedData]="selectedData" (save)="handleSave($event)"> </app-add-mod-staff>
+	<app-add-mod-staff [selectedID]="selectedID" (save)="handleSave($event)"> </app-add-mod-staff>
 </ng-container>
+<app-alerts [type]="alertType"></app-alerts>

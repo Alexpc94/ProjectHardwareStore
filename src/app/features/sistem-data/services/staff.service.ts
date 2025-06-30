@@ -15,6 +15,10 @@ export class StaffService {
 		const url = `${this.apiURL}/api/persons/${status}`;
 		return this._http.get<{ data: staff[] }>(url).pipe(map((response) => response.data));
 	}
+	getUserById(id: number): Observable<staff> {
+		const url = `${this.apiURL}/api/persons/id/${id}`;
+		return this._http.get<{ data: staff }>(url).pipe(map((response) => response.data));
+	}
 
 	addData(user: FormData): Observable<any> {
 		const url = `${this.apiURL}/api/persons`;

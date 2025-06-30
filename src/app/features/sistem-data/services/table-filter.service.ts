@@ -5,7 +5,6 @@ import { Injectable, signal } from '@angular/core';
 })
 export class TableFilterService {
 	searchField = signal<string>('');
-	statusField = signal<string>('');
 	orderField = signal<string>('');
 
 	constructor() {}

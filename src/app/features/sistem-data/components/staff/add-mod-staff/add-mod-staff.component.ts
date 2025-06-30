@@ -1,14 +1,4 @@
-import {
-	Component,
-	ElementRef,
-	EventEmitter,
-	Input,
-	Output,
-	ViewChild,
-	inject,
-	OnInit,
-	SimpleChanges,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject, OnInit } from '@angular/core';
 import {
 	AbstractControl,
 	ReactiveFormsModule,
@@ -22,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { staff } from '../../../models/staff.model';
+import { ActionEvent } from '../../../models/Actions.model';
 import { StaffService } from '../../../services/staff.service';
 @Component({
 	selector: 'app-add-mod-staff',
@@ -31,8 +22,18 @@ import { StaffService } from '../../../services/staff.service';
 	styleUrl: './add-mod-staff.component.css',
 })
 export class AddModStaffComponent implements OnInit {
-	@Input() selectedData!: staff;
-	@Output() save = new EventEmitter<any>();
+	private _selectedID?: number;
+	@Input()
+	set selectedID(value: any) {
+		if (value !== null) {
+			this._selectedID = value;
+			this.selectedIDChange(value);
+		}
+	}
+	get selectedID(): any {
+		return this._selectedID;
+	}
+	@Output() save = new EventEmitter<ActionEvent>();
 	@ViewChild('userDialog') userDialog!: ElementRef<HTMLDialogElement>;
 	@ViewChild('confirmModal') confirmModal!: ConfirmDialogComponent;
 	private _getStaffService = inject(StaffService);
@@ -43,17 +44,18 @@ export class AddModStaffComponent implements OnInit {
 		return this.form.controls;
 	}
 	submitted: boolean = false;
+	selectedData?: staff;
+
 	ngOnInit() {
 		this.buildForm();
 	}
 
-	ngOnChanges(changes: SimpleChanges) {
-		if (changes['selectedData']) {
-			if (!this.form) this.buildForm(); // asegurar que el form ya exista
-			if (this.selectedData) {
-				this.patchForm();
-			}
-		}
+	private selectedIDChange(id: number): void {
+		if (!this.form) this.buildForm();
+		this._getStaffService.getUserById(id).subscribe((user) => {
+			this.selectedData = user;
+			this.patchForm();
+		});
 	}
 
 	buildForm(): void {
@@ -76,11 +78,10 @@ export class AddModStaffComponent implements OnInit {
 	}
 
 	patchForm(): void {
-		console.log(this.selectedData);
+		//console.log(this.selectedData);
 		if (this.selectedData) {
 			const birdthDate = new Date(this.selectedData.dateBirth);
 			const formattedBirdthDate = this._datePipe.transform(birdthDate, 'yyyy-MM-dd', 'UTC');
-			//const formattedBirdthDate = this._datePipe.transform(birdthDate, 'dd-MM-yyyy', 'UTC');
 			this.form.patchValue({
 				cedula: this.selectedData.cedula,
 				name: this.selectedData.name,
@@ -95,7 +96,7 @@ export class AddModStaffComponent implements OnInit {
 	}
 
 	ValidAgeDate(): ValidatorFn {
-		// Función to define if people are 18 years old o more
+		// Function to define if people are 18 years old o more
 		return (control: AbstractControl): { [key: string]: any } | null => {
 			const startDate = new Date(control.value);
 			const today = new Date();
@@ -136,7 +137,7 @@ export class AddModStaffComponent implements OnInit {
 	onlyImageFilesValidator(): ValidatorFn {
 		return (control: AbstractControl): { [key: string]: any } | null => {
 			const file = control.value;
-			if (!file) return null; // No validar si está vacío
+			if (!file) return null; // dont validate if no file selected
 			if (!(file instanceof File)) return { invalidType: true };
 			if (!file.type.startsWith('image/')) {
 				return { invalidType: true };
@@ -163,13 +164,13 @@ export class AddModStaffComponent implements OnInit {
 
 	saveData(): void {
 		const { datebirth, photo, ...values } = this.form.value;
-		const staff = {
+		const data: staff = {
 			...values,
 			dateBirth: datebirth,
 		};
 		const formData = new FormData();
 		const file = this.form.value.photo;
-		formData.append('person', new Blob([JSON.stringify(staff)], { type: 'application/json' }));
+		formData.append('person', new Blob([JSON.stringify(data)], { type: 'application/json' }));
 		if (file instanceof File) {
 			formData.append('file', file);
 		}
@@ -180,28 +181,31 @@ export class AddModStaffComponent implements OnInit {
 		// 		console.log(`${key}:`, value);
 		// 	}
 		// }
-		if (this.selectedData) {
-			console.log('Modo: Modificar');
-			this._getStaffService.modData(formData, this.selectedData.id).subscribe({
+		if (this.selectedID) {
+			//console.log('to update');
+			this._getStaffService.modData(formData, this.selectedID).subscribe({
 				next: (response) => {
-					console.log('Usuario modificado con éxito:', response);
+					//console.log('user updated:', response);
+					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
 				},
 				error: (err) => {
-					console.error('Error al enviar los datos:', err);
+					console.error('Error:', err);
+					this.save.emit({ action: 'edit', success: false });
 				},
 			});
 		} else {
-			console.log('Modo: Adicionar');
+			//console.log('to add');
 			this._getStaffService.addData(formData).subscribe({
 				next: (response) => {
-					console.log('Usuario agregado con éxito:', response);
+					//console.log('User added:', response);
+					this.save.emit({ action: 'add', success: true, data });
 				},
 				error: (err) => {
-					console.error('Error al enviar los datos:', err);
+					console.error('Error:', err);
+					this.save.emit({ action: 'add', success: false });
 				},
 			});
 		}
-		this.save.emit(this.selectedData);
 		this.close();
 	}
 }

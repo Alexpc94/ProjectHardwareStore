@@ -7,7 +7,13 @@
 			<div class="mb-4 flex gap-2">
 				<div class="form__group w-full">
 					<div class="relative">
-						<input type="text" id="name" class="peer block" placeholder=" " formControlName="name" />
+						<input
+							type="text"
+							id="name"
+							class="peer block"
+							placeholder=" "
+							formControlName="name"
+							autocomplete="given-name" />
 						<label for="name" class="floating-label"> Nombre </label>
 					</div>
 					<app-validation [control]="f['name']" [submitted]="submitted"></app-validation>
@@ -53,12 +59,24 @@
 			<div class="mb-4 flex gap-2">
 				<div class="form__group flex w-full flex-col gap-2">
 					<div class="relative">
-						<label class="flex items-center gap-2">
-							<input type="radio" formControlName="gender" value="M" class="radio radio-xs" />
+						<label class="flex items-center gap-2" for="genderM">
+							<input
+								type="radio"
+								formControlName="gender"
+								id="genderM"
+								name="gender"
+								value="M"
+								class="radio radio-xs" />
 							<span>Masculino</span>
 						</label>
-						<label class="flex items-center gap-2">
-							<input type="radio" formControlName="gender" value="F" class="radio radio-xs" />
+						<label class="flex items-center gap-2" for="genderF">
+							<input
+								type="radio"
+								formControlName="gender"
+								id="genderF"
+								name="gender"
+								value="F"
+								class="radio radio-xs" />
 							<span>Femenino</span>
 						</label>
 					</div>
@@ -73,7 +91,13 @@
 				</div>
 				<div class="form__group w-full">
 					<div class="relative">
-						<input type="text" id="email" class="peer block" placeholder=" " formControlName="email" />
+						<input
+							type="text"
+							id="email"
+							class="peer block"
+							placeholder=" "
+							formControlName="email"
+							autocomplete="email" />
 						<label for="email" class="floating-label"> Correo </label>
 					</div>
 					<app-validation [control]="f['email']" [submitted]="submitted"></app-validation>

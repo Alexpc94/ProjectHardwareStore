@@ -1,7 +1,7 @@
 <div class="text-muted-foreground flex flex-wrap items-center justify-between gap-2 py-3 px-5 text-xs">
 	<div class="order-2 flex items-center gap-2 md:order-1">
 		Ver
-		<select class="w-16 p-2" (change)="onItemsPerPageChange($event)">
+		<select name="items" class="w-16 p-2" (change)="onItemsPerPageChange($event)">
 			@for (option of [5, 10, 20, 50]; track option) {
 			<option [value]="option" [selected]="option === itemsPerPage">
 				{{ option }}

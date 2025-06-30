@@ -24,15 +24,20 @@ export class ListStaffComponent implements OnInit {
 	totalUsers = computed(() => this.users().length);
 	itemsPerPage = signal(5);
 	currentPage = signal(1);
-	isActive = signal(true);
-
+	isActive = true;
 	addUser(): void {
-		this.childComponent.addUpdateUser(); // sin argumentos
+		this.childComponent.addUpdateUser();
 	}
 
 	ngOnInit(): void {
-		this._getStaffService.getUsers(this.isActive()).subscribe((users) => {
+		this.loadUsers(true);
+	}
+
+	loadUsers(status: boolean): void {
+		this.isActive = status;
+		this._getStaffService.getUsers(status).subscribe((users) => {
 			this.users.set(users);
+			this.currentPage.set(1); // opcional: resetear página al cambiar estado
 		});
 	}
 
@@ -43,13 +48,12 @@ export class ListStaffComponent implements OnInit {
 			const fullName = `${user.name} ${user.firstName} ${user.secondName}`.toLowerCase();
 			const reverseFullName = `${user.secondName} ${user.firstName} ${user.name}`.toLowerCase();
 
-			const matchesSearch = fullName.includes(search) || reverseFullName.includes(search);
-			user.cedula.toLowerCase().includes(search);
-			//user.telephone.includes(search);
-
-			const matchesStatus = user.status === this.isActive();
-
-			return matchesSearch && matchesStatus;
+			return (
+				fullName.includes(search) ||
+				reverseFullName.includes(search) ||
+				user.cedula.includes(search) ||
+				user.telephone?.toString().includes(search)
+			);
 		});
 	});
 
@@ -72,5 +76,18 @@ export class ListStaffComponent implements OnInit {
 	handleItemsPerPageChange(count: number) {
 		this.itemsPerPage.set(count);
 		this.currentPage.set(1);
+	}
+
+	handleUserSave(res: any) {
+		switch (res.action) {
+			case 'add':
+				this.loadUsers(true);
+				break;
+
+			case 'edit':
+				console.log('Usuario modificado:', res.data);
+				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, ...res.data } : user)));
+				break;
+		}
 	}
 }
