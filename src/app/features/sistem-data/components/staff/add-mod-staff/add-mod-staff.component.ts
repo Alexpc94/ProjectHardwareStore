@@ -62,7 +62,7 @@ export class AddModStaffComponent implements OnInit {
 		this.form = this._formBuilder.group({
 			name: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
 			firstName: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
-			secondName: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
+			secondName: new FormControl('', [Validators.maxLength(50), Validators.minLength(2)]),
 			cedula: new FormControl('', [
 				Validators.required,
 				Validators.maxLength(15),
@@ -162,10 +162,21 @@ export class AddModStaffComponent implements OnInit {
 		this.confirmModal.open();
 	}
 
+	capitalizeWords(str: string | undefined | null): string {
+		if (!str) return '';
+		return str
+			.toLowerCase()
+			.split(' ')
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
+	}
 	saveData(): void {
-		const { datebirth, photo, ...values } = this.form.value;
+		const { datebirth, photo, name, firstName, secondName, ...values } = this.form.value;
 		const data: staff = {
 			...values,
+			name: this.capitalizeWords(name),
+			firstName: this.capitalizeWords(firstName),
+			secondName: this.capitalizeWords(secondName),
 			dateBirth: datebirth,
 		};
 		const formData = new FormData();
@@ -173,6 +184,8 @@ export class AddModStaffComponent implements OnInit {
 		formData.append('person', new Blob([JSON.stringify(data)], { type: 'application/json' }));
 		if (file instanceof File) {
 			formData.append('file', file);
+		} else {
+			formData.append('file', new Blob([], { type: 'application/octet-stream' }), '');
 		}
 		// for (const [key, value] of (formData as any).entries()) {
 		// 	if (value instanceof File) {

@@ -14,7 +14,7 @@
 							placeholder=" "
 							formControlName="name"
 							autocomplete="given-name" />
-						<label for="name" class="floating-label"> Nombre </label>
+						<label for="name" class="floating-label"> Nombres </label>
 					</div>
 					<app-validation [control]="f['name']" [submitted]="submitted"></app-validation>
 				</div>
@@ -30,7 +30,6 @@
 						<input type="text" id="secondName" class="peer block" placeholder=" " formControlName="secondName" />
 						<label for="secondName" class="floating-label"> Segundo Apellido </label>
 					</div>
-					<app-validation [control]="f['secondName']" [submitted]="submitted"></app-validation>
 				</div>
 			</div>
 			<div class="mb-4 flex gap-2">
@@ -50,7 +49,7 @@
 							placeholder=" "
 							formControlName="datebirth"
 							onkeydown="return false"
-							onfocus="this.showPicker && this.showPicker()" />
+							onclick="this.showPicker && this.showPicker()" />
 						<label for="datebirth" class="floating-label"> Fecha Nacimiento </label>
 					</div>
 					<app-validation [control]="f['datebirth']" [submitted]="submitted"></app-validation>

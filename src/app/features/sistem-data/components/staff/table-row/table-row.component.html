@@ -34,22 +34,36 @@
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
 				</button>
 			</div>
-			@if (user.status) {
-			<div class="tooltip" data-tip="Dar de Baja">
-				<button (click)="deleteUser(user.id, user.name)" class="block w-full px-2 py-1 text-left text-sm">
-					<svg-icon src="./assets/icons/usericons/delete-2-svgrepo-com.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+			<div class="tooltip" [attr.data-tip]="user.status ? 'Dar de Baja' : 'Habilitar'">
+				<button
+					(click)="openModal(user.id, user.firstName + ' ' + user.secondName + ' ' + user.name, user.status)"
+					class="block w-full px-2 py-1 text-left text-sm">
+					<svg-icon
+						[src]="
+							user.status
+								? './assets/icons/usericons/delete-2-svgrepo-com.svg'
+								: './assets/icons/tablericons/repeat.svg'
+						"
+						[svgClass]="'h-4 w-4'">
+					</svg-icon>
 				</button>
 			</div>
-			} @else {
-			<div class="tooltip" data-tip="Habilitar">
-				<button (click)="ActivateUser(user.id, user.name)" class="block w-full px-2 py-1 text-left text-sm">
-					<svg-icon src="./assets/icons/tablericons/repeat.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
-				</button>
-			</div>
-			}
 		</div>
 	</td>
 
 	<app-add-mod-staff [selectedID]="selectedID" (save)="handleSave($event)"> </app-add-mod-staff>
 </ng-container>
 <app-alerts [type]="alertType"></app-alerts>
+@if (selectedUser) {
+<div class="modal modal-open">
+	<div class="modal-box bg-background border-border max-w-md border">
+		<h3 class="mb-4 text-lg font-bold">
+			¿Estás seguro de {{ selectedUser!.status ? 'dar de baja' : 'habilitar' }} a "{{ selectedUser!.name }}"?
+		</h3>
+		<div class="modal-action mt-6">
+			<button class="btn" (click)="cancelModal()">Cancelar</button>
+			<button class="btn btn-primary" (click)="cancelModal()">Aceptar</button>
+		</div>
+	</div>
+</div>
+}

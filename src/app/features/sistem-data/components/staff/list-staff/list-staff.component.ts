@@ -85,7 +85,7 @@ export class ListStaffComponent implements OnInit {
 				break;
 
 			case 'edit':
-				console.log('Usuario modificado:', res.data);
+				//console.log('user updated:', res.data);
 				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, ...res.data } : user)));
 				break;
 		}

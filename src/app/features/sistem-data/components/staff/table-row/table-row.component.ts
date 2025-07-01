@@ -48,14 +48,13 @@ export class TableRowComponent {
 		this.userModal.open();
 	}
 
-	ActivateUser(userId: number, name: string) {
-		// Lógica para eliminar el usuario
-		console.log('Habilitar Usuario:', userId, name);
+	selectedUser: { id: number; name: string; status: boolean } | null = null;
+	openModal(id: number, name: string, status: boolean) {
+		this.selectedUser = { id, name, status };
 	}
 
-	deleteUser(userId: number, name: string) {
-		// Lógica para eliminar el usuario
-		console.log('Eliminar Usuario:', userId, name);
+	cancelModal() {
+		this.selectedUser = null;
 	}
 
 	ngAfterViewInit(): void {
