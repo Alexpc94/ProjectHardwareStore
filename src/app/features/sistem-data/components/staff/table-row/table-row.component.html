@@ -29,8 +29,11 @@
 					<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
 				</button>
 			</div>
-			<div class="tooltip" data-tip="Modificar Usuario">
-				<button (click)="addUpdateUser(user.id)" class="block w-full px-2 py-1 text-left text-sm">
+			<div class="tooltip" [attr.data-tip]="user.status ? 'Modificar Usuario' : 'Usuario inactivo'">
+				<button
+					(click)="addUpdateUser(user.id)"
+					class="block w-full px-2 py-1 text-left text-sm"
+					[disabled]="!user.status">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
 				</button>
 			</div>
@@ -62,8 +65,13 @@
 		</h3>
 		<div class="modal-action mt-6">
 			<button class="btn" (click)="cancelModal()">Cancelar</button>
-			<button class="btn btn-primary" (click)="cancelModal()">Aceptar</button>
+			<button class="btn btn-primary" (click)="changeStatus()">Aceptar</button>
 		</div>
 	</div>
 </div>
 }
+<!-- <app-confirm-dialog
+  #confirmDialog
+  [name]="selectedUser?.name || ''"
+  [status]="selectedUser?.status || false"
+  (confirm)="changeStatus()" /> -->

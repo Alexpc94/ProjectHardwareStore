@@ -1,16 +1,18 @@
-import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
+import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { staff } from './../../../models/staff.model';
 import { ActionEvent } from '../../../models/Actions.model';
+import { StaffService } from '../../../services/staff.service';
 import { environment } from 'src/environments/environment.prod';
 @Component({
 	selector: '[app-table-row]',
-	imports: [FormsModule, AngularSvgIconModule, AddModStaffComponent, AlertsComponent],
+	imports: [FormsModule, AngularSvgIconModule, AddModStaffComponent, AlertsComponent, ConfirmChangeStatusComponent],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
 })
@@ -21,6 +23,7 @@ export class TableRowComponent {
 	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 	apiUrl = environment.apiUrl;
 	saveSubscription!: Subscription;
+	private _getStaffService = inject(StaffService);
 	alertType: '' | 'success' | 'error' | 'info' = '';
 
 	showAlert(type: 'success' | 'error' | 'info') {
@@ -51,6 +54,22 @@ export class TableRowComponent {
 	selectedUser: { id: number; name: string; status: boolean } | null = null;
 	openModal(id: number, name: string, status: boolean) {
 		this.selectedUser = { id, name, status };
+	}
+	changeStatus() {
+		if (!this.selectedUser) return;
+		const { id, status } = this.selectedUser;
+		this._getStaffService.modStatus(id).subscribe({
+			next: (response) => {
+				this.save.emit({ action: status ? 'delete' : 'enable', success: true, id: id });
+				this.showAlert('success');
+			},
+			error: (err) => {
+				console.error('Error:', err);
+				this.save.emit({ action: 'edit', success: false });
+				this.showAlert('error');
+			},
+		});
+		this.selectedUser = null;
 	}
 
 	cancelModal() {
