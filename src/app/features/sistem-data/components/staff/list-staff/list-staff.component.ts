@@ -17,9 +17,11 @@ import { StaffService } from '../../../services/staff.service';
 	styleUrl: './list-staff.component.css',
 })
 export class ListStaffComponent implements OnInit {
-	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
 	private _filterService = inject(TableFilterService);
 	private _getStaffService = inject(StaffService);
+
+	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
+
 	users = signal<staff[]>([]);
 	totalUsers = computed(() => this.users().length);
 	itemsPerPage = signal(5);

@@ -17,17 +17,22 @@ import { environment } from 'src/environments/environment.prod';
 	styleUrl: './table-row.component.css',
 })
 export class TableRowComponent {
+	private _getStaffService = inject(StaffService);
+
 	@Input() user!: staff;
 	@Output() save = new EventEmitter<ActionEvent>();
-	selectedID: any = null;
+
 	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
+	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
+
+	selectedID: any = null;
+	selectedUser: { id: number; name: string; status: boolean } | null = null;
 	apiUrl = environment.apiUrl;
 	saveSubscription!: Subscription;
-	private _getStaffService = inject(StaffService);
-	alertType: '' | 'success' | 'error' | 'info' = '';
 
+	alertType: '' | 'success' | 'error' | 'info' = '';
 	showAlert(type: 'success' | 'error' | 'info') {
-		this.alertType = ''; // Reiniciar para forzar cambio
+		this.alertType = ''; // Reset alert type to hide any previous alert
 		setTimeout(() => {
 			this.alertType = type;
 		}, 0);
@@ -51,9 +56,9 @@ export class TableRowComponent {
 		this.userModal.open();
 	}
 
-	selectedUser: { id: number; name: string; status: boolean } | null = null;
 	openModal(id: number, name: string, status: boolean) {
 		this.selectedUser = { id, name, status };
+		this.confirmDialog.show();
 	}
 	changeStatus() {
 		if (!this.selectedUser) return;
@@ -69,10 +74,6 @@ export class TableRowComponent {
 				this.showAlert('error');
 			},
 		});
-		this.selectedUser = null;
-	}
-
-	cancelModal() {
 		this.selectedUser = null;
 	}
 

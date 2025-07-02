@@ -123,6 +123,5 @@
 			</div>
 		</form>
 	</div>
+	<app-confirm-dialog #confirmModal [message]="'¿Estás seguro?'" (confirm)="saveData()"></app-confirm-dialog>
 </dialog>
-
-<app-confirm-dialog #confirmModal [message]="'¿Estás seguro?'" (confirm)="saveData()"></app-confirm-dialog>

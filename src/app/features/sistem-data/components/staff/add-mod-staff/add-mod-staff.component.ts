@@ -159,7 +159,7 @@ export class AddModStaffComponent implements OnInit {
 	onPreSubmit(): void {
 		this.submitted = true;
 		if (this.form.invalid) return;
-		this.confirmModal.open();
+		this.confirmModal.show();
 	}
 
 	capitalizeWords(str: string | undefined | null): string {

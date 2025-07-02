@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
 	selector: 'app-confirm-dialog',
@@ -6,19 +6,16 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 	styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent {
-	@Input() title = '¿Confirmar acción?';
-	@Input() message = '¿Estás seguro de que deseas continuar?';
-
+	@Input() message?: string;
 	@Output() confirm = new EventEmitter<void>();
-	@Output() cancel = new EventEmitter<void>();
 
-	@ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+	open = false;
 
-	open(): void {
-		this.dialogRef.nativeElement.showModal();
+	show() {
+		this.open = true;
 	}
 
-	close(): void {
-		this.dialogRef.nativeElement.close();
+	close() {
+		this.open = false;
 	}
 }

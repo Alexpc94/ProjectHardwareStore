@@ -3,8 +3,8 @@
 	<div class="modal-box bg-background border-border max-w-md border">
 		<h3 class="mb-4 text-lg font-bold">¿Estás seguro de {{ actionLabel }} a "{{ name }}"?</h3>
 		<div class="modal-action mt-6">
-			<button class="btn" (click)="cancel.emit()">Cancelar</button>
-			<button class="btn btn-primary" (click)="confirm.emit()">Aceptar</button>
+			<button class="btn" (click)="close()">Cancelar</button>
+			<button class="btn btn-primary" (click)="confirm.emit(); close()">Aceptar</button>
 		</div>
 	</div>
 </div>
