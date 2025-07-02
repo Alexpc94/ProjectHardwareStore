@@ -1,5 +1,4 @@
 import { Component, Input, ViewChild, Output, EventEmitter, inject } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -26,13 +25,12 @@ export class TableRowComponent {
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
 	selectedID: any = null;
-	selectedUser: { id: number; name: string; status: boolean } | null = null;
+	selectedUser: any;
 	apiUrl = environment.apiUrl;
-	saveSubscription!: Subscription;
 
-	alertType: '' | 'success' | 'error' | 'info' = '';
+	alertType: any;
 	showAlert(type: 'success' | 'error' | 'info') {
-		this.alertType = ''; // Reset alert type to hide any previous alert
+		this.alertType = '';
 		setTimeout(() => {
 			this.alertType = type;
 		}, 0);
@@ -44,7 +42,12 @@ export class TableRowComponent {
 
 	viewUser(id: number) {}
 
-	handleSave(user: any) {}
+	addModSave(res: any) {
+		console.log('let me see:', res);
+		if (!res.success) return this.showAlert('error');
+		this.save.emit(res);
+		this.showAlert('success');
+	}
 
 	addUpdateUser(userID?: number) {
 		if (userID) {
@@ -56,7 +59,7 @@ export class TableRowComponent {
 		this.userModal.open();
 	}
 
-	openModal(id: number, name: string, status: boolean) {
+	openModalToUpdateStatus(id: number, name: string, status: boolean) {
 		this.selectedUser = { id, name, status };
 		this.confirmDialog.show();
 	}
@@ -75,18 +78,5 @@ export class TableRowComponent {
 			},
 		});
 		this.selectedUser = null;
-	}
-
-	ngAfterViewInit(): void {
-		this.saveSubscription = this.userModal.save.subscribe((res) => {
-			console.log('Respuesta:', res);
-			if (!res.success) return this.showAlert('error');
-			this.save.emit(res);
-			this.showAlert('success');
-		});
-	}
-
-	ngOnDestroy() {
-		this.saveSubscription?.unsubscribe();
 	}
 }

@@ -34,7 +34,7 @@ export class UpdatePasswordComponent implements OnInit {
 	submitted = false;
 	passwordTextType!: boolean;
 	confirmPasswordTextType: boolean = false;
-	alertType: '' | 'success' | 'error' | 'login-error' | 'info' = '';
+	alertType: any;
 
 	showAlert(type: 'success' | 'error' | 'login-error' | 'info') {
 		this.alertType = ''; // Reiniciar para forzar cambio

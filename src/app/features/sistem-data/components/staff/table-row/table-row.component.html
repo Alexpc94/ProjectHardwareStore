@@ -39,7 +39,9 @@
 			</div>
 			<div class="tooltip" [attr.data-tip]="user.status ? 'Dar de Baja' : 'Habilitar'">
 				<button
-					(click)="openModal(user.id, user.firstName + ' ' + user.secondName + ' ' + user.name, user.status)"
+					(click)="
+						openModalToUpdateStatus(user.id, user.firstName + ' ' + user.secondName + ' ' + user.name, user.status)
+					"
 					class="block w-full px-2 py-1 text-left text-sm">
 					<svg-icon
 						[src]="
@@ -54,7 +56,7 @@
 		</div>
 	</td>
 
-	<app-add-mod-staff [selectedID]="selectedID" (save)="handleSave($event)"> </app-add-mod-staff>
+	<app-add-mod-staff [selectedID]="selectedID" (save)="addModSave($event)"> </app-add-mod-staff>
 </ng-container>
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status

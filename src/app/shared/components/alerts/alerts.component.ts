@@ -42,11 +42,11 @@ export class AlertsComponent implements OnChanges {
 				break;
 			case 'info':
 				this.message = 'Información general.';
-				this.iconPath = 'assets/icons/info.svg';
+				this.iconPath = 'assets/icons/heroicons/outline/information-circle.svg';
 				break;
 			default:
 				this.message = '';
-				this.iconPath = 'assets/icons/alert.svg';
+				this.iconPath = 'assets/icons/heroicons/outline/information-circle.svg';
 				break;
 		}
 	}

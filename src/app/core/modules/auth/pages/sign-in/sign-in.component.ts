@@ -35,7 +35,7 @@ export class SignInComponent implements OnInit {
 	submitted = false;
 	isLoading = false;
 	passwordTextType!: boolean;
-	alertType: '' | 'success' | 'error' | 'login-error' | 'info' = '';
+	alertType: any;
 
 	showAlert(type: 'success' | 'error' | 'login-error' | 'info') {
 		this.alertType = ''; // Reiniciar para forzar cambio
