@@ -72,7 +72,7 @@ export class SignInComponent implements OnInit {
 		this.isLoading = true;
 		this._loginAccessService.getToken(user, password).subscribe({
 			next: (data: any) => {
-				console.log('Respuesta del servicio:', data);
+				//console.log('Respuesta del servicio:', data);
 				this.isLoading = false;
 				if (data.otherParams) {
 					this._loginAccessService.setCurrentSession('currentUser', data);

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject, OnInit } from '@angular/core';
 import {
 	AbstractControl,
 	ReactiveFormsModule,
@@ -9,11 +9,14 @@ import {
 	Validators,
 } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
-import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { staff } from '../../../models/staff.model';
 import { ActionEvent } from '../../../models/Actions.model';
+
+import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+
 import { StaffService } from '../../../services/staff.service';
+import { Data } from '../../../../../core/models/data.interface';
 @Component({
 	selector: 'app-add-mod-staff',
 	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent],
@@ -22,20 +25,11 @@ import { StaffService } from '../../../services/staff.service';
 	styleUrl: './add-mod-staff.component.css',
 })
 export class AddModStaffComponent implements OnInit {
-	private _selectedID?: number;
-	@Input()
-	set selectedID(value: any) {
-		if (value !== null) {
-			this._selectedID = value;
-			this.selectedIDChange(value);
-		}
-	}
-	get selectedID(): any {
-		return this._selectedID;
-	}
+	@Input() selectedID?: number;
 	@Output() save = new EventEmitter<ActionEvent>();
-	@ViewChild('userDialog') userDialog!: ElementRef<HTMLDialogElement>;
+
 	@ViewChild('confirmModal') confirmModal!: ConfirmDialogComponent;
+
 	private _getStaffService = inject(StaffService);
 	_formBuilder = inject(FormBuilder);
 	_datePipe = inject(DatePipe);
@@ -43,6 +37,7 @@ export class AddModStaffComponent implements OnInit {
 	get f() {
 		return this.form.controls;
 	}
+	showModal: boolean = false;
 	submitted: boolean = false;
 	selectedData?: staff;
 
@@ -50,12 +45,20 @@ export class AddModStaffComponent implements OnInit {
 		this.buildForm();
 	}
 
-	private selectedIDChange(id: number): void {
-		if (!this.form) this.buildForm();
-		this._getStaffService.getUserById(id).subscribe((user) => {
-			this.selectedData = user;
-			this.patchForm();
-		});
+	open() {
+		if (this.selectedID != null) {
+			this._getStaffService.getUserById(this.selectedID).subscribe((user) => {
+				this.selectedData = user.data;
+				this.patchForm();
+			});
+		}
+		this.showModal = true;
+	}
+
+	close() {
+		this.form.reset();
+		this.submitted = false;
+		this.showModal = false;
 	}
 
 	buildForm(): void {
@@ -144,16 +147,6 @@ export class AddModStaffComponent implements OnInit {
 			}
 			return null;
 		};
-	}
-
-	open() {
-		this.userDialog.nativeElement.showModal();
-	}
-
-	close() {
-		this.form.reset();
-		this.submitted = false;
-		this.userDialog.nativeElement.close();
 	}
 
 	onPreSubmit(): void {

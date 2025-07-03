@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
+import { ViewStaffComponent } from '../view-staff/view-staff.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { staff } from './../../../models/staff.model';
@@ -11,7 +12,14 @@ import { StaffService } from '../../../services/staff.service';
 import { environment } from 'src/environments/environment.prod';
 @Component({
 	selector: '[app-table-row]',
-	imports: [FormsModule, AngularSvgIconModule, AddModStaffComponent, AlertsComponent, ConfirmChangeStatusComponent],
+	imports: [
+		FormsModule,
+		AngularSvgIconModule,
+		AddModStaffComponent,
+		AlertsComponent,
+		ConfirmChangeStatusComponent,
+		ViewStaffComponent,
+	],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
 })
@@ -22,6 +30,7 @@ export class TableRowComponent {
 	@Output() save = new EventEmitter<ActionEvent>();
 
 	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
+	@ViewChild(ViewStaffComponent) userViewModal!: ViewStaffComponent;
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
 	selectedID: any = null;
@@ -40,13 +49,8 @@ export class TableRowComponent {
 		return `${this.apiUrl}${photoPath}`;
 	}
 
-	viewUser(id: number) {}
-
-	addModSave(res: any) {
-		console.log('let me see:', res);
-		if (!res.success) return this.showAlert('error');
-		this.save.emit(res);
-		this.showAlert('success');
+	viewUser(userID: number) {
+		this.userViewModal.open(userID);
 	}
 
 	addUpdateUser(userID?: number) {
@@ -59,10 +63,18 @@ export class TableRowComponent {
 		this.userModal.open();
 	}
 
+	addModSave(res: any) {
+		console.log('let me see:', res);
+		if (!res.success) return this.showAlert('error');
+		this.save.emit(res);
+		this.showAlert('success');
+	}
+
 	openModalToUpdateStatus(id: number, name: string, status: boolean) {
 		this.selectedUser = { id, name, status };
 		this.confirmDialog.show();
 	}
+
 	changeStatus() {
 		if (!this.selectedUser) return;
 		const { id, status } = this.selectedUser;

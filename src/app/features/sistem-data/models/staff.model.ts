@@ -1,6 +1,7 @@
 export interface staff {
 	id: number;
 	cedula: string;
+	usuario: string;
 	name: string;
 	firstName: string;
 	secondName: string;
