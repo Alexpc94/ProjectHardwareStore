@@ -14,6 +14,11 @@ export class TableFooterComponent {
 
 	@Output() pageChange = new EventEmitter<number>();
 	@Output() itemsPerPageChange = new EventEmitter<number>();
+
+	get totalPages(): number {
+		return Math.ceil(this.totalItems / this.itemsPerPage);
+	}
+
 	get pages(): number[] {
 		const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
 		const current = this.currentPage;
@@ -31,14 +36,12 @@ export class TableFooterComponent {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
 
-	totalPages = computed(() => Math.ceil(this.totalItems / this.itemsPerPage));
-
 	onPreviousPage() {
 		if (this.currentPage > 1) this.pageChange.emit(this.currentPage - 1);
 	}
 
 	onNextPage() {
-		if (this.currentPage < this.totalPages()) this.pageChange.emit(this.currentPage + 1);
+		if (this.currentPage < this.totalPages) this.pageChange.emit(this.currentPage + 1);
 	}
 
 	onItemsPerPageChange(event: Event) {
