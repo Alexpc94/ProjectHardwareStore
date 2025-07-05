@@ -34,7 +34,7 @@
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
-			<div class="tooltip" [attr.data-tip]="user.usuario ? 'Asignar usuario' : 'Modificar clave'">
+			<div class="tooltip" [attr.data-tip]="user.usuario ? 'Modificar clave' : 'Asignar usuario'">
 				<button (click)="addUpdateCredentials(user.id, user.usuario)" class="block w-full px-1 py-1">
 					<svg-icon
 						[src]="
