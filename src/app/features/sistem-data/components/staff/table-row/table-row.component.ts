@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.prod';
 
 import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 import { ViewStaffComponent } from '../view-staff/view-staff.component';
+import { CredentialStaffComponent } from '../credential-staff/credential-staff.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 
@@ -20,6 +21,7 @@ import { StaffService } from '../../../services/staff.service';
 		AddModStaffComponent,
 		AlertsComponent,
 		ConfirmChangeStatusComponent,
+		CredentialStaffComponent,
 		ViewStaffComponent,
 	],
 	templateUrl: './table-row.component.html',
@@ -33,6 +35,7 @@ export class TableRowComponent {
 
 	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 	@ViewChild(ViewStaffComponent) userViewModal!: ViewStaffComponent;
+	@ViewChild(CredentialStaffComponent) userCredentialModal!: CredentialStaffComponent;
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
 	selectedID: any = null;
@@ -53,6 +56,14 @@ export class TableRowComponent {
 
 	viewUser(userID: number) {
 		this.userViewModal.open(userID);
+	}
+
+	addUpdateCredentials(userID: number, userCredential?: string) {
+		this.userCredentialModal.open(userID, userCredential);
+	}
+
+	addModSaveCredential(res: any) {
+		console.log('Credential save response:', res);
 	}
 
 	addUpdateUser(userID?: number) {

@@ -26,8 +26,8 @@ export class ViewStaffComponent {
 		this._getStaffService.getUserById(userID).subscribe((user) => {
 			this.selectedData = user.data;
 			this.selectedRoleData = user.data2;
-			console.log('User data:', this.selectedData);
-			console.log('User data2:', this.selectedRoleData);
+			//console.log('User data:', this.selectedData);
+			//console.log('User data2:', this.selectedRoleData);
 		});
 		this.showModal = true;
 	}

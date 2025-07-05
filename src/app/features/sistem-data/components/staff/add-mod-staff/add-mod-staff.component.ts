@@ -24,7 +24,6 @@ import { StaffService } from '../../../services/staff.service';
 	styleUrl: './add-mod-staff.component.css',
 })
 export class AddModStaffComponent implements OnInit {
-	selectedID?: number;
 	@Output() save = new EventEmitter<ActionEvent>();
 
 	@ViewChild('confirmModal') confirmModal!: ConfirmDialogComponent;
@@ -39,7 +38,7 @@ export class AddModStaffComponent implements OnInit {
 	showModal: boolean = false;
 	submitted: boolean = false;
 	selectedData?: staff;
-
+	selectedID?: number;
 	ngOnInit() {
 		this.buildForm();
 	}

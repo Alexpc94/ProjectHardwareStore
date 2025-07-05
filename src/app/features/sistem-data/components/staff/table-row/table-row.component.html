@@ -35,11 +35,7 @@
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="user.usuario ? 'Asignar usuario' : 'Modificar clave'">
-				<button
-					(click)="
-						openModalToUpdateStatus(user.id, user.firstName + ' ' + user.secondName + ' ' + user.name, user.status)
-					"
-					class="block w-full px-1 py-1">
+				<button (click)="addUpdateCredentials(user.id, user.usuario)" class="block w-full px-1 py-1">
 					<svg-icon
 						[src]="
 							user.usuario
@@ -70,6 +66,7 @@
 	</td>
 
 	<app-add-mod-staff (save)="addModSave($event)"> </app-add-mod-staff>
+	<app-credential-staff (save)="addModSaveCredential($event)"> </app-credential-staff>
 	<app-view-staff> </app-view-staff>
 </ng-container>
 <app-alerts [type]="alertType"></app-alerts>
