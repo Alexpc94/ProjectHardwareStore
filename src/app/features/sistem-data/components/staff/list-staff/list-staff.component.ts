@@ -1,12 +1,12 @@
 import { Component, OnInit, signal, computed, inject, ViewChild } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { staff } from './../../../models/staff.model';
 import { TableRowComponent } from '../table-row/table-row.component';
-
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
+
+import { staff } from './../../../models/staff.model';
 
 import { TableFilterService } from '../../../services/table-filter.service';
 import { StaffService } from '../../../services/staff.service';

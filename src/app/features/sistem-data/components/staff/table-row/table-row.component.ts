@@ -1,15 +1,17 @@
 import { Component, Input, ViewChild, Output, EventEmitter, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { environment } from 'src/environments/environment.prod';
 
 import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 import { ViewStaffComponent } from '../view-staff/view-staff.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
+
 import { staff } from './../../../models/staff.model';
 import { ActionEvent } from '../../../models/Actions.model';
+
 import { StaffService } from '../../../services/staff.service';
-import { environment } from 'src/environments/environment.prod';
 @Component({
 	selector: '[app-table-row]',
 	imports: [
@@ -59,8 +61,7 @@ export class TableRowComponent {
 		} else {
 			this.selectedID = null;
 		}
-		this.userModal.selectedID = this.selectedID;
-		this.userModal.open();
+		this.userModal.open(this.selectedID);
 	}
 
 	addModSave(res: any) {

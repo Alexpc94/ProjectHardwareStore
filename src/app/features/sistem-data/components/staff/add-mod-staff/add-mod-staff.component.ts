@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, inject, OnInit } from '@angular/core';
 import {
 	AbstractControl,
 	ReactiveFormsModule,
@@ -16,7 +16,6 @@ import { ValidationComponent } from 'src/app/shared/components/validation/valida
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 import { StaffService } from '../../../services/staff.service';
-import { Data } from '../../../../../core/models/data.interface';
 @Component({
 	selector: 'app-add-mod-staff',
 	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent],
@@ -25,7 +24,7 @@ import { Data } from '../../../../../core/models/data.interface';
 	styleUrl: './add-mod-staff.component.css',
 })
 export class AddModStaffComponent implements OnInit {
-	@Input() selectedID?: number;
+	selectedID?: number;
 	@Output() save = new EventEmitter<ActionEvent>();
 
 	@ViewChild('confirmModal') confirmModal!: ConfirmDialogComponent;
@@ -45,10 +44,11 @@ export class AddModStaffComponent implements OnInit {
 		this.buildForm();
 	}
 
-	open() {
-		if (this.selectedID != null) {
-			this._getStaffService.getUserById(this.selectedID).subscribe((user) => {
+	open(userID: number) {
+		if (userID != null) {
+			this._getStaffService.getUserById(userID).subscribe((user) => {
 				this.selectedData = user.data;
+				this.selectedID = userID;
 				this.patchForm();
 			});
 		}
