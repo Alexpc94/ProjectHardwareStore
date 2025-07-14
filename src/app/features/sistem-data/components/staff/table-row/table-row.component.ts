@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment.prod';
 import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 import { ViewStaffComponent } from '../view-staff/view-staff.component';
 import { CredentialStaffComponent } from '../credential-staff/credential-staff.component';
+import { RoleAssignmentComponent } from '../role-assignment/role-assignment.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 
@@ -22,6 +23,7 @@ import { StaffService } from '../../../services/staff.service';
 		AlertsComponent,
 		ConfirmChangeStatusComponent,
 		CredentialStaffComponent,
+		RoleAssignmentComponent,
 		ViewStaffComponent,
 	],
 	templateUrl: './table-row.component.html',
@@ -36,6 +38,7 @@ export class TableRowComponent {
 	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 	@ViewChild(ViewStaffComponent) userViewModal!: ViewStaffComponent;
 	@ViewChild(CredentialStaffComponent) userCredentialModal!: CredentialStaffComponent;
+	@ViewChild(RoleAssignmentComponent) roleAssignmentModal!: RoleAssignmentComponent;
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
 	selectedID: any = null;
@@ -58,12 +61,15 @@ export class TableRowComponent {
 		this.userViewModal.open(userID);
 	}
 
-	addUpdateCredentials(userID: number, userCredential?: string) {
-		this.userCredentialModal.open(userID, userCredential);
+	addUpdateCredentials(userID: number, userCredential: string, userCedula: string) {
+		this.userCredentialModal.open(userID, userCredential, userCedula);
 	}
 
 	addModSaveCredential(res: any) {
 		console.log('Credential save response:', res);
+		if (!res.success) return this.showAlert('error');
+		this.save.emit(res);
+		this.showAlert('success');
 	}
 
 	addUpdateUser(userID?: number) {
@@ -76,7 +82,7 @@ export class TableRowComponent {
 	}
 
 	addModSave(res: any) {
-		console.log('let me see:', res);
+		//console.log('let me see:', res);
 		if (!res.success) return this.showAlert('error');
 		this.save.emit(res);
 		this.showAlert('success');
@@ -103,4 +109,9 @@ export class TableRowComponent {
 		});
 		this.selectedUser = null;
 	}
+
+	roleAssignment(userID: number) {
+		this.roleAssignmentModal.open(userID);
+	}
+	roleAssignmentUpdated(res: any) {}
 }

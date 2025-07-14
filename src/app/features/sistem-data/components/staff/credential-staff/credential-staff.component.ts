@@ -7,7 +7,7 @@ import { ActionEvent } from '../../../models/Actions.model';
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
-import { StaffService } from '../../../services/staff.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
 	selector: 'app-credential-staff',
 	imports: [ReactiveFormsModule, AngularSvgIconModule, ValidationComponent, ConfirmDialogComponent],
@@ -18,22 +18,28 @@ export class CredentialStaffComponent {
 	@Output() save = new EventEmitter<ActionEvent>();
 
 	@ViewChild('confirmModal') confirmModal!: ConfirmDialogComponent;
-
-	private _getStaffService = inject(StaffService);
+	private _loginAccessService = inject(AuthService);
 	_formBuilder = inject(FormBuilder);
 
 	showModal: boolean = false;
 	submitted: boolean = false;
 	form!: FormGroup;
 	selectedID!: number;
-	selectedCredential?: string;
+	selectedUserCredential: boolean = true;
+	selectedNameUserCredential?: string;
+	selectedCedula?: string;
 	get f() {
 		return this.form.controls;
 	}
 
-	open(userID: number, userCredential?: string) {
+	open(userID: number, userCredential: string, userCedula: string) {
 		this.selectedID = userID;
-		this.selectedCredential = userCredential;
+		this.selectedNameUserCredential = userCredential;
+
+		if (!userCredential) {
+			this.selectedCedula = userCedula;
+			this.selectedUserCredential = false;
+		}
 		this.buildForm();
 		this.showModal = true;
 	}
@@ -45,13 +51,12 @@ export class CredentialStaffComponent {
 	}
 
 	buildForm(): void {
+		const usuarioValidators = !this.selectedUserCredential
+			? [Validators.required, Validators.maxLength(50), Validators.minLength(3)]
+			: [];
 		this.form = this._formBuilder.group(
 			{
-				usuario: new FormControl(this.selectedCredential ?? '', [
-					Validators.required,
-					Validators.maxLength(50),
-					Validators.minLength(3),
-				]),
+				usuario: [this.selectedCedula ?? '', usuarioValidators],
 				password: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(3)]],
 				password2: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(3)]],
 			},
@@ -82,6 +87,49 @@ export class CredentialStaffComponent {
 	}
 
 	saveData(): void {
-		console.log('Saving data...');
+		console.log('usuario a modificar ', this.selectedNameUserCredential);
+		const { usuario, password } = this.form.value;
+		const data: any = {
+			username: usuario,
+			password: password,
+			idPerson: this.selectedID,
+		};
+		const dataToArray: any = { usuario: usuario };
+		if (this.selectedUserCredential) {
+			//console.log('user updated:');
+			this._loginAccessService.UpdatePassword(this.selectedNameUserCredential!, password).subscribe({
+				next: () => {
+					this.save.emit({ action: 'edit', success: true });
+				},
+				error: (error) => {
+					console.log('Error recibido:', error);
+					this.save.emit({ action: 'edit', success: false });
+				},
+			});
+			this.close();
+		} else {
+			//console.log('user created:');
+			this._loginAccessService.addUserData(data).subscribe({
+				next: () => {
+					this.save.emit({ action: 'edit', success: true, data: dataToArray, id: this.selectedID });
+					this.close();
+				},
+				error: (error) => {
+					console.error('Error:', error);
+					const mensaje =
+						typeof error?.error === 'string'
+							? error.error
+							: typeof error?.error?.message === 'string'
+							? error.error.message
+							: '';
+					// Validar si el mensaje es de "usuario ya existe"
+					if (mensaje.includes('El UserName ya Existe.')) {
+						this.form.get('usuario')?.setErrors({ datoExistente: true });
+						return;
+					}
+					this.save.emit({ action: 'edit', success: false });
+				},
+			});
+		}
 	}
 }

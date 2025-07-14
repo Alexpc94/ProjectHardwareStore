@@ -34,8 +34,13 @@
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
-			<div class="tooltip" [attr.data-tip]="user.usuario ? 'Modificar clave' : 'Asignar usuario'">
-				<button (click)="addUpdateCredentials(user.id, user.usuario)" class="block w-full px-1 py-1">
+			<div
+				class="tooltip"
+				[attr.data-tip]="!user.status ? 'Usuario inactivo' : user.usuario ? 'Modificar clave' : 'Asignar usuario'">
+				<button
+					(click)="addUpdateCredentials(user.id, user.usuario, user.cedula)"
+					class="block w-full px-1 py-1"
+					[disabled]="!user.status">
 					<svg-icon
 						[src]="
 							user.usuario
@@ -44,6 +49,11 @@
 						"
 						[svgClass]="'h-5 w-5'">
 					</svg-icon>
+				</button>
+			</div>
+			<div class="tooltip" [attr.data-tip]="!user.status ? 'Usuario inactivo' : 'Asignar rol usuario'">
+				<button (click)="roleAssignment(user.id)" class="block w-full px-1 py-1" [disabled]="!user.status">
+					<svg-icon src="assets/icons/usericons/list-check-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="user.status ? 'Dar de Baja' : 'Habilitar'">
@@ -68,6 +78,7 @@
 	<app-add-mod-staff (save)="addModSave($event)"> </app-add-mod-staff>
 	<app-credential-staff (save)="addModSaveCredential($event)"> </app-credential-staff>
 	<app-view-staff> </app-view-staff>
+	<app-role-assignment (save)="roleAssignmentUpdated($event)"> </app-role-assignment>
 </ng-container>
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status

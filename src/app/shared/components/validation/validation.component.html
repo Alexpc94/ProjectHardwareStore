@@ -9,6 +9,7 @@
 	<div *ngIf="errors['pattern']">Solo se permiten números</div>
 	<div *ngIf="errors['ValidAgeDate']">Debe Tener al menos 18 años</div>
 	<div *ngIf="errors['invalidType']">Solo se permiten imágenes.</div>
+	<div *ngIf="errors['datoExistente']">Este dato ya está en uso.</div>
 	<div *ngIf="errors['maxSizeExceeded']">
 		El archivo no puede superar los
 		{{ errors['maxSizeExceeded'].maxSize }} MB.

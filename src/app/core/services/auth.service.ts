@@ -56,12 +56,12 @@ export class AuthService {
 	deleteCurrentSession(sessionName: string): void {
 		if (this.isAuthenticated(sessionName)) {
 			sessionStorage.removeItem(sessionName);
-			console.log(`Sesión "${sessionName}" eliminada.`);
+			//console.log(`Sesión "${sessionName}" eliminada.`);
 		}
 	}
 
 	UpdatePassword(xlogin: string, xpass: string): Observable<Data> {
-		console.log('Datos:', xlogin, xpass);
+		//console.log('Datos:', xlogin, xpass);
 		const body = new HttpParams().set('username', xlogin).set('newPassword', xpass);
 		const httpOptions = {
 			headers: new HttpHeaders({
@@ -72,5 +72,10 @@ export class AuthService {
 		};
 		const url = `${this.apiURL}/reset/password/change`;
 		return this.http.post<Data>(url, body.toString(), httpOptions);
+	}
+
+	addUserData(data: any): Observable<any> {
+		const url = `${this.apiURL}/api/systemusers`;
+		return this.http.post<any>(url, data);
 	}
 }

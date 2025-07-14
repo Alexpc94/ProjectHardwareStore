@@ -82,8 +82,10 @@ export class AddModStaffComponent implements OnInit {
 	patchForm(): void {
 		//console.log(this.selectedData);
 		if (this.selectedData) {
-			const birdthDate = new Date(this.selectedData.dateBirth);
-			const formattedBirdthDate = this._datePipe.transform(birdthDate, 'yyyy-MM-dd', 'UTC');
+			const birthDate = this.selectedData?.dateBirth
+				? this._datePipe.transform(new Date(this.selectedData.dateBirth), 'yyyy-MM-dd', 'UTC')
+				: null;
+			const formattedBirdthDate = this._datePipe.transform(birthDate, 'yyyy-MM-dd', 'UTC');
 			this.form.patchValue({
 				cedula: this.selectedData.cedula,
 				name: this.selectedData.name,
@@ -125,7 +127,6 @@ export class AddModStaffComponent implements OnInit {
 			const file = control.value;
 			if (!file) return null;
 			if (!(file instanceof File)) return { maxSizeExceeded: { actualSize: 0, maxSize: maxSizeMB } };
-
 			const maxSizeBytes = maxSizeMB * 1024 * 1024;
 			if (file.size > maxSizeBytes) {
 				return {
@@ -187,30 +188,43 @@ export class AddModStaffComponent implements OnInit {
 		// 	}
 		// }
 		if (this.selectedID) {
-			//console.log('to update');
 			this._getStaffService.modData(formData, this.selectedID).subscribe({
 				next: (response) => {
 					//console.log('user updated:', response);
 					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
+					this.close();
 				},
-				error: (err) => {
-					console.error('Error:', err);
+				error: (error) => {
+					if (this.handleCedulaError(error)) return;
 					this.save.emit({ action: 'edit', success: false });
 				},
 			});
 		} else {
-			//console.log('to add');
 			this._getStaffService.addData(formData).subscribe({
 				next: (response) => {
 					//console.log('User added:', response);
 					this.save.emit({ action: 'add', success: true, data });
+					this.close();
 				},
-				error: (err) => {
-					console.error('Error:', err);
+				error: (error) => {
+					if (this.handleCedulaError(error)) return;
 					this.save.emit({ action: 'add', success: false });
 				},
 			});
 		}
-		this.close();
+	}
+
+	private handleCedulaError(error: any): boolean {
+		const mensaje =
+			typeof error?.error === 'string'
+				? error.error
+				: typeof error?.error?.message === 'string'
+				? error.error.message
+				: '';
+		if (mensaje.includes('La Cédula ya Existe.')) {
+			this.form.get('cedula')?.setErrors({ datoExistente: true });
+			return true;
+		}
+		return false;
 	}
 }

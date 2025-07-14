@@ -8,7 +8,7 @@
 			<figure class="md:rounded-se-lg flex flex-col items-center justify-center rounded-b-lg border-gray-200 p-2">
 				<blockquote class="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400 lg:mb-8">
 					<figcaption class="flex items-center justify-center text-center">
-						<img class="h-15 w-15 rounded-full" [src]="getUserPhoto(selectedData.photo)" alt="profile picture" />
+						<img class="h-30 w-30 rounded-sm" [src]="getUserPhoto(selectedData.photo)" alt="profile picture" />
 						<div class="ms-3 space-y-0.5 text-left font-medium rtl:text-right dark:text-white">
 							<div>{{ selectedData.name }} {{ selectedData.firstName }} {{ selectedData.secondName }}</div>
 							<div class="text-sm text-gray-500 dark:text-gray-400">
@@ -17,7 +17,6 @@
 								<p>Dni: {{ selectedData.cedula }}</p>
 								<p>Fec. Nacimiento: {{ selectedData.dateBirth | date: 'dd/MM/yyyy' }}</p>
 								<p>Genero: {{ selectedData.gender === 'M' ? 'Masculino' : 'Femenino' }}</p>
-								<p>Usuario: {{ selectedData.usuario }}</p>
 								<p>Estado en sistema: {{ selectedData.status ? 'Activo' : 'Inactivo' }}</p>
 							</div>
 						</div>
