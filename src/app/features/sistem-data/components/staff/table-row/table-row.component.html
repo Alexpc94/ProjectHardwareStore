@@ -36,7 +36,7 @@
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
-			@if (user.tipoper === 'Operarios') {
+			@if (user.tipoper === 'Sistema') {
 			<div
 				class="tooltip"
 				[attr.data-tip]="!user.status ? 'Usuario inactivo' : user.usuario ? 'Modificar clave' : 'Asignar usuario'">
@@ -80,7 +80,7 @@
 				class="tooltip"
 				[attr.data-tip]="user.tipoper === 'Sistema' ? 'Pasar a tipo Operario' : 'Pasar a tipo Sistema'">
 				<button class="block w-full px-1 py-0.5" [disabled]="!user.status">
-					<svg-icon src="./assets/icons/heroicons/outline/user-circle.svg" [svgClass]="'h-3 w-3'"> </svg-icon>
+					<svg-icon src="./assets/icons/heroicons/outline/user-circle.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
 		</div>
