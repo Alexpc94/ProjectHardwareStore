@@ -43,7 +43,7 @@ export class TableRowComponent {
 
 	selectedID: any = null;
 	selectedUser: any;
-	apiUrl = environment.apiUrl;
+	storageUrl = environment.storageUrl;
 
 	alertType: any;
 	showAlert(type: 'success' | 'error' | 'info') {
@@ -54,7 +54,7 @@ export class TableRowComponent {
 	}
 
 	getUserPhoto(photoPath: string): string {
-		return `${this.apiUrl}${photoPath}`;
+		return `${this.storageUrl}${photoPath}`;
 	}
 
 	viewUser(userID: number) {
@@ -78,7 +78,7 @@ export class TableRowComponent {
 		} else {
 			this.selectedID = null;
 		}
-		this.userModal.open(this.selectedID);
+		this.userModal.open(this.selectedID, this.user.tipoper);
 	}
 
 	addModSave(res: any) {

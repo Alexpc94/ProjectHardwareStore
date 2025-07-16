@@ -39,11 +39,12 @@ export class AddModStaffComponent implements OnInit {
 	submitted: boolean = false;
 	selectedData?: staff;
 	selectedID?: number;
+	selectedTipoper?: string;
 	ngOnInit() {
 		this.buildForm();
 	}
 
-	open(userID: number) {
+	open(userID: number, tipoper: string): void {
 		if (userID != null) {
 			this._getStaffService.getUserById(userID).subscribe((user) => {
 				this.selectedData = user.data;
@@ -51,6 +52,7 @@ export class AddModStaffComponent implements OnInit {
 				this.patchForm();
 			});
 		}
+		this.selectedTipoper = tipoper;
 		this.showModal = true;
 	}
 
@@ -95,6 +97,7 @@ export class AddModStaffComponent implements OnInit {
 				email: this.selectedData.email,
 				telephone: this.selectedData.telephone,
 				datebirth: formattedBirdthDate,
+				tipoper: this.selectedTipoper,
 			});
 		}
 	}
@@ -163,6 +166,7 @@ export class AddModStaffComponent implements OnInit {
 			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 			.join(' ');
 	}
+
 	saveData(): void {
 		const { datebirth, photo, name, firstName, secondName, ...values } = this.form.value;
 		const data: staff = {
@@ -171,6 +175,7 @@ export class AddModStaffComponent implements OnInit {
 			firstName: this.capitalizeWords(firstName),
 			secondName: this.capitalizeWords(secondName),
 			dateBirth: datebirth,
+			tipoper: this.selectedTipoper,
 		};
 		const formData = new FormData();
 		const file = this.form.value.photo;
@@ -180,13 +185,6 @@ export class AddModStaffComponent implements OnInit {
 		} else {
 			formData.append('file', new Blob([], { type: 'application/octet-stream' }), '');
 		}
-		// for (const [key, value] of (formData as any).entries()) {
-		// 	if (value instanceof File) {
-		// 		console.log(`${key}: [File] ${value.name}`);
-		// 	} else {
-		// 		console.log(`${key}:`, value);
-		// 	}
-		// }
 		if (this.selectedID) {
 			this._getStaffService.modData(formData, this.selectedID).subscribe({
 				next: (response) => {

@@ -8,6 +8,7 @@ export const environment = {
 	// apiUrl: 'tallerweb.uajms.edu.bo/swagger-ui/index.html',
 	//apiUrl: 'http://tallerweb.uajms.edu.bo:8080',
 	apiUrl: 'https://astro-sp.onrender.com',
+	storageUrl: 'https://astro-sp.onrender.com',
 };
 
 /*

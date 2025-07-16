@@ -16,10 +16,10 @@ export class ViewStaffComponent {
 	showModal: boolean = false;
 	selectedData!: staff;
 	selectedRoleData!: any;
-	apiUrl = environment.apiUrl;
+	storageUrl = environment.storageUrl;
 
 	getUserPhoto(photoPath: string): string {
-		return `${this.apiUrl}${photoPath}`;
+		return `${this.storageUrl}${photoPath}`;
 	}
 
 	open(userID: number) {

@@ -7,8 +7,23 @@
 			<span class="text-foreground">{{ totalUsers() }}</span>
 		</div>
 	</div>
+	<div class="relative max-w-xs">
+		<label
+			for="role"
+			class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
+			Tipo de Personal
+		</label>
+		<select
+			id="role"
+			name="role"
+			class="text-muted-foreground w-40! mt-2 rounded border p-2"
+			(change)="onTypeChange($event)">
+			<option value="Sistema" selected>Sistema</option>
+			<option value="Operarios">Operarios</option>
+		</select>
+	</div>
 	<div class="inline-flex items-center space-x-2">
-		<app-toggle-switch [checked]="isActive" (checkedChange)="loadUsers($event)"></app-toggle-switch>
+		<app-toggle-switch [checked]="isActive" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
 		<p class="text-muted-foreground font-semibold">{{ isActive ? 'Activos' : 'Inactivos' }}</p>
 	</div>
 
@@ -69,6 +84,7 @@
 							[data]="users()"
 							(sortedData)="users.set($event)"></app-sort-header>
 					</th>
+					@if (userType === 'Operarios') {
 					<th>
 						<app-sort-header
 							[label]="'Usuario'"
@@ -76,6 +92,7 @@
 							[data]="users()"
 							(sortedData)="users.set($event)"></app-sort-header>
 					</th>
+					}
 					<th>Telefono</th>
 					<th>Estado</th>
 					<th class="min-w-[100px]">Acciones</th>

@@ -11,8 +11,8 @@ export class StaffService {
 	private apiURL = `${environment.apiUrl}`;
 	_http = inject(HttpClient);
 
-	getUsers(status: boolean): Observable<staff[]> {
-		const url = `${this.apiURL}/api/persons/${status}`;
+	getUsers(status: boolean, type: string): Observable<staff[]> {
+		const url = `${this.apiURL}/api/persons/${status}/${type}`;
 		return this._http.get<{ data: staff[] }>(url).pipe(map((response) => response.data));
 	}
 	getUserById(id: number): Observable<any> {

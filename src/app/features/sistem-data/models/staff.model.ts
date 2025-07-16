@@ -11,4 +11,5 @@ export interface staff {
 	photo: string;
 	dateBirth: string;
 	status: boolean;
+	tipoper: string;
 }

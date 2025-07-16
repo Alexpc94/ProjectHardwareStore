@@ -27,19 +27,32 @@ export class ListStaffComponent implements OnInit {
 	itemsPerPage = signal(5);
 	currentPage = signal(1);
 	isActive = true;
+	userType: string = 'Sistema';
 	addUser(): void {
 		this.childComponent.addUpdateUser();
 	}
 
 	ngOnInit(): void {
-		this.loadUsers(true);
+		this.loadUsers(true, this.userType);
 	}
 
-	loadUsers(status: boolean): void {
+	onToggleChange(status: boolean) {
+		this.loadUsers(status, this.userType);
+	}
+
+	onTypeChange(event: Event) {
+		const select = event.target as HTMLSelectElement;
+		this.userType = select.value;
+		this.loadUsers(this.isActive, this.userType);
+	}
+
+	loadUsers(status: boolean, type: string): void {
 		this.isActive = status;
-		this._getStaffService.getUsers(status).subscribe((users) => {
+		this.userType = type;
+		this._getStaffService.getUsers(status, type).subscribe((users) => {
 			this.users.set(users);
-			this.currentPage.set(1); // opcional: resetear página al cambiar estado
+			console.log('Usuarios cargados:', users);
+			this.currentPage.set(1); // to restart pagination
 		});
 	}
 
@@ -83,7 +96,7 @@ export class ListStaffComponent implements OnInit {
 	handleUserSave(res: any) {
 		switch (res.action) {
 			case 'add':
-				this.loadUsers(true);
+				this.loadUsers(this.isActive, this.userType);
 				break;
 			case 'edit':
 				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, ...res.data } : user)));
