@@ -44,6 +44,9 @@ export class TableRowComponent {
 	selectedID: any = null;
 	selectedUser: any;
 	storageUrl = environment.storageUrl;
+	typeModalOpen = false;
+	userTypes: string[] = ['Sistema', 'Operarios'];
+	selectedType: string = '';
 
 	alertType: any;
 	showAlert(type: 'success' | 'error' | 'info') {
@@ -90,6 +93,7 @@ export class TableRowComponent {
 
 	openModalToUpdateStatus(id: number, name: string, status: boolean) {
 		this.selectedUser = { id, name, status };
+		this.confirmDialog.message = status ? 'dar de baja' : 'habilitar';
 		this.confirmDialog.show();
 	}
 
@@ -103,15 +107,41 @@ export class TableRowComponent {
 			},
 			error: (err) => {
 				console.error('Error:', err);
-				this.save.emit({ action: 'edit', success: false });
 				this.showAlert('error');
 			},
 		});
 		this.selectedUser = null;
 	}
 
+	openModalToUpdateType(id: number, name: string, type: string) {
+		this.selectedUser = { id, name, type };
+		this.typeModalOpen = true;
+	}
+
+	closeTypeModal(): void {
+		this.typeModalOpen = false;
+		this.selectedUser = null;
+	}
+
+	changeType() {
+		if (!this.selectedUser) return;
+		const { id } = this.selectedUser;
+		this._getStaffService.modTipoper(id, this.selectedType).subscribe({
+			next: (response) => {
+				this.save.emit({ action: 'assignType', success: true, id: id });
+				this.showAlert('success');
+			},
+			error: (err) => {
+				console.error('Error:', err);
+				this.showAlert('error');
+			},
+		});
+		this.closeTypeModal();
+	}
+
 	roleAssignment(userID: number) {
 		this.roleAssignmentModal.open(userID);
 	}
+
 	roleAssignmentUpdated(res: any) {}
 }

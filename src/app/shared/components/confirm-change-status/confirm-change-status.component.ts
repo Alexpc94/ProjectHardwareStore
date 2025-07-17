@@ -8,15 +8,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ConfirmChangeStatusComponent {
 	@Input() name?: string;
-	@Input() status?: boolean;
-
+	@Input() message?: string;
 	@Output() confirm = new EventEmitter<void>();
 
 	open = false;
-
-	get actionLabel(): string {
-		return this.status ? 'dar de baja' : 'habilitar';
-	}
 
 	show() {
 		this.open = true;

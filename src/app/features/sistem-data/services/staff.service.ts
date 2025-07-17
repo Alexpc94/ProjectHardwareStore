@@ -32,4 +32,10 @@ export class StaffService {
 		const url = `${this.apiURL}/api/persons/${id}`;
 		return this._http.delete<staff>(url);
 	}
+	modTipoper(id: number, type: string): Observable<any> {
+		const url = `${this.apiURL}/api/persons/tipoper/${id}`;
+		return this._http.put<staff>(url, `"${type}"`, {
+			headers: { 'Content-Type': 'application/json' },
+		});
+	}
 }

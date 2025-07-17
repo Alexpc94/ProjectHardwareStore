@@ -51,7 +51,7 @@ export class ListStaffComponent implements OnInit {
 		this.userType = type;
 		this._getStaffService.getUsers(status, type).subscribe((users) => {
 			this.users.set(users);
-			console.log('Usuarios cargados:', users);
+			//console.log('Usuarios cargados:', users);
 			this.currentPage.set(1); // to restart pagination
 		});
 	}
@@ -94,6 +94,7 @@ export class ListStaffComponent implements OnInit {
 	}
 
 	handleUserSave(res: any) {
+		console.log('User save response:', res);
 		switch (res.action) {
 			case 'add':
 				this.loadUsers(this.isActive, this.userType);
@@ -106,6 +107,9 @@ export class ListStaffComponent implements OnInit {
 				break;
 			case 'enable':
 				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, status: true } : user)));
+				break;
+			case 'assignType':
+				this.users.update((users) => users.filter((user) => user.id !== res.id));
 				break;
 		}
 	}

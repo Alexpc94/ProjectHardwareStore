@@ -13,7 +13,7 @@
 		</div>
 	</td>
 	<td>{{ user.cedula }}</td>
-	@if (user.tipoper === 'Operarios') {
+	@if (user.tipoper === 'Sistema') {
 	<td>{{ user.usuario }}</td>
 	}
 	<td>{{ user.telephone }}</td>
@@ -76,10 +76,13 @@
 					</svg-icon>
 				</button>
 			</div>
-			<div
-				class="tooltip"
-				[attr.data-tip]="user.tipoper === 'Sistema' ? 'Pasar a tipo Operario' : 'Pasar a tipo Sistema'">
-				<button class="block w-full px-1 py-0.5" [disabled]="!user.status">
+			<div class="tooltip" [attr.data-tip]="user.status ? 'Cambiar Tipo Usuario' : 'Usuario inactivo'">
+				<button
+					(click)="
+						openModalToUpdateType(user.id, user.firstName + ' ' + user.secondName + ' ' + user.name, user.tipoper)
+					"
+					class="block w-full px-1 py-0.5"
+					[disabled]="!user.status">
 					<svg-icon src="./assets/icons/heroicons/outline/user-circle.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
@@ -95,5 +98,32 @@
 <app-confirm-change-status
 	#confirmDialog
 	[name]="selectedUser?.name"
-	[status]="selectedUser?.status"
+	[message]="confirmDialog.message"
 	(confirm)="changeStatus()"></app-confirm-change-status>
+@if(typeModalOpen){
+<div class="modal modal-open">
+	<div class="modal-box bg-background border-border max-w-md border">
+		<h2 class="mb-4 text-lg font-semibold">{{ selectedUser?.name }} mover a:</h2>
+
+		<div class="space-y-2">
+			@for (option of userTypes; track option) {
+			<label class="flex items-center gap-2">
+				<input
+					type="radio"
+					class="radio"
+					[value]="option"
+					name="userType"
+					[checked]="selectedUser.type === option"
+					(change)="selectedType = option" />
+				{{ option }}
+			</label>
+			}
+		</div>
+
+		<div class="mt-6 flex justify-end gap-2">
+			<button class="btn" (click)="closeTypeModal()">Cancelar</button>
+			<button class="btn btn-primary" (click)="changeType()">Confirmar</button>
+		</div>
+	</div>
+</div>
+}

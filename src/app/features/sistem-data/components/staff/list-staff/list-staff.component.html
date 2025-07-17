@@ -9,13 +9,13 @@
 	</div>
 	<div class="relative max-w-xs">
 		<label
-			for="role"
+			for="type"
 			class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
 			Tipo de Personal
 		</label>
 		<select
-			id="role"
-			name="role"
+			id="type"
+			name="type"
 			class="text-muted-foreground w-40! mt-2 rounded border p-2"
 			(change)="onTypeChange($event)">
 			<option value="Sistema" selected>Sistema</option>
@@ -84,7 +84,7 @@
 							[data]="users()"
 							(sortedData)="users.set($event)"></app-sort-header>
 					</th>
-					@if (userType === 'Operarios') {
+					@if (userType === 'Sistema') {
 					<th>
 						<app-sort-header
 							[label]="'Usuario'"

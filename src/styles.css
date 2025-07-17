@@ -292,6 +292,10 @@ select {
   @apply rounded-sm border-border bg-background checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus:ring-2 focus:ring-primary;
 }
 
+[class='radio'] {
+  @apply appearance-none w-4 h-4 rounded-full border border-border bg-background checked:border-primary checked:bg-primary focus:ring-1 focus:ring-primary;
+}
+
 .floating-label {
   @apply bg-background text-muted-foreground peer-focus:text-primary absolute top-2 z-10 origin-[0] -translate-y-4 scale-95 transform px-2 text-sm duration-300
           peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100
