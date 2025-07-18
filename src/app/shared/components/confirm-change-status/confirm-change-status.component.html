@@ -1,6 +1,7 @@
 @if (open) {
 <div class="modal modal-open">
 	<div class="modal-box bg-background border-border max-w-md border">
+		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 		<h3 class="mb-4 text-lg font-bold">¿Estás seguro de {{ message }} a "{{ name }}"?</h3>
 		<div class="modal-action mt-6">
 			<button class="btn" (click)="close()">Cancelar</button>
