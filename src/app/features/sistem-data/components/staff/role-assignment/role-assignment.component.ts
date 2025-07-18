@@ -20,7 +20,6 @@ export class RoleAssignmentComponent {
 	selectedRoleData!: roles[];
 	listRoles: roles[] = [];
 	open(userID: number) {
-		console.log('Role assignment modal opened for user ID:', userID);
 		forkJoin({
 			userResponse: this._getStaffService.getUserById(userID),
 			roles: this._getRolesService.getRoles(),
@@ -31,14 +30,11 @@ export class RoleAssignmentComponent {
 			this.listRoles = roles.filter((role: any) => {
 				return !this.selectedRoleData.some((r: any) => r.id_role === role.id_role);
 			});
-
-			console.log('Roles disponibles para asignar:', this.listRoles);
 		});
 
 		this.showModal = true;
 	}
 	assignRole(id_role: number, action: boolean) {
-		console.log('Assigning role ID:', id_role, 'to user ID:', this.selectedData.id);
 		const data = {
 			id_person: this.selectedData.id,
 			id_role: id_role,
@@ -68,5 +64,7 @@ export class RoleAssignmentComponent {
 
 	close() {
 		this.showModal = false;
+		this.selectedRoleData = [];
+		this.listRoles = [];
 	}
 }
