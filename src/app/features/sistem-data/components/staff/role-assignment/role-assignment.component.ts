@@ -37,8 +37,33 @@ export class RoleAssignmentComponent {
 
 		this.showModal = true;
 	}
-	assignRole(id_role: number) {
+	assignRole(id_role: number, action: boolean) {
 		console.log('Assigning role ID:', id_role, 'to user ID:', this.selectedData.id);
+		const data = {
+			id_person: this.selectedData.id,
+			id_role: id_role,
+		};
+		if (action) {
+			this._getRolesService.assignRole(data).subscribe({
+				next: () => {
+					const assignedRole = this.listRoles.find((role) => role.id_role === id_role);
+					if (assignedRole) {
+						this.selectedRoleData.push(assignedRole);
+						this.listRoles = this.listRoles.filter((role) => role.id_role !== id_role);
+					}
+				},
+			});
+		} else {
+			this._getRolesService.assignRole(data).subscribe({
+				next: () => {
+					const removedRole = this.selectedRoleData.find((role) => role.id_role === id_role);
+					if (removedRole) {
+						this.selectedRoleData = this.selectedRoleData.filter((role) => role.id_role !== id_role);
+						this.listRoles.push(removedRole);
+					}
+				},
+			});
+		}
 	}
 
 	close() {
