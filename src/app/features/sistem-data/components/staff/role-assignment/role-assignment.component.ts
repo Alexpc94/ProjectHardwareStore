@@ -3,12 +3,14 @@ import { Component, inject } from '@angular/core';
 import { staff } from '../../../models/staff.model';
 import { roles } from '../../../models/roles.model';
 
+import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
+
 import { StaffService } from '../../../services/staff.service';
 import { RolesService } from '../../../services/roles.service';
 import { forkJoin } from 'rxjs';
 @Component({
 	selector: 'app-role-assignment',
-	imports: [],
+	imports: [AlertsComponent],
 	templateUrl: './role-assignment.component.html',
 	styleUrl: './role-assignment.component.css',
 })
@@ -19,6 +21,14 @@ export class RoleAssignmentComponent {
 	selectedData!: staff;
 	selectedRoleData!: roles[];
 	listRoles: roles[] = [];
+	alertType: any;
+	showAlert(type: 'success' | 'error' | 'info') {
+		this.alertType = '';
+		setTimeout(() => {
+			this.alertType = type;
+		}, 0);
+	}
+
 	open(userID: number) {
 		forkJoin({
 			userResponse: this._getStaffService.getUserById(userID),
@@ -46,16 +56,18 @@ export class RoleAssignmentComponent {
 					if (assignedRole) {
 						this.selectedRoleData.push(assignedRole);
 						this.listRoles = this.listRoles.filter((role) => role.id_role !== id_role);
+						this.showAlert('success');
 					}
 				},
 			});
 		} else {
-			this._getRolesService.assignRole(data).subscribe({
+			this._getRolesService.deleteRole(this.selectedData.id, id_role).subscribe({
 				next: () => {
 					const removedRole = this.selectedRoleData.find((role) => role.id_role === id_role);
 					if (removedRole) {
 						this.selectedRoleData = this.selectedRoleData.filter((role) => role.id_role !== id_role);
 						this.listRoles.push(removedRole);
+						this.showAlert('success');
 					}
 				},
 			});
