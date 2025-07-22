@@ -6,7 +6,7 @@ import { TableFooterComponent } from 'src/app/shared/components/table-footer/tab
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 
-import { staff } from './../../../models/staff.model';
+import { staff } from '../../../models/staff.model';
 
 import { TableFilterService } from '../../../services/table-filter.service';
 import { StaffService } from '../../../services/staff.service';
@@ -26,7 +26,7 @@ export class ListStaffComponent implements OnInit {
 	totalUsers = computed(() => this.users().length);
 	itemsPerPage = signal(5);
 	currentPage = signal(1);
-	isActive = true;
+	isActive: boolean = true;
 	userType: string = 'Sistema';
 	addUser(): void {
 		this.childComponent.addUpdateUser();

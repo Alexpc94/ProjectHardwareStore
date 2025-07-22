@@ -19,6 +19,10 @@ const routes: Routes = [
 				loadChildren: () => import('./features/sistem-data/sistem-data.module').then((m) => m.SistemDataModule),
 			},
 			{
+				path: 'clients',
+				loadChildren: () => import('./features/tenants/tenants.module').then((m) => m.TenantsModule),
+			},
+			{
 				path: 'logos',
 				loadComponent: () => import('./core/modules/logos/logos.component').then((m) => m.LogosComponent),
 			},
