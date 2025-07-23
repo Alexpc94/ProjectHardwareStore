@@ -45,7 +45,7 @@
 <div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
 	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
 		<h3 class="text-muted-foreground text-sm font-medium">
-			Mostrando {{ filteredUsers().length }} de {{ totalUsers() }} usuarios
+			Mostrando {{ filteredData().length }} de {{ totalUsers() }} usuarios
 		</h3>
 		<div class="flex flex-wrap gap-2">
 			<div class="flex">
@@ -110,7 +110,7 @@
 		</table>
 	</div>
 	<app-table-footer
-		[totalItems]="filteredUsers().length"
+		[totalItems]="filteredData().length"
 		[itemsPerPage]="itemsPerPage()"
 		[currentPage]="currentPage()"
 		(pageChange)="handlePageChange($event)"

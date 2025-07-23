@@ -56,18 +56,18 @@ export class ListStaffComponent implements OnInit {
 		});
 	}
 
-	filteredUsers = computed(() => {
+	filteredData = computed(() => {
 		const search = this._filterService.searchField().toLowerCase().trim();
 
-		return this.users().filter((user) => {
-			const fullName = `${user.name} ${user.firstName} ${user.secondName}`.toLowerCase();
-			const reverseFullName = `${user.secondName} ${user.firstName} ${user.name}`.toLowerCase();
+		return this.users().filter((data) => {
+			const fullName = `${data.name} ${data.firstName} ${data.secondName}`.toLowerCase();
+			const reverseFullName = `${data.secondName} ${data.firstName} ${data.name}`.toLowerCase();
 
 			return (
 				fullName.includes(search) ||
 				reverseFullName.includes(search) ||
-				user.cedula.includes(search) ||
-				user.telephone?.toString().includes(search)
+				data.cedula.includes(search) ||
+				data.telephone?.toString().includes(search)
 			);
 		});
 	});
@@ -81,7 +81,7 @@ export class ListStaffComponent implements OnInit {
 	paginatedData = computed(() => {
 		const start = (this.currentPage() - 1) * this.itemsPerPage();
 		const end = start + this.itemsPerPage();
-		return this.filteredUsers().slice(start, end);
+		return this.filteredData().slice(start, end);
 	});
 
 	handlePageChange(page: number) {
