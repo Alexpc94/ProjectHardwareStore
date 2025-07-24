@@ -100,7 +100,7 @@
 			</thead>
 			<tbody>
 				@for (user of paginatedData(); track $index) {
-				<tr class="hover:bg-card/50" app-table-row [user]="user" (save)="handleUserSave($event)"></tr>
+				<tr class="hover:bg-card/50" app-table-row [user]="user" (save)="handleDataSave($event)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>

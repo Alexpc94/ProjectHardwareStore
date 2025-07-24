@@ -93,7 +93,7 @@ export class ListStaffComponent implements OnInit {
 		this.currentPage.set(1);
 	}
 
-	handleUserSave(res: any) {
+	handleDataSave(res: any) {
 		console.log('User save response:', res);
 		switch (res.action) {
 			case 'add':

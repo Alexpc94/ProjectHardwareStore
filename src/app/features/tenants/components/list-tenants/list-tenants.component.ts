@@ -1,79 +1,71 @@
-import { Component, OnInit, signal, computed, inject, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, effect, ViewChild } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { tenant } from '../../models/tenant.model';
 
+import { TableRowComponent } from '../table-row/table-row.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 
-import { TableFilterService } from '../../services/table-filter.service';
 import { TenantService } from '../../services/tenant.service';
 
 @Component({
 	selector: 'app-list-tenants',
-	imports: [ToggleSwitchComponent, TableFooterComponent, SortHeaderComponent, AngularSvgIconModule],
+	imports: [ToggleSwitchComponent, TableFooterComponent, SortHeaderComponent, AngularSvgIconModule, TableRowComponent],
 	templateUrl: './list-tenants.component.html',
 	styleUrl: './list-tenants.component.css',
 })
 export class ListTenantsComponent {
-	private _filterService = inject(TableFilterService);
-	private _getTenantService = inject(TenantService);
+	private searchDebounceTimer?: any;
+	constructor(private _getTenantService: TenantService) {
+		effect(() => {
+			const status = this.isActive();
+			const searchTerm = this.search();
+			const page = this.currentPage() - 1;
+			const size = this.itemsPerPage();
+			this._getTenantService.getTenants(status, searchTerm, { page, size, sort: ['id'] }).subscribe((data) => {
+				this.totalTenants = data.totalElements;
+				this.tenants.set(data.content);
+			});
+		});
+	}
+	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
 
 	tenants = signal<tenant[]>([]);
 	totalTenants!: number;
-	itemsPerPage = signal(5);
-	currentPage = signal(1);
+	isActive = signal<boolean>(true);
+	search = signal<string>(' ');
+	currentPage = signal<number>(1);
+	itemsPerPage = signal<number>(5);
 
-	isActive: boolean = true;
+	ngOnInit(): void {}
 
-	ngOnInit(): void {
-		this.loadTenants(true);
+	onToggleChange(status: boolean) {
+		this.isActive.set(status);
+		this.currentPage.set(1);
 	}
 
-	loadTenants(status: boolean): void {
-		this.isActive = status;
-		const size = this.itemsPerPage();
-		const page = this.currentPage() - 1;
-		this._getTenantService
-			.getTenants(status, {
-				page,
-				size,
-				sort: ['id'],
-			})
-			.subscribe((data) => {
-				//this.users.set(users);
-				this.totalTenants = data.totalElements;
-				console.log('Total Tenants:', data);
-				this.tenants.set(data.content);
-				//this.currentPage.set(1); // to restart pagination
-			});
-	}
-
-	filteredData = computed(() => {
-		const search = this._filterService.searchField().toLowerCase().trim();
-
-		return this.tenants().filter((data) => {
-			const fullName = `${data.nombre} ${data.ap} ${data.am}`.toLowerCase();
-			const reverseFullName = `${data.am} ${data.ap} ${data.nombre}`.toLowerCase();
-			return fullName.includes(search) || reverseFullName.includes(search);
-		});
-	});
-
-	onSearchChange(value: Event) {
-		const input = value.target as HTMLInputElement;
-		this._filterService.searchField.set(input.value);
-		//this.currentPage.set(1);
+	onSearchChange(event: Event) {
+		const input = (event.target as HTMLInputElement).value.toLowerCase();
+		if (this.searchDebounceTimer) {
+			clearTimeout(this.searchDebounceTimer);
+		}
+		this.searchDebounceTimer = setTimeout(() => {
+			this.search.set(input);
+			this.currentPage.set(1);
+		}, 500);
+		this.currentPage.set(1);
 	}
 
 	handlePageChange(page: number) {
 		this.currentPage.set(page);
-		this.loadTenants(this.isActive);
 	}
 
 	handleItemsPerPageChange(count: number) {
 		this.itemsPerPage.set(count);
 		this.currentPage.set(1);
-		this.loadTenants(this.isActive);
 	}
+
+	handleDataSave(res: any) {}
 }

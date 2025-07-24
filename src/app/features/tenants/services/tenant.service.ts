@@ -12,8 +12,8 @@ export class TenantService {
 	private apiURL = `${environment.apiUrl}`;
 	_http = inject(HttpClient);
 
-	getTenants(status: boolean, pageable: Pageable): Observable<PaginatedResponse<tenant>> {
-		const url = `${this.apiURL}/api/inquilinos/${status}`;
+	getTenants(status: boolean, buscar: string, pageable: Pageable): Observable<PaginatedResponse<tenant>> {
+		const url = `${this.apiURL}/api/inquilinos/${status}/${buscar}`;
 		const params = {
 			page: pageable.page,
 			size: pageable.size,

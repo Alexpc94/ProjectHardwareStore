@@ -8,8 +8,8 @@
 		</div>
 	</div>
 	<div class="inline-flex items-center space-x-2">
-		<app-toggle-switch [checked]="isActive" (checkedChange)="loadTenants($event)"></app-toggle-switch>
-		<p class="text-muted-foreground font-semibold">{{ isActive ? 'Activos' : 'Inactivos' }}</p>
+		<app-toggle-switch [checked]="isActive()" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
+		<p class="text-muted-foreground font-semibold">{{ isActive() ? 'Activos' : 'Inactivos' }}</p>
 	</div>
 
 	<div class="inline-block space-x-4">
@@ -28,7 +28,7 @@
 <div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
 	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
 		<h3 class="text-muted-foreground text-sm font-medium">
-			Mostrando {{ filteredData().length }} de {{ totalTenants }} usuarios
+			Mostrando {{ tenants().length }} de {{ totalTenants }} usuarios
 		</h3>
 		<div class="flex flex-wrap gap-2">
 			<div class="flex">
@@ -73,23 +73,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for (tenant of filteredData(); track tenant.id) {
-				<tr>
-					<td>{{ tenant.nombre }}</td>
-					<td>{{ tenant.ap }}</td>
-					<td>{{ tenant.am }}</td>
-				</tr>
-				}
-			</tbody>
-			<!-- <tbody>
-				@for (user of paginatedData(); track $index) {
-				<tr class="hover:bg-card/50" app-table-row [user]="user" (save)="handleUserSave($event)"></tr>
+				@for (tenant of tenants(); track $index) {
+				<tr class="hover:bg-card/50" app-table-row [tenant]="tenant" (save)="handleDataSave($event)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
 				</tr>
 				}
-			</tbody> -->
+			</tbody>
 		</table>
 	</div>
 	<app-table-footer
