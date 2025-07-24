@@ -27,6 +27,7 @@ export class ListTenantsComponent {
 			this._getTenantService.getTenants(status, searchTerm, { page, size, sort: ['id'] }).subscribe((data) => {
 				this.totalTenants = data.totalElements;
 				this.tenants.set(data.content);
+				console.log('Tenants fetched:', this.tenants());
 			});
 		});
 	}

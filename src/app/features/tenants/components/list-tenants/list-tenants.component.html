@@ -53,10 +53,11 @@
 			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
 			<thead class="border-muted/20 text-muted-foreground border text-xs">
 				<tr>
+					<th>Nro</th>
 					<th class="min-w-[300px]">
 						<app-sort-header
 							[label]="'Nombres y Apellidos'"
-							[sortField]="'firstName'"
+							[sortField]="'nombre'"
 							[data]="tenants()"
 							(sortedData)="tenants.set($event)"></app-sort-header>
 					</th>
@@ -74,7 +75,12 @@
 			</thead>
 			<tbody>
 				@for (tenant of tenants(); track $index) {
-				<tr class="hover:bg-card/50" app-table-row [tenant]="tenant" (save)="handleDataSave($event)"></tr>
+				<tr
+					class="hover:bg-card/50"
+					app-table-row
+					[tenant]="tenant"
+					[rowIndex]="$index + 1"
+					(save)="handleDataSave($event)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>

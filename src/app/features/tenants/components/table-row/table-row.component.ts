@@ -10,4 +10,5 @@ import { tenant } from '../../models/tenant.model';
 })
 export class TableRowComponent {
 	@Input() tenant!: tenant;
+	@Input() rowIndex!: number;
 }
