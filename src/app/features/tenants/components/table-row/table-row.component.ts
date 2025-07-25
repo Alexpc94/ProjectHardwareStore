@@ -6,6 +6,9 @@ import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { tenant } from '../../models/tenant.model';
+import { ActionEvent } from '../../models/actions.model';
+
+import { TenantService } from '../../services/tenant.service';
 
 @Component({
 	selector: '[app-table-row]',
@@ -14,8 +17,10 @@ import { tenant } from '../../models/tenant.model';
 	styleUrl: './table-row.component.css',
 })
 export class TableRowComponent {
+	private _getTenantService = inject(TenantService);
 	@Input() tenant!: tenant;
 	@Input() rowIndex!: number;
+	@Output() save = new EventEmitter<ActionEvent>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
@@ -38,17 +43,16 @@ export class TableRowComponent {
 	changeStatus() {
 		if (!this.selectedtenant) return;
 		const { id, estado } = this.selectedtenant;
-		console.log('Changing status for tenant ID:', id, 'to:', estado);
-		// this._getStaffService.modStatus(id).subscribe({
-		// 	next: (response) => {
-		// 		this.save.emit({ action: status ? 'delete' : 'enable', success: true, id: id });
-		// 		this.showAlert('success');
-		// 	},
-		// 	error: (err) => {
-		// 		console.error('Error:', err);
-		// 		this.showAlert('error');
-		// 	},
-		// });
+		this._getTenantService.modStatus(id!).subscribe({
+			next: (response) => {
+				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: id });
+				this.showAlert('success');
+			},
+			error: (err) => {
+				console.error('Error:', err);
+				this.showAlert('error');
+			},
+		});
 		this.selectedtenant = {};
 	}
 }

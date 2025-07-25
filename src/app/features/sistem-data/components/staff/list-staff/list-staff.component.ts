@@ -94,7 +94,7 @@ export class ListStaffComponent implements OnInit {
 	}
 
 	handleDataSave(res: any) {
-		console.log('User save response:', res);
+		// console.log('User save response:', res);
 		switch (res.action) {
 			case 'add':
 				this.loadUsers(this.isActive, this.userType);

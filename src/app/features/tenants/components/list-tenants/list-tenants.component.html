@@ -57,21 +57,13 @@
 						<app-sort-header
 							[label]="'Nombres y Apellidos'"
 							[sortField]="'nombre'"
-							[data]="tenants()"
-							(sortedData)="tenants.set($event)"></app-sort-header>
+							(click)="onSortChange('nombre')"></app-sort-header>
 					</th>
-					<th (click)="onSortChange('cedula')" class="cursor-pointer select-none">
-						Cedula
-						<span>
-							{{ sortDirection() === 'ASC' ? '🔼' : '🔽' }}
-						</span>
+					<th>
+						<app-sort-header [label]="'Cedula'" [sortField]="'cedula'" (click)="onSortChange('cedula')">
+						</app-sort-header>
 					</th>
-					<th (click)="onSortChange('telefono')" class="cursor-pointer select-none">
-						Teléfono
-						<span>
-							{{ sortDirection() === 'ASC' ? '🔼' : '🔽' }}
-						</span>
-					</th>
+					<th>Teléfono</th>
 					<th>Estado</th>
 					<th class="min-w-[100px]">Acciones</th>
 				</tr>

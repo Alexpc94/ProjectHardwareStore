@@ -28,7 +28,7 @@ export class ListTenantsComponent {
 			this._getTenantService.getTenants(status, searchTerm, { page, size, sort }).subscribe((data) => {
 				this.totalTenants = data.totalElements;
 				this.tenants.set(data.content);
-				console.log('Tenants fetched:', this.tenants());
+				//console.log('Tenants fetched:', this.tenants());
 			});
 		});
 	}
@@ -82,5 +82,17 @@ export class ListTenantsComponent {
 		this.currentPage.set(1);
 	}
 
-	handleDataSave(res: any) {}
+	handleDataSave(res: any) {
+		console.log('User save response:', res);
+		switch (res.action) {
+			case 'delete':
+			case 'enable':
+				const newStatus = res.action === 'enable';
+				console.log('New status:', newStatus);
+				this.tenants.update((tenants) =>
+					tenants.map((tenant) => (tenant.id === res.id ? { ...tenant, estado: newStatus } : tenant)),
+				);
+				break;
+		}
+	}
 }
