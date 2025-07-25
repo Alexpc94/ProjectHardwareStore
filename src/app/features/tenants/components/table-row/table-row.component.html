@@ -1,7 +1,4 @@
 <ng-container>
-	<td class="text-muted-foreground px-4 py-2 text-sm font-medium">
-		{{ rowIndex }}
-	</td>
 	<td>
 		<div class="flex flex-col items-start">
 			<span class="text-foreground text-sm font-semibold"> {{ tenant.nombre }} {{ tenant.ap }} {{ tenant.am }}</span>
@@ -17,6 +14,27 @@
 		</span>
 	</td>
 	<td>
-		<div class="flex"></div>
+		<div class="flex">
+			<div class="tooltip" [attr.data-tip]="tenant.estado ? 'Dar de Baja' : 'Habilitar'">
+				<button
+					(click)="openModalToUpdateStatus(tenant.id, tenant.nombre + ' ' + tenant.ap + ' ' + tenant.am, tenant.estado)"
+					class="block w-full px-1 py-1">
+					<svg-icon
+						[src]="
+							tenant.estado
+								? './assets/icons/usericons/delete-2-svgrepo-com.svg'
+								: './assets/icons/tablericons/repeat.svg'
+						"
+						[svgClass]="'h-5 w-5'">
+					</svg-icon>
+				</button>
+			</div>
+		</div>
 	</td>
 </ng-container>
+<app-alerts [type]="alertType"></app-alerts>
+<app-confirm-change-status
+	#confirmDialog
+	[name]="selectedtenant.nombre"
+	[message]="confirmDialog.message"
+	(confirm)="changeStatus()"></app-confirm-change-status>

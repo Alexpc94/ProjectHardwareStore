@@ -53,7 +53,6 @@
 			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
 			<thead class="border-muted/20 text-muted-foreground border text-xs">
 				<tr>
-					<th>Nro</th>
 					<th class="min-w-[300px]">
 						<app-sort-header
 							[label]="'Nombres y Apellidos'"
@@ -61,14 +60,18 @@
 							[data]="tenants()"
 							(sortedData)="tenants.set($event)"></app-sort-header>
 					</th>
-					<th>
-						<app-sort-header
-							[label]="'Dni'"
-							[sortField]="'cedula'"
-							[data]="tenants()"
-							(sortedData)="tenants.set($event)"></app-sort-header>
+					<th (click)="onSortChange('cedula')" class="cursor-pointer select-none">
+						Cedula
+						<span>
+							{{ sortDirection() === 'ASC' ? '🔼' : '🔽' }}
+						</span>
 					</th>
-					<th>Telefono</th>
+					<th (click)="onSortChange('telefono')" class="cursor-pointer select-none">
+						Teléfono
+						<span>
+							{{ sortDirection() === 'ASC' ? '🔼' : '🔽' }}
+						</span>
+					</th>
 					<th>Estado</th>
 					<th class="min-w-[100px]">Acciones</th>
 				</tr>
@@ -79,7 +82,7 @@
 					class="hover:bg-card/50"
 					app-table-row
 					[tenant]="tenant"
-					[rowIndex]="$index + 1"
+					[rowIndex]="$index"
 					(save)="handleDataSave($event)"></tr>
 				} @empty {
 				<tr>

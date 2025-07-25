@@ -24,7 +24,8 @@ export class ListTenantsComponent {
 			const searchTerm = this.search();
 			const page = this.currentPage() - 1;
 			const size = this.itemsPerPage();
-			this._getTenantService.getTenants(status, searchTerm, { page, size, sort: ['id'] }).subscribe((data) => {
+			const sort = [`${this.sortBy()},${this.sortDirection()}`];
+			this._getTenantService.getTenants(status, searchTerm, { page, size, sort }).subscribe((data) => {
 				this.totalTenants = data.totalElements;
 				this.tenants.set(data.content);
 				console.log('Tenants fetched:', this.tenants());
@@ -37,6 +38,8 @@ export class ListTenantsComponent {
 	totalTenants!: number;
 	isActive = signal<boolean>(true);
 	search = signal<string>(' ');
+	sortBy = signal<string>('id');
+	sortDirection = signal<'ASC' | 'DESC'>('ASC');
 	currentPage = signal<number>(1);
 	itemsPerPage = signal<number>(5);
 
@@ -48,7 +51,8 @@ export class ListTenantsComponent {
 	}
 
 	onSearchChange(event: Event) {
-		const input = (event.target as HTMLInputElement).value.toLowerCase();
+		const inputValue = (event.target as HTMLInputElement).value?.toLowerCase().trim();
+		const input = inputValue ? inputValue : ' ';
 		if (this.searchDebounceTimer) {
 			clearTimeout(this.searchDebounceTimer);
 		}
@@ -65,6 +69,16 @@ export class ListTenantsComponent {
 
 	handleItemsPerPageChange(count: number) {
 		this.itemsPerPage.set(count);
+		this.currentPage.set(1);
+	}
+
+	onSortChange(column: string) {
+		if (this.sortBy() === column) {
+			this.sortDirection.set(this.sortDirection() === 'ASC' ? 'DESC' : 'ASC');
+		} else {
+			this.sortBy.set(column);
+			this.sortDirection.set('ASC');
+		}
 		this.currentPage.set(1);
 	}
 
