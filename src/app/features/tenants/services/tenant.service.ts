@@ -21,6 +21,12 @@ export class TenantService {
 		};
 		return this._http.get<PaginatedResponse<tenant>>(url, { params });
 	}
+
+	getTenantById(id: number): Observable<any> {
+		const url = `${this.apiURL}/api/inquilinos/id/${id}`;
+		return this._http.get<{ data: any }>(url).pipe(map((response) => response));
+	}
+
 	modStatus(xid: number): Observable<any> {
 		const url = `${this.apiURL}/api/inquilinos/${xid}`;
 		return this._http.delete<tenant>(url);

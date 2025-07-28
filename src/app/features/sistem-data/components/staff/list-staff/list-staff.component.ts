@@ -103,10 +103,9 @@ export class ListStaffComponent implements OnInit {
 				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, ...res.data } : user)));
 				break;
 			case 'delete':
-				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, status: false } : user)));
-				break;
 			case 'enable':
-				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, status: true } : user)));
+				const newStatus = res.action === 'enable';
+				this.users.update((users) => users.map((user) => (user.id === res.id ? { ...user, status: newStatus } : user)));
 				break;
 			case 'assignType':
 				this.users.update((users) => users.filter((user) => user.id !== res.id));

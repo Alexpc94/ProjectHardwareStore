@@ -15,6 +15,11 @@
 	</td>
 	<td>
 		<div class="flex">
+			<div class="tooltip" [attr.data-tip]="tenant.estado ? 'Modificar Usuario' : 'Usuario inactivo'">
+				<button (click)="addUpdateUser(tenant.id)" class="block w-full px-1 py-1" [disabled]="!tenant.estado">
+					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+				</button>
+			</div>
 			<div class="tooltip" [attr.data-tip]="tenant.estado ? 'Dar de Baja' : 'Habilitar'">
 				<button
 					(click)="openModalToUpdateStatus(tenant.id, tenant.nombre + ' ' + tenant.ap + ' ' + tenant.am, tenant.estado)"
@@ -31,6 +36,7 @@
 			</div>
 		</div>
 	</td>
+	<app-add-mod-tenant (save)="addModSave($event)"> </app-add-mod-tenant>
 </ng-container>
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status

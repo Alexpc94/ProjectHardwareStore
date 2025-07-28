@@ -1,19 +1,12 @@
 import { Component, EventEmitter, Output, ViewChild, inject, OnInit } from '@angular/core';
-import {
-	AbstractControl,
-	ReactiveFormsModule,
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	ValidatorFn,
-	Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { staff } from '../../../models/staff.model';
 import { ActionEvent } from '../../../models/Actions.model';
 
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { CustomValidators } from 'src/app/shared/components/validation/custom-validators';
 
 import { StaffService } from '../../../services/staff.service';
 @Component({
@@ -45,7 +38,7 @@ export class AddModStaffComponent implements OnInit {
 	}
 
 	open(userID: number, tipoper: string): void {
-		if (userID != null) {
+		if (userID) {
 			this._getStaffService.getUserById(userID).subscribe((user) => {
 				this.selectedData = user.data;
 				this.selectedID = userID;
@@ -73,11 +66,14 @@ export class AddModStaffComponent implements OnInit {
 				Validators.minLength(4),
 				Validators.pattern('^[0-9]*$'),
 			]),
-			datebirth: new FormControl('', [Validators.required, this.ValidAgeDate()]),
+			datebirth: new FormControl('', [Validators.required, CustomValidators.validAgeDate()]),
 			gender: new FormControl('', [Validators.required]),
 			telephone: new FormControl('', [Validators.pattern('^[0-9]*$')]),
 			email: new FormControl('', [Validators.email]),
-			photo: new FormControl('', [this.onlyImageFilesValidator(), this.maxFileSizeValidator(3)]),
+			photo: new FormControl('', [
+				CustomValidators.onlyImageFilesValidator(),
+				CustomValidators.maxFileSizeValidator(1),
+			]),
 		});
 	}
 
@@ -102,20 +98,6 @@ export class AddModStaffComponent implements OnInit {
 		}
 	}
 
-	ValidAgeDate(): ValidatorFn {
-		// Function to define if people are 18 years old o more
-		return (control: AbstractControl): { [key: string]: any } | null => {
-			const startDate = new Date(control.value);
-			const today = new Date();
-			const maxStartDate = new Date();
-			maxStartDate.setFullYear(today.getFullYear() - 18);
-			if (startDate && startDate > maxStartDate) {
-				return { ValidAgeDate: true };
-			}
-			return null;
-		};
-	}
-
 	onFileSelected(event: Event): void {
 		const input = event.target as HTMLInputElement;
 		if (input.files && input.files.length > 0) {
@@ -123,33 +105,6 @@ export class AddModStaffComponent implements OnInit {
 			this.form.get('photo')?.setValue(file);
 			this.form.get('photo')?.updateValueAndValidity();
 		}
-	}
-
-	maxFileSizeValidator(maxSizeMB: number): ValidatorFn {
-		return (control: AbstractControl): { [key: string]: any } | null => {
-			const file = control.value;
-			if (!file) return null;
-			if (!(file instanceof File)) return { maxSizeExceeded: { actualSize: 0, maxSize: maxSizeMB } };
-			const maxSizeBytes = maxSizeMB * 1024 * 1024;
-			if (file.size > maxSizeBytes) {
-				return {
-					maxSizeExceeded: { maxSize: maxSizeMB },
-				};
-			}
-			return null;
-		};
-	}
-
-	onlyImageFilesValidator(): ValidatorFn {
-		return (control: AbstractControl): { [key: string]: any } | null => {
-			const file = control.value;
-			if (!file) return null; // dont validate if no file selected
-			if (!(file instanceof File)) return { invalidType: true };
-			if (!file.type.startsWith('image/')) {
-				return { invalidType: true };
-			}
-			return null;
-		};
 	}
 
 	onPreSubmit(): void {

@@ -7,7 +7,7 @@
 	<div *ngIf="errors['min']">Debe ser mayor o igual a {{ errors['min'].min }}</div>
 	<div *ngIf="errors['max']">Debe ser menor o igual a {{ errors['max'].max }}</div>
 	<div *ngIf="errors['pattern']">Solo se permiten números</div>
-	<div *ngIf="errors['ValidAgeDate']">Debe Tener al menos 18 años</div>
+	<div *ngIf="errors['validAgeDate']">Debe Tener al menos 18 años</div>
 	<div *ngIf="errors['invalidType']">Solo se permiten imágenes.</div>
 	<div *ngIf="errors['datoExistente']">Este dato ya está en uso.</div>
 	<div *ngIf="errors['maxSizeExceeded']">

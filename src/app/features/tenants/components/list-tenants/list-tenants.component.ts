@@ -45,6 +45,10 @@ export class ListTenantsComponent {
 
 	ngOnInit(): void {}
 
+	addUser(): void {
+		this.childComponent.addUpdateUser();
+	}
+
 	onToggleChange(status: boolean) {
 		this.isActive.set(status);
 		this.currentPage.set(1);
@@ -88,7 +92,6 @@ export class ListTenantsComponent {
 			case 'delete':
 			case 'enable':
 				const newStatus = res.action === 'enable';
-				console.log('New status:', newStatus);
 				this.tenants.update((tenants) =>
 					tenants.map((tenant) => (tenant.id === res.id ? { ...tenant, estado: newStatus } : tenant)),
 				);

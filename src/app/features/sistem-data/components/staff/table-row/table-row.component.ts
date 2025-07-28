@@ -76,11 +76,7 @@ export class TableRowComponent {
 	}
 
 	addUpdateUser(userID?: number) {
-		if (userID) {
-			this.selectedID = userID;
-		} else {
-			this.selectedID = null;
-		}
+		this.selectedID = userID ?? null;
 		this.userModal.open(this.selectedID, this.user.tipoper);
 	}
 
