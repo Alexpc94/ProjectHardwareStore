@@ -20,16 +20,7 @@ export class ListTenantsComponent {
 	private searchDebounceTimer?: any;
 	constructor(private _getTenantService: TenantService) {
 		effect(() => {
-			const status = this.isActive();
-			const searchTerm = this.search();
-			const page = this.currentPage() - 1;
-			const size = this.itemsPerPage();
-			const sort = [`${this.sortBy()},${this.sortDirection()}`];
-			this._getTenantService.getTenants(status, searchTerm, { page, size, sort }).subscribe((data) => {
-				this.totalTenants = data.totalElements;
-				this.tenants.set(data.content);
-				//console.log('Tenants fetched:', this.tenants());
-			});
+			this.loadTenants();
 		});
 	}
 	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
@@ -44,6 +35,19 @@ export class ListTenantsComponent {
 	itemsPerPage = signal<number>(5);
 
 	ngOnInit(): void {}
+
+	loadTenants(): void {
+		const status = this.isActive();
+		const searchTerm = this.search();
+		const page = this.currentPage() - 1;
+		const size = this.itemsPerPage();
+		const sort = [`${this.sortBy()},${this.sortDirection()}`];
+
+		this._getTenantService.getTenants(status, searchTerm, { page, size, sort }).subscribe((data) => {
+			this.totalTenants = data.totalElements;
+			this.tenants.set(data.content);
+		});
+	}
 
 	addUser(): void {
 		this.childComponent.addUpdateUser();
@@ -89,6 +93,14 @@ export class ListTenantsComponent {
 	handleDataSave(res: any) {
 		console.log('User save response:', res);
 		switch (res.action) {
+			case 'add':
+				this.loadTenants();
+				break;
+			case 'edit':
+				this.tenants.update((tenants) =>
+					tenants.map((tenant) => (tenant.id === res.id ? { ...tenant, ...res.data } : tenant)),
+				);
+				break;
 			case 'delete':
 			case 'enable':
 				const newStatus = res.action === 'enable';

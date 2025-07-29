@@ -97,6 +97,15 @@ export class AddModTenantComponent implements OnInit {
 		}
 	}
 
+	capitalizeWords(str: string | undefined | null): string {
+		if (!str) return '';
+		return str
+			.toLowerCase()
+			.split(' ')
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
+	}
+
 	onPreSubmit(): void {
 		this.submitted = true;
 		if (this.form.invalid) return;
@@ -104,6 +113,60 @@ export class AddModTenantComponent implements OnInit {
 	}
 
 	saveData(): void {
-		console.log('holi');
+		const { nombre, ap, am, ...values } = this.form.value;
+
+		const data: tenant = {
+			...values,
+			nombre: this.capitalizeWords(nombre),
+			ap: this.capitalizeWords(ap),
+			am: this.capitalizeWords(am),
+		};
+		const formData = new FormData();
+		const file = this.form.value.photo;
+		formData.append('inquilinos', new Blob([JSON.stringify(data)], { type: 'application/json' }));
+		if (file instanceof File) {
+			formData.append('file', file);
+		} else {
+			formData.append('file', new Blob([], { type: 'application/octet-stream' }), '');
+		}
+		if (this.selectedID) {
+			this._getTenantService.modData(formData, this.selectedID).subscribe({
+				next: () => {
+					//console.log('user updated:', response);
+					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
+					this.close();
+				},
+				error: (error) => {
+					if (this.handleCedulaError(error)) return;
+					this.save.emit({ action: 'edit', success: false });
+				},
+			});
+		} else {
+			this._getTenantService.addData(formData).subscribe({
+				next: () => {
+					//console.log('User added:', response);
+					this.save.emit({ action: 'add', success: true, data });
+					this.close();
+				},
+				error: (error) => {
+					if (this.handleCedulaError(error)) return;
+					this.save.emit({ action: 'add', success: false });
+				},
+			});
+		}
+	}
+
+	private handleCedulaError(error: any): boolean {
+		const mensaje =
+			typeof error?.error === 'string'
+				? error.error
+				: typeof error?.error?.message === 'string'
+				? error.error.message
+				: '';
+		if (mensaje.includes('La Cédula ya Existe.')) {
+			this.form.get('cedula')?.setErrors({ datoExistente: true });
+			return true;
+		}
+		return false;
 	}
 }

@@ -31,4 +31,14 @@ export class TenantService {
 		const url = `${this.apiURL}/api/inquilinos/${xid}`;
 		return this._http.delete<tenant>(url);
 	}
+
+	addData(data: FormData): Observable<tenant> {
+		const url = `${this.apiURL}/api/inquilinos`;
+		return this._http.post<tenant>(url, data);
+	}
+
+	modData(data: FormData, id: number): Observable<tenant> {
+		const url = `${this.apiURL}/api/inquilinos/${id}`;
+		return this._http.put<tenant>(url, data);
+	}
 }

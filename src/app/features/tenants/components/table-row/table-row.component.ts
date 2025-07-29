@@ -2,8 +2,9 @@ import { Component, Input, ViewChild, Output, EventEmitter, inject } from '@angu
 
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { AddModTenantComponent } from '../add-mod-tenant/add-mod-tenant.component';
+import { ViewTenantComponent } from '../view-tenant/view-tenant.component';
+import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { tenant } from '../../models/tenant.model';
@@ -13,7 +14,13 @@ import { TenantService } from '../../services/tenant.service';
 
 @Component({
 	selector: '[app-table-row]',
-	imports: [AngularSvgIconModule, ConfirmChangeStatusComponent, AlertsComponent, AddModTenantComponent],
+	imports: [
+		AngularSvgIconModule,
+		ConfirmChangeStatusComponent,
+		AlertsComponent,
+		AddModTenantComponent,
+		ViewTenantComponent,
+	],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
 })
@@ -25,6 +32,7 @@ export class TableRowComponent {
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 	@ViewChild(AddModTenantComponent) tenantModal!: AddModTenantComponent;
+	@ViewChild(ViewTenantComponent) tenantViewModal!: ViewTenantComponent;
 
 	selectedtenant: Partial<tenant> = {};
 	selectedID?: number | null;
@@ -69,5 +77,9 @@ export class TableRowComponent {
 		if (!res.success) return this.showAlert('error');
 		this.save.emit(res);
 		this.showAlert('success');
+	}
+
+	viewTenant(tenantID: number) {
+		this.tenantViewModal.open(tenantID);
 	}
 }
