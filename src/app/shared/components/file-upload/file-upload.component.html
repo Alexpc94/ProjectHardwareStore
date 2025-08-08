@@ -1,0 +1,18 @@
+<div
+	(click)="fileInput.click()"
+	(drop)="onDrop($event)"
+	(dragover)="onDragOver($event)"
+	(dragleave)="onDragLeave($event)"
+	[class.border-blue-400]="isDragging"
+	class="upload-dropzone hover:border-primary flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-3 text-center transition">
+	<input #fileInput type="file" class="hidden" accept="image/*" (change)="onFileSelected($event)" />
+
+	<svg-icon src="./assets/icons/usericons/download-svgrepo-com.svg" [svgClass]="'h-8 w-8'"></svg-icon>
+
+	@if (fileName) {
+	<p class="font-medium text-gray-700">{{ fileName }}</p>
+	} @else {
+	<p class="text-gray-500">{{ emptyMessage }}</p>
+	<span class="text-xs text-gray-400">{{ emptySubMessage }}</span>
+	}
+</div>

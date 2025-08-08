@@ -105,15 +105,10 @@
 			</div>
 			<div class="mb-4 flex gap-2">
 				<div class="form__group w-full">
-					<div class="relative">
-						<input
-							type="file"
-							id="photo"
-							class="file-input file-input-sm peer block"
-							placeholder=" "
-							accept="image/*"
-							(change)="onFileSelected($event)" />
-					</div>
+					<app-file-upload
+						[emptyMessage]="'Arrastra una imagen o haz clic para subir'"
+						[emptySubMessage]="'Formatos permitidos: Imagenes PNG, JPG, JPEG - Máx 2MB'"
+						(fileSelected)="onFileSelected($event)"></app-file-upload>
 					<app-validation [control]="f['photo']" [submitted]="submitted"></app-validation>
 				</div>
 			</div>

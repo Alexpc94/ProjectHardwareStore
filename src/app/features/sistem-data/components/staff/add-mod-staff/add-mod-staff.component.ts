@@ -7,11 +7,12 @@ import { ActionEvent } from '../../../models/Actions.model';
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { CustomValidators } from 'src/app/shared/components/validation/custom-validators';
+import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-upload.component';
 
 import { StaffService } from '../../../services/staff.service';
 @Component({
 	selector: 'app-add-mod-staff',
-	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent],
+	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent, FileUploadComponent],
 	providers: [DatePipe],
 	templateUrl: './add-mod-staff.component.html',
 	styleUrl: './add-mod-staff.component.css',
@@ -33,6 +34,7 @@ export class AddModStaffComponent implements OnInit {
 	selectedData?: staff;
 	selectedID?: number;
 	selectedTipoper?: string;
+
 	ngOnInit() {
 		this.buildForm();
 	}
@@ -98,13 +100,9 @@ export class AddModStaffComponent implements OnInit {
 		}
 	}
 
-	onFileSelected(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		if (input.files && input.files.length > 0) {
-			const file = input.files[0];
-			this.form.get('photo')?.setValue(file);
-			this.form.get('photo')?.updateValueAndValidity();
-		}
+	onFileSelected(file: File) {
+		this.form.get('photo')?.setValue(file);
+		this.form.get('photo')?.updateValueAndValidity();
 	}
 
 	onPreSubmit(): void {
@@ -136,6 +134,7 @@ export class AddModStaffComponent implements OnInit {
 		const file = this.form.value.photo;
 		formData.append('person', new Blob([JSON.stringify(data)], { type: 'application/json' }));
 		if (file instanceof File) {
+			console.log('Archivo presente:', file.name, file.size);
 			formData.append('file', file);
 		} else {
 			formData.append('file', new Blob([], { type: 'application/octet-stream' }), '');
