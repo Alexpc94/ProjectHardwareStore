@@ -9,7 +9,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 })
 export class FileUploadComponent {
 	@Input() emptyMessage: string = 'Haz clic o arrastra tu archivo aquí';
-	@Input() emptySubMessage: string = 'PNG, JPG, JPEG - Máx. 1MB';
+	@Input() emptySubMessage: string = 'Formatos permitidos: PNG, JPG, JPEG - Máx 1MB';
 
 	@Output() fileSelected = new EventEmitter<File>();
 
