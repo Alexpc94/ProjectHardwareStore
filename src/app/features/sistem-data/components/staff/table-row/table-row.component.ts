@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.prod';
 
 import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 import { ViewStaffComponent } from '../view-staff/view-staff.component';
+import { UpdateImageComponent } from '../update-image/update-image.component';
 import { CredentialStaffComponent } from '../credential-staff/credential-staff.component';
 import { RoleAssignmentComponent } from '../role-assignment/role-assignment.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
@@ -25,6 +26,7 @@ import { StaffService } from '../../../services/staff.service';
 		CredentialStaffComponent,
 		RoleAssignmentComponent,
 		ViewStaffComponent,
+		UpdateImageComponent,
 	],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
@@ -37,6 +39,7 @@ export class TableRowComponent {
 
 	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 	@ViewChild(ViewStaffComponent) userViewModal!: ViewStaffComponent;
+	@ViewChild(UpdateImageComponent) userImageModal!: UpdateImageComponent;
 	@ViewChild(CredentialStaffComponent) userCredentialModal!: CredentialStaffComponent;
 	@ViewChild(RoleAssignmentComponent) roleAssignmentModal!: RoleAssignmentComponent;
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
@@ -62,6 +65,16 @@ export class TableRowComponent {
 
 	viewUser(userID: number) {
 		this.userViewModal.open(userID);
+	}
+	UpdateProfileImage(userID: number) {
+		this.userImageModal.open(userID);
+	}
+
+	ImageUpdated(res: any) {
+		//console.log('let me see:', res);
+		if (!res.success) return this.showAlert('error');
+		this.save.emit(res);
+		this.showAlert('success');
 	}
 
 	addUpdateCredentials(userID: number, userCredential: string, userCedula: string) {

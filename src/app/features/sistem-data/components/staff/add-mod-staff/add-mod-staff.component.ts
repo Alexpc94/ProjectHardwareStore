@@ -134,7 +134,7 @@ export class AddModStaffComponent implements OnInit {
 		const file = this.form.value.photo;
 		formData.append('person', new Blob([JSON.stringify(data)], { type: 'application/json' }));
 		if (file instanceof File) {
-			console.log('Archivo presente:', file.name, file.size);
+			//console.log('Archivo presente:', file.name, file.size);
 			formData.append('file', file);
 		} else {
 			formData.append('file', new Blob([], { type: 'application/octet-stream' }), '');
