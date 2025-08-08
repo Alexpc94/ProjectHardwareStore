@@ -106,8 +106,7 @@
 			<div class="mb-4 flex gap-2">
 				<div class="form__group w-full">
 					<app-file-upload
-						[emptyMessage]="'Arrastra una imagen o haz clic para subir'"
-						[emptySubMessage]="'Formatos permitidos: Imagenes PNG, JPG, JPEG - Máx 2MB'"
+						[emptyMessage]="'Arrastra la imagen de perfil o haz clic para subir'"
 						(fileSelected)="onFileSelected($event)"></app-file-upload>
 					<app-validation [control]="f['photo']" [submitted]="submitted"></app-validation>
 				</div>
