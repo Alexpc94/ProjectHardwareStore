@@ -1,18 +1,29 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { NgClass } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { ThemeService } from 'src/app/core/services/theme.service';
+
 import { ClickOutsideDirective } from 'src/app/shared/directives/click-outside.directive';
+import { ViewStaffComponent } from 'src/app/features/sistem-data/components/staff/view-staff/view-staff.component';
+import { UpdateImageComponent } from 'src/app/features/sistem-data/components/staff/update-image/update-image.component';
+import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { AuthService } from 'src/app/core/services/auth.service';
-import { Router } from '@angular/router';
+import { ThemeService } from 'src/app/core/services/theme.service';
 
 @Component({
 	selector: 'app-profile-menu',
 	templateUrl: './profile-menu.component.html',
 	styleUrls: ['./profile-menu.component.css'],
-	imports: [ClickOutsideDirective, NgClass, AngularSvgIconModule],
+	imports: [
+		ClickOutsideDirective,
+		NgClass,
+		AngularSvgIconModule,
+		ViewStaffComponent,
+		UpdateImageComponent,
+		AlertsComponent,
+	],
 	animations: [
 		trigger('openClose', [
 			state(
@@ -40,8 +51,21 @@ export class ProfileMenuComponent implements OnInit {
 	_loginAccessService = inject(AuthService);
 	_router = inject(Router);
 	themeService = inject(ThemeService);
+
+	@ViewChild(ViewStaffComponent) userViewModal!: ViewStaffComponent;
+	@ViewChild(UpdateImageComponent) userImageModal!: UpdateImageComponent;
+
 	public isOpen = false;
 	public userData: any = {};
+
+	alertType: any;
+	showAlert(type: 'success' | 'error' | 'info') {
+		this.alertType = '';
+		setTimeout(() => {
+			this.alertType = type;
+		}, 0);
+	}
+
 	public profileMenu = [
 		{
 			title: 'Mi Perfil',
@@ -110,6 +134,15 @@ export class ProfileMenuComponent implements OnInit {
 		});
 	}
 
+	UpdateProfileImage() {
+		this.userImageModal.open(this.userData.otherParams.id);
+	}
+	ImageUpdated(res: any) {
+		console.log('let me see:', res);
+		if (!res.success) return this.showAlert('error');
+		this.showAlert('success');
+	}
+
 	handleMenuAction(action: string) {
 		switch (action) {
 			case 'logOut':
@@ -117,7 +150,7 @@ export class ProfileMenuComponent implements OnInit {
 				this._router.navigate(['/auth/sign-in']);
 				break;
 			case 'yourProfile':
-				this._router.navigate(['/profile']);
+				this.userViewModal.open(this.userData.otherParams.id);
 				break;
 			case 'ChangePassword':
 				this._router.navigate(['/passUpdate']);

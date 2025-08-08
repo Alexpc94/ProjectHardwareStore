@@ -1,7 +1,11 @@
 <ng-container>
 	<td>
 		<div class="flex items-center gap-2.5">
-			<img alt="user avatar" class="h-9 w-9 shrink-0 rounded-full" [src]="getUserPhoto(user.photo)" />
+			<div class="tooltip" data-tip="Actualizar Foto">
+				<button (click)="UpdateProfileImage(user.id)">
+					<img alt="user avatar" class="h-9 w-9 shrink-0 rounded-full" [src]="getUserPhoto(user.photo)" />
+				</button>
+			</div>
 			<div class="flex flex-col items-start">
 				<span class="text-foreground text-sm font-semibold">
 					{{ user.firstName }} {{ user.secondName }} {{ user.name }}</span
@@ -92,6 +96,7 @@
 	<app-add-mod-staff (save)="addModSave($event)"> </app-add-mod-staff>
 	<app-credential-staff (save)="addModSaveCredential($event)"> </app-credential-staff>
 	<app-view-staff> </app-view-staff>
+	<app-update-image (save)="ImageUpdated($event)"> </app-update-image>
 	<app-role-assignment (save)="roleAssignmentUpdated($event)"> </app-role-assignment>
 </ng-container>
 <app-alerts [type]="alertType"></app-alerts>

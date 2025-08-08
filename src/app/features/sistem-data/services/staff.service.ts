@@ -28,6 +28,10 @@ export class StaffService {
 		const url = `${this.apiURL}/api/persons/${id}`;
 		return this._http.put<staff>(url, user);
 	}
+	updateImage(user: FormData, id: number): Observable<any> {
+		const url = `${this.apiURL}/api/persons/foto/${id}`;
+		return this._http.put<any>(url, user);
+	}
 	modStatus(id: number): Observable<any> {
 		const url = `${this.apiURL}/api/persons/${id}`;
 		return this._http.delete<staff>(url);
