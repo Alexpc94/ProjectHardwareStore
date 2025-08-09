@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Output, ViewChild, inject, OnInit } from '@angular/core';
-
-import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { tenant } from '../../models/tenant.model';
@@ -9,12 +7,13 @@ import { ActionEvent } from '../../models/actions.model';
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { CustomValidators } from 'src/app/shared/components/validation/custom-validators';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-upload.component';
 
 import { TenantService } from '../../services/tenant.service';
 
 @Component({
 	selector: 'app-add-mod-tenant',
-	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent],
+	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent, FileUploadComponent],
 	templateUrl: './add-mod-tenant.component.html',
 	styleUrl: './add-mod-tenant.component.css',
 })
@@ -88,13 +87,9 @@ export class AddModTenantComponent implements OnInit {
 		}
 	}
 
-	onFileSelected(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		if (input.files && input.files.length > 0) {
-			const file = input.files[0];
-			this.form.get('photo')?.setValue(file);
-			this.form.get('photo')?.updateValueAndValidity();
-		}
+	onFileSelected(file: File) {
+		this.form.get('photo')?.setValue(file);
+		this.form.get('photo')?.updateValueAndValidity();
 	}
 
 	capitalizeWords(str: string | undefined | null): string {

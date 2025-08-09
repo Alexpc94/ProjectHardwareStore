@@ -6,6 +6,7 @@
 	</td>
 	<td>{{ tenant.cedula }}</td>
 	<td>{{ tenant.celular }}</td>
+	<td>{{ tenant.direc }}</td>
 	<td>
 		<span
 			class="rounded-[30px] px-2 py-0.5 text-xs font-medium"
@@ -18,6 +19,15 @@
 			<div class="tooltip" data-tip="Ver Inquilino">
 				<button (click)="viewTenant(tenant.id)" class="block w-full px-1 py-1">
 					<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+				</button>
+			</div>
+			<div class="tooltip" data-tip="Actualizar Ubicacion Inquilino">
+				<button
+					(click)="toggleMap(tenant.ubicacion_gps?.latitude, tenant.ubicacion_gps?.longitude)"
+					class="block w-full px-1 py-1">
+					<svg-icon
+						src="./assets/icons/usericons/location-information-svgrepo-com.svg"
+						[svgClass]="'h-5 w-5'"></svg-icon>
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="tenant.estado ? 'Modificar Usuario' : 'Usuario inactivo'">
@@ -43,6 +53,18 @@
 	</td>
 	<app-add-mod-tenant (save)="addModSave($event)"> </app-add-mod-tenant>
 	<app-view-tenant> </app-view-tenant>
+	@if(showMap) {
+	<div class="modal modal-open">
+		<div class="modal-box bg-background border-border border">
+			<h3 class="mb-4 text-lg font-bold">Detalles del Personal</h3>
+			<button (click)="closeMap()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+			<app-open-street-map
+				[latitude]="latidude"
+				[longitude]="longitude"
+				(locationChanged)="onLocationChanged($event)"></app-open-street-map>
+		</div>
+	</div>
+	}
 </ng-container>
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status

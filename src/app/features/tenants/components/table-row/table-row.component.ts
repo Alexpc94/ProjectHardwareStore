@@ -5,6 +5,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AddModTenantComponent } from '../add-mod-tenant/add-mod-tenant.component';
 import { ViewTenantComponent } from '../view-tenant/view-tenant.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
+import { OpenStreetMapComponent } from 'src/app/shared/components/open-street-map/open-street-map.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { tenant } from '../../models/tenant.model';
@@ -20,6 +21,7 @@ import { TenantService } from '../../services/tenant.service';
 		AlertsComponent,
 		AddModTenantComponent,
 		ViewTenantComponent,
+		OpenStreetMapComponent,
 	],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
@@ -36,6 +38,9 @@ export class TableRowComponent {
 
 	selectedtenant: Partial<tenant> = {};
 	selectedID?: number | null;
+	showMap = false;
+	latidude?: number;
+	longitude?: number;
 
 	alertType: any;
 	showAlert(type: 'success' | 'error' | 'info') {
@@ -73,7 +78,7 @@ export class TableRowComponent {
 	}
 
 	addModSave(res: any) {
-		console.log('let me see:', res);
+		//console.log('let me see:', res);
 		if (!res.success) return this.showAlert('error');
 		this.save.emit(res);
 		this.showAlert('success');
@@ -81,5 +86,19 @@ export class TableRowComponent {
 
 	viewTenant(tenantID: number) {
 		this.tenantViewModal.open(tenantID);
+	}
+
+	toggleMap(lat?: number, lng?: number) {
+		console.log('holi');
+		this.showMap = !this.showMap;
+		this.latidude = lat;
+		this.longitude = lng;
+	}
+
+	onLocationChanged(coords: { lat: number; lng: number }) {
+		console.log('Nueva posición:', coords);
+	}
+	closeMap() {
+		this.showMap = false;
 	}
 }

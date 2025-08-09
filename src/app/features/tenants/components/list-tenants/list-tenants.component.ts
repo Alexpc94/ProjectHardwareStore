@@ -91,7 +91,7 @@ export class ListTenantsComponent {
 	}
 
 	handleDataSave(res: any) {
-		console.log('User save response:', res);
+		//console.log('User save response:', res);
 		switch (res.action) {
 			case 'add':
 				this.loadTenants();
