@@ -15,17 +15,16 @@
 								<p>Dni: {{ selectedData.cedula }}</p>
 								<p>Telefono: {{ selectedData.celular }}</p>
 								<p>Direccion: {{ selectedData.direc }}</p>
-								<div class="flex items-center space-x-2">
-									<p>ubicacion:</p>
+								<div class="flex items-center space-x-2" (click)="toggleMap()">
+									<p>Ubicacion</p>
 									@if (selectedData.ubicacion_gps?.latitude && selectedData.ubicacion_gps?.longitude) {
 									<div class="tooltip" data-tip="Ubicacion Inquilino">
-										<button (click)="toggleMap()">
+										<button>
 											<svg-icon
-												src="./assets/icons/usericons/location-svgrepo-com.svg"
+												src="./assets/icons/usericons/location-information-svgrepo-com.svg"
 												[svgClass]="'h-5 w-5'"></svg-icon>
 										</button>
 									</div>
-
 									}
 								</div>
 								<p>Estado en sistema: {{ selectedData.estado ? 'Activo' : 'Inactivo' }}</p>
@@ -40,11 +39,12 @@
 } @if(showMap) {
 <div class="modal modal-open">
 	<div class="modal-box bg-background border-border border">
-		<h3 class="mb-4 text-lg font-bold">Detalles del Personal</h3>
+		<h3 class="text-lg font-bold">Ubicacion Global</h3>
 		<button (click)="closeMap()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 		<app-open-street-map
 			[latitude]="selectedData.ubicacion_gps?.latitude"
-			[longitude]="selectedData.ubicacion_gps?.longitude"></app-open-street-map>
+			[longitude]="selectedData.ubicacion_gps?.longitude"
+			[readOnly]="true"></app-open-street-map>
 	</div>
 </div>
 }

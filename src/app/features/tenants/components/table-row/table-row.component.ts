@@ -38,8 +38,8 @@ export class TableRowComponent {
 
 	selectedtenant: Partial<tenant> = {};
 	selectedID?: number | null;
-	showMap = false;
-	latidude?: number;
+	showMap: boolean = false;
+	latitude?: number;
 	longitude?: number;
 
 	alertType: any;
@@ -88,15 +88,37 @@ export class TableRowComponent {
 		this.tenantViewModal.open(tenantID);
 	}
 
-	toggleMap(lat?: number, lng?: number) {
-		console.log('holi');
+	toggleMap(id: number, lat?: number, lng?: number) {
 		this.showMap = !this.showMap;
-		this.latidude = lat;
+		this.latitude = lat;
 		this.longitude = lng;
+		this.selectedID = id;
 	}
 
 	onLocationChanged(coords: { lat: number; lng: number }) {
-		console.log('Nueva posición:', coords);
+		this.latitude = coords.lat;
+		this.longitude = coords.lng;
+	}
+	saveLocation() {
+		//console.log('New coordinates:', this.latidude, this.longitude, 'id:', this.selectedID);
+		const data = {
+			id: this.selectedID,
+			latitude: this.latitude,
+			longitude: this.longitude,
+		};
+		const formData = new FormData();
+		formData.append('inquilinos', new Blob([JSON.stringify(data)], { type: 'application/json' }));
+		this._getTenantService.updateLocationData(formData, this.selectedID!).subscribe({
+			next: () => {
+				//console.log('user updated:', response);
+				this.save.emit({ action: 'editLocation', success: true, data, id: this.selectedID! });
+				this.showAlert('success');
+				this.closeMap();
+			},
+			error: () => {
+				this.showAlert('error');
+			},
+		});
 	}
 	closeMap() {
 		this.showMap = false;

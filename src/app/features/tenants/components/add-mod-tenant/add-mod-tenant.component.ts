@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, ViewChild, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { tenant } from '../../models/tenant.model';
 import { ActionEvent } from '../../models/actions.model';
@@ -8,12 +9,20 @@ import { ValidationComponent } from 'src/app/shared/components/validation/valida
 import { CustomValidators } from 'src/app/shared/components/validation/custom-validators';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-upload.component';
+import { OpenStreetMapComponent } from 'src/app/shared/components/open-street-map/open-street-map.component';
 
 import { TenantService } from '../../services/tenant.service';
 
 @Component({
 	selector: 'app-add-mod-tenant',
-	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent, FileUploadComponent],
+	imports: [
+		ReactiveFormsModule,
+		ValidationComponent,
+		ConfirmDialogComponent,
+		FileUploadComponent,
+		AngularSvgIconModule,
+		OpenStreetMapComponent,
+	],
 	templateUrl: './add-mod-tenant.component.html',
 	styleUrl: './add-mod-tenant.component.css',
 })
@@ -28,9 +37,12 @@ export class AddModTenantComponent implements OnInit {
 		return this.form.controls;
 	}
 	showModal: boolean = false;
+	showMap: boolean = false;
 	submitted: boolean = false;
 	selectedData?: tenant;
 	selectedID?: number;
+	latitude?: number;
+	longitude?: number;
 
 	ngOnInit() {
 		this.buildForm();
@@ -51,6 +63,10 @@ export class AddModTenantComponent implements OnInit {
 		this.form.reset();
 		this.submitted = false;
 		this.showModal = false;
+	}
+
+	closeMap() {
+		this.showMap = false;
 	}
 
 	buildForm(): void {
@@ -84,6 +100,8 @@ export class AddModTenantComponent implements OnInit {
 				direc: this.selectedData.direc,
 				celular: this.selectedData.celular,
 			});
+			this.latitude = this.selectedData.ubicacion_gps?.latitude;
+			this.longitude = this.selectedData.ubicacion_gps?.longitude;
 		}
 	}
 
@@ -101,6 +119,15 @@ export class AddModTenantComponent implements OnInit {
 			.join(' ');
 	}
 
+	toggleMap() {
+		this.showMap = !this.showMap;
+	}
+
+	onLocationChanged(coords: { lat: number; lng: number }) {
+		this.latitude = coords.lat;
+		this.longitude = coords.lng;
+	}
+
 	onPreSubmit(): void {
 		this.submitted = true;
 		if (this.form.invalid) return;
@@ -115,7 +142,10 @@ export class AddModTenantComponent implements OnInit {
 			nombre: this.capitalizeWords(nombre),
 			ap: this.capitalizeWords(ap),
 			am: this.capitalizeWords(am),
+			latitude: this.latitude,
+			longitude: this.longitude,
 		};
+		console.log('Form values:', data);
 		const formData = new FormData();
 		const file = this.form.value.photo;
 		formData.append('inquilinos', new Blob([JSON.stringify(data)], { type: 'application/json' }));

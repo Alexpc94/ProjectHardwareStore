@@ -10,11 +10,10 @@ import * as L from 'leaflet';
 export class OpenStreetMapComponent implements AfterViewInit {
 	@Input() latitude?: number;
 	@Input() longitude?: number;
-
+	@Input() readOnly: boolean = false;
 	@Output() locationChanged = new EventEmitter<{ lat: number; lng: number }>();
 
 	private map!: L.Map;
-	private marker!: L.Marker;
 
 	ngAfterViewInit(): void {
 		// Configura ícono (igual que antes)
@@ -35,8 +34,8 @@ export class OpenStreetMapComponent implements AfterViewInit {
 
 		L.Marker.prototype.options.icon = DefaultIcon;
 
-		const defaultLat = -21.5355;
-		const defaultLng = -64.7297;
+		const defaultLat = -21.5338989080539;
+		const defaultLng = -64.73426699638368;
 
 		const lat = this.latitude ?? defaultLat;
 		const lng = this.longitude ?? defaultLng;
@@ -48,18 +47,15 @@ export class OpenStreetMapComponent implements AfterViewInit {
 		}).addTo(this.map);
 
 		// Crear marcador draggable
-		this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map);
+		const marker = L.marker([lat, lng], { draggable: !this.readOnly }).addTo(this.map);
 
-		this.marker
-			.bindPopup(
-				this.latitude !== undefined && this.longitude !== undefined ? 'Ubicación registrada' : 'Ubicación por defecto',
-			)
-			.openPopup();
+		marker.bindPopup(this.latitude && this.longitude ? 'Ubicación registrada' : 'Ubicación por defecto').openPopup();
 
-		// Escuchar evento dragend para obtener la nueva ubicación
-		this.marker.on('dragend', () => {
-			const position = this.marker.getLatLng();
-			this.locationChanged.emit({ lat: position.lat, lng: position.lng });
-		});
+		if (!this.readOnly) {
+			marker.on('dragend', (e: any) => {
+				const newLatLng = e.target.getLatLng();
+				this.locationChanged.emit({ lat: newLatLng.lat, lng: newLatLng.lng });
+			});
+		}
 	}
 }

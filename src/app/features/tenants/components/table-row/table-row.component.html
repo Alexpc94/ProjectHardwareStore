@@ -23,7 +23,7 @@
 			</div>
 			<div class="tooltip" data-tip="Actualizar Ubicacion Inquilino">
 				<button
-					(click)="toggleMap(tenant.ubicacion_gps?.latitude, tenant.ubicacion_gps?.longitude)"
+					(click)="toggleMap(tenant.id, tenant.ubicacion_gps?.latitude, tenant.ubicacion_gps?.longitude)"
 					class="block w-full px-1 py-1">
 					<svg-icon
 						src="./assets/icons/usericons/location-information-svgrepo-com.svg"
@@ -56,12 +56,17 @@
 	@if(showMap) {
 	<div class="modal modal-open">
 		<div class="modal-box bg-background border-border border">
-			<h3 class="mb-4 text-lg font-bold">Detalles del Personal</h3>
+			<h3 class="text-lg font-bold">Actualizar Ubicacion Global</h3>
 			<button (click)="closeMap()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 			<app-open-street-map
-				[latitude]="latidude"
+				[latitude]="latitude"
 				[longitude]="longitude"
+				[readOnly]="false"
 				(locationChanged)="onLocationChanged($event)"></app-open-street-map>
+			<div class="modal-action">
+				<button type="button" class="btn" (click)="closeMap()">Cerrar</button>
+				<button type="button" class="btn btn-primary" (click)="saveLocation()">Guardar</button>
+			</div>
 		</div>
 	</div>
 	}
