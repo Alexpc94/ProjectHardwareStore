@@ -91,14 +91,32 @@ export class ListTenantsComponent {
 	}
 
 	handleDataSave(res: any) {
-		console.log('User save response:', res);
 		switch (res.action) {
 			case 'add':
 				this.loadTenants();
 				break;
 			case 'edit':
 				this.tenants.update((tenants) =>
-					tenants.map((tenant) => (tenant.id === res.id ? { ...tenant, ...res.data } : tenant)),
+					tenants.map((tenant) => {
+						if (tenant.id !== res.id) return tenant;
+						const { latitude, longitude, ...restData } = res.data;
+						return {
+							...tenant,
+							...restData,
+							ubicacion_gps: {
+								...tenant.ubicacion_gps,
+								latitude,
+								longitude,
+							},
+						};
+					}),
+				);
+				break;
+			case 'editLocation':
+				this.tenants.update((tenants) =>
+					tenants.map((tenant) =>
+						tenant.id === res.id ? { ...tenant, ubicacion_gps: { ...tenant.ubicacion_gps, ...res.data } } : tenant,
+					),
 				);
 				break;
 			case 'delete':

@@ -100,5 +100,13 @@ export class LogosComponent {
 			name: 'calendar-lines-pen-svgrepo-com',
 			src: 'assets/icons/usericons/calendar-lines-pen-svgrepo-com.svg',
 		},
+		{
+			name: 'location-svgrepo-com',
+			src: 'assets/icons/usericons/location-svgrepo-com.svg',
+		},
+		{
+			name: 'location-information-svgrepo-com',
+			src: 'assets/icons/usericons/location-information-svgrepo-com.svg',
+		},
 	];
 }

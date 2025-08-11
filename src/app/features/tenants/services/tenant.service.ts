@@ -41,4 +41,8 @@ export class TenantService {
 		const url = `${this.apiURL}/api/inquilinos/${id}`;
 		return this._http.put<tenant>(url, data);
 	}
+	updateLocationData(data: FormData, id: number): Observable<tenant> {
+		const url = `${this.apiURL}/api/inquilinos/gps8/${id}`;
+		return this._http.put<tenant>(url, data);
+	}
 }
