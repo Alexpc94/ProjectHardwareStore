@@ -23,6 +23,11 @@ const routes: Routes = [
 				loadChildren: () => import('./features/tenants/tenants.module').then((m) => m.TenantsModule),
 			},
 			{
+				path: 'rentals',
+				loadChildren: () =>
+					import('./features/rental-sectors/rental-sectors.module').then((m) => m.RentalSectorsModule),
+			},
+			{
 				path: 'logos',
 				loadComponent: () => import('./core/modules/logos/logos.component').then((m) => m.LogosComponent),
 			},
