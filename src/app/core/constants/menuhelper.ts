@@ -67,6 +67,12 @@ export function generateDynamicMenu(menuData: any[], id_role: number): MenuItem[
 				children: [{ label: 'Inquilinos', route: '/clients/tenants' }],
 			},
 			{
+				icon: 'assets/icons/heroicons/outline/cube.svg',
+				label: 'Alquileres',
+				route: '/rentals',
+				children: [{ label: 'Sectores', route: '/rentals/sectors' }],
+			},
+			{
 				icon: 'assets/icons/heroicons/outline/bookmark.svg',
 				label: 'Iconos',
 				route: '/logos',

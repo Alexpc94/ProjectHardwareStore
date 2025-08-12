@@ -51,3 +51,4 @@ npx angular-cli-ghpages --dir=dist/angular-tailwind/browser
 npm run deploy
 
 in back render
+https://daisyui.com/components/list/

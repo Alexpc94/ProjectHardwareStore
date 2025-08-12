@@ -1,0 +1,87 @@
+<ul class="list bg-background rounded-box shadow-md">
+	<li class="list-row flex">
+		<div class="inline-block w-[25%]">
+			<h3 class="text-foreground font-semibold">Alquileres</h3>
+			<div class="relative max-w-xs">
+				<p class="text-muted-foreground space-x-1 font-medium">Selecciona sector para listar sus secciones</p>
+				<label
+					for="type"
+					class="text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
+					Sectores
+				</label>
+				<select id="type" name="type" class="text-muted-foreground w-40! mt-2 rounded border p-2">
+					<option value="Sistema" selected>Sector 1</option>
+					<option value="Operarios">Sector 2</option>
+				</select>
+			</div>
+			<div class="relative max-w-xs">
+				<p class="text-muted-foreground space-x-1 font-medium">Selecciona Seccion para listar sus predios</p>
+				<label
+					for="type"
+					class="text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
+					Secciones
+				</label>
+				<select id="type" name="type" class="text-muted-foreground w-40! mt-2 rounded border p-2">
+					<option value="Sistema" selected>Seccion 1</option>
+					<option value="Operarios">Seccion 2</option>
+				</select>
+			</div>
+		</div>
+		<div class="border-muted/30 flex-1 flex-col rounded-xl border p-2">
+			<div class="mb-4 flex justify-between">
+				<!-- <div class="flex items-center space-x-4"></div> -->
+				<div class="inline-block">
+					<h3 class="text-foreground font-semibold">Control Inquilinos</h3>
+					<div class="text-muted-foreground space-x-1 text-xs font-medium">
+						<a href="" class="hover:text-primary">Total Registros:</a>
+						<span class="text-foreground">10</span>
+					</div>
+				</div>
+
+				<div class="inline-block space-x-4">
+					<button
+						class="bg-muted text-muted-foreground hover:text-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold">
+						Importar CSV
+					</button>
+					<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
+						<button class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold">
+							Nuevo
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
+				<h3 class="text-muted-foreground text-sm font-medium">Mostrando 1 de 10 sectores</h3>
+				<div class="flex flex-wrap gap-2">
+					<div class="flex">
+						<label class="text-muted-foreground relative">
+							<div class="absolute left-2.5 top-2.5">
+								<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'">
+								</svg-icon>
+							</div>
+							<input name="search" class="py-2 pl-8 pr-2" placeholder="Buscar" type="text" value="" />
+						</label>
+					</div>
+				</div>
+			</div>
+			<div
+				class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5">
+				<table
+					class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
+					<thead class="border-muted/20 text-muted-foreground border text-xs">
+						<tr>
+							<th>Teléfono</th>
+							<th>Teléfono</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>123</td>
+							<td>holi</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</li>
+</ul>
