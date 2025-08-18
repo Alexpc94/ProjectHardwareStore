@@ -1,32 +1,33 @@
 import { Component, signal, effect, ViewChild } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { tenant } from '../../models/tenant.model';
+import { sector } from '../../../models/sector.model';
 
-import { TableRowComponent } from '../table-row/table-row.component';
-import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
+import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
+import { TableRowComponent } from '../table-row/table-row.component';
 
-import { TenantService } from '../../services/tenant.service';
+import { SectorService } from '../../../services/sectors.service';
 
 @Component({
-	selector: 'app-list-tenants',
-	imports: [ToggleSwitchComponent, TableFooterComponent, SortHeaderComponent, AngularSvgIconModule, TableRowComponent],
-	templateUrl: './list-tenants.component.html',
-	styleUrl: './list-tenants.component.css',
+	selector: 'app-list-rental-sectors',
+	imports: [AngularSvgIconModule, TableFooterComponent, ToggleSwitchComponent, SortHeaderComponent, TableRowComponent],
+	templateUrl: './list-rental-sectors.component.html',
+	styleUrl: './list-rental-sectors.component.css',
 })
-export class ListTenantsComponent {
+export class ListRentalSectorsComponent {
 	private searchDebounceTimer?: any;
-	constructor(private _getTenantService: TenantService) {
+	constructor(private _getSectorService: SectorService) {
 		effect(() => {
-			this.loadTenants();
+			this.loadSectors();
 		});
 	}
+
 	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
 
-	tenants = signal<tenant[]>([]);
-	totalTenants!: number;
+	sectors = signal<sector[]>([]);
+	totalSectors!: number;
 	isActive = signal<boolean>(true);
 	search = signal<string>(' ');
 	sortBy = signal<string>('id');
@@ -34,21 +35,18 @@ export class ListTenantsComponent {
 	currentPage = signal<number>(1);
 	itemsPerPage = signal<number>(5);
 
-	loadTenants(): void {
-		const status = this.isActive();
+	loadSectors(): void {
+		const status = +this.isActive();
 		const searchTerm = this.search();
 		const page = this.currentPage() - 1;
 		const size = this.itemsPerPage();
 		const sort = [`${this.sortBy()},${this.sortDirection()}`];
 
-		this._getTenantService.getTenants(status, searchTerm, { page, size, sort }).subscribe((data) => {
-			this.totalTenants = data.totalElements;
-			this.tenants.set(data.content);
+		this._getSectorService.getSectors(status, searchTerm, { page, size, sort }).subscribe((data) => {
+			this.totalSectors = data.totalElements;
+			this.sectors.set(data.content);
+			console.log('Sectors loaded:', this.sectors());
 		});
-	}
-
-	addUser(): void {
-		this.childComponent.addUpdateUser();
 	}
 
 	onToggleChange(status: boolean) {
@@ -88,40 +86,25 @@ export class ListTenantsComponent {
 		this.currentPage.set(1);
 	}
 
+	addData(): void {
+		this.childComponent.addUpdateSector();
+	}
+
 	handleDataSave(res: any) {
 		switch (res.action) {
 			case 'add':
-				this.loadTenants();
+				this.loadSectors();
 				break;
 			case 'edit':
-				this.tenants.update((tenants) =>
-					tenants.map((tenant) => {
-						if (tenant.id !== res.id) return tenant;
-						const { latitude, longitude, ...restData } = res.data;
-						return {
-							...tenant,
-							...restData,
-							ubicacion_gps: {
-								...tenant.ubicacion_gps,
-								latitude,
-								longitude,
-							},
-						};
-					}),
-				);
-				break;
-			case 'editLocation':
-				this.tenants.update((tenants) =>
-					tenants.map((tenant) =>
-						tenant.id === res.id ? { ...tenant, ubicacion_gps: { ...tenant.ubicacion_gps, ...res.data } } : tenant,
-					),
+				this.sectors.update((sectors) =>
+					sectors.map((sector) => (sector.cods === res.id ? { ...sector, ...res.data } : sector)),
 				);
 				break;
 			case 'delete':
 			case 'enable':
-				const newStatus = res.action === 'enable';
-				this.tenants.update((tenants) =>
-					tenants.map((tenant) => (tenant.id === res.id ? { ...tenant, estado: newStatus } : tenant)),
+				const newStatus = res.action === 'enable' ? 1 : 0;
+				this.sectors.update((sectors) =>
+					sectors.map((sector) => (sector.cods === res.id ? { ...sector, estado: newStatus } : sector)),
 				);
 				break;
 		}

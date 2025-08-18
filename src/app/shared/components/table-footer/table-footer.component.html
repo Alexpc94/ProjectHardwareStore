@@ -1,14 +1,14 @@
 <div class="text-muted-foreground flex flex-wrap items-center justify-between gap-2 py-3 px-5 text-xs">
 	<div class="order-2 flex items-center gap-2 md:order-1">
-		Ver
-		<select name="items" class="w-16 p-2" (change)="onItemsPerPageChange($event)">
+		<p class="min-w-[28px]">Ver</p>
+		<select name="items" class="min-w-16 p-2" (change)="onItemsPerPageChange($event)">
 			@for (option of [5, 10, 20, 50]; track option) {
 			<option [value]="option" [selected]="option === itemsPerPage">
 				{{ option }}
 			</option>
 			}
 		</select>
-		por página
+		<p class="min-w-[50px]">por página</p>
 	</div>
 	<div class="order-1 flex items-center md:order-2">
 		<span>{{ (currentPage - 1) * itemsPerPage + 1 }}-{{ currentPage * itemsPerPage }} de {{ totalItems }}</span>

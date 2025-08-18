@@ -1,5 +1,4 @@
 import { Component, Input, ViewChild, Output, EventEmitter, inject } from '@angular/core';
-
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AddModTenantComponent } from '../add-mod-tenant/add-mod-tenant.component';
@@ -29,7 +28,6 @@ import { TenantService } from '../../services/tenant.service';
 export class TableRowComponent {
 	private _getTenantService = inject(TenantService);
 	@Input() tenant!: tenant;
-	@Input() rowIndex!: number;
 	@Output() save = new EventEmitter<ActionEvent>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;

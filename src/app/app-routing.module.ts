@@ -24,8 +24,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'rentals',
-				loadChildren: () =>
-					import('./features/rental-sectors/rental-sectors.module').then((m) => m.RentalSectorsModule),
+				loadChildren: () => import('./features/rentals/rentals.module').then((m) => m.RentalsModule),
 			},
 			{
 				path: 'logos',

@@ -4,6 +4,8 @@ import { DatePipe } from '@angular/common';
 import { staff } from '../../../models/staff.model';
 import { ActionEvent } from '../../../models/Actions.model';
 
+import { capitalizeWords } from 'src/app/shared/utils/stringData';
+
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { CustomValidators } from 'src/app/shared/components/validation/custom-validators';
@@ -111,22 +113,13 @@ export class AddModStaffComponent implements OnInit {
 		this.confirmModal.show();
 	}
 
-	capitalizeWords(str: string | undefined | null): string {
-		if (!str) return '';
-		return str
-			.toLowerCase()
-			.split(' ')
-			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-			.join(' ');
-	}
-
 	saveData(): void {
 		const { datebirth, photo, name, firstName, secondName, ...values } = this.form.value;
 		const data: staff = {
 			...values,
-			name: this.capitalizeWords(name),
-			firstName: this.capitalizeWords(firstName),
-			secondName: this.capitalizeWords(secondName),
+			name: capitalizeWords(name),
+			firstName: capitalizeWords(firstName),
+			secondName: capitalizeWords(secondName),
 			dateBirth: datebirth,
 			tipoper: this.selectedTipoper,
 		};
