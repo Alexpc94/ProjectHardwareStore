@@ -5,6 +5,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { tenant } from '../../models/tenant.model';
 import { ActionEvent } from '../../models/actions.model';
 
+import { capitalizeWords } from 'src/app/shared/utils/stringData';
+
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { CustomValidators } from 'src/app/shared/components/validation/custom-validators';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
@@ -110,15 +112,6 @@ export class AddModTenantComponent implements OnInit {
 		this.form.get('photo')?.updateValueAndValidity();
 	}
 
-	capitalizeWords(str: string | undefined | null): string {
-		if (!str) return '';
-		return str
-			.toLowerCase()
-			.split(' ')
-			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-			.join(' ');
-	}
-
 	toggleMap() {
 		this.showMap = !this.showMap;
 	}
@@ -139,13 +132,13 @@ export class AddModTenantComponent implements OnInit {
 
 		const data: tenant = {
 			...values,
-			nombre: this.capitalizeWords(nombre),
-			ap: this.capitalizeWords(ap),
-			am: this.capitalizeWords(am),
+			nombre: capitalizeWords(nombre),
+			ap: capitalizeWords(ap),
+			am: capitalizeWords(am),
 			latitude: this.latitude,
 			longitude: this.longitude,
 		};
-		console.log('Form values:', data);
+		//console.log('Form values:', data);
 		const formData = new FormData();
 		const file = this.form.value.photo;
 		formData.append('inquilinos', new Blob([JSON.stringify(data)], { type: 'application/json' }));

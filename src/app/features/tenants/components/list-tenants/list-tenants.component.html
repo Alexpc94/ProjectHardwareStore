@@ -3,8 +3,9 @@
 	<div class="inline-block">
 		<h3 class="text-foreground font-semibold">Control Inquilinos</h3>
 		<div class="text-muted-foreground space-x-1 text-xs font-medium">
-			<a href="" class="hover:text-primary">Total Registros:</a>
-			<span class="text-foreground">{{ totalTenants }}</span>
+			<p>
+				Total Registros: <span class="text-foreground">{{ totalTenants }}</span>
+			</p>
 		</div>
 	</div>
 	<div class="inline-flex items-center space-x-2">
@@ -73,12 +74,7 @@
 			</thead>
 			<tbody>
 				@for (tenant of tenants(); track $index) {
-				<tr
-					class="hover:bg-card/50"
-					app-table-row
-					[tenant]="tenant"
-					[rowIndex]="$index"
-					(save)="handleDataSave($event)"></tr>
+				<tr class="hover:bg-card/50" app-table-row [tenant]="tenant" (save)="handleDataSave($event)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
