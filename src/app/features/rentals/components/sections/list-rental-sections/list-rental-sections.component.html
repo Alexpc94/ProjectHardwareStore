@@ -1,10 +1,10 @@
 <div class="mb-4 flex justify-between">
 	<!-- <div class="flex items-center space-x-4"></div> -->
 	<div class="inline-block">
-		<h3 class="text-foreground font-semibold">Control Inquilinos</h3>
+		<h3 class="text-foreground font-semibold">Gestion Secciones</h3>
 		<div class="text-muted-foreground space-x-1 text-xs font-medium">
 			<p>
-				Total Registros: <span class="text-foreground">{{ totalTenants }}</span>
+				Total Registros: <span class="text-foreground">{{ totalSections }}</span>
 			</p>
 		</div>
 	</div>
@@ -18,20 +18,19 @@
 			class="bg-muted text-muted-foreground hover:text-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold">
 			Importar CSV
 		</button>
-		<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
+		<div class="tooltip tooltip-bottom" data-tip="Agregar Seccion">
 			<button
 				class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
-				(click)="addUser()">
-				Nuevo inquilino
+				(click)="addData()">
+				Nuevo
 			</button>
 		</div>
 	</div>
 </div>
-
 <div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
 	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
 		<h3 class="text-muted-foreground text-sm font-medium">
-			Mostrando {{ tenants().length }} de {{ totalTenants }} usuarios
+			Mostrando {{ sections().length }} de {{ totalSections }} Secciones
 		</h3>
 		<div class="flex flex-wrap gap-2">
 			<div class="flex">
@@ -58,26 +57,20 @@
 				<tr>
 					<th class="min-w-[300px]">
 						<app-sort-header
-							[label]="'Nombres y Apellidos'"
+							[label]="'Nombre'"
 							[sortField]="'nombre'"
 							(click)="onSortChange('nombre')"></app-sort-header>
 					</th>
-					<th>
-						<app-sort-header [label]="'Cedula'" [sortField]="'cedula'" (click)="onSortChange('cedula')">
-						</app-sort-header>
-					</th>
-					<th>Teléfono</th>
-					<th>Direccion</th>
-					<th>Estado</th>
+					<th class="min-w-[90px]">Estado</th>
 					<th class="min-w-[100px]">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
-				@for (tenant of tenants(); track $index) {
+				@for (strs of sections(); track $index) {
 				<tr
 					class="border-border hover:bg-card/50 border-b"
 					app-table-row
-					[tenant]="tenant"
+					[sections]="strs"
 					(save)="handleDataSave($event)"></tr>
 				} @empty {
 				<tr>
@@ -88,7 +81,7 @@
 		</table>
 	</div>
 	<app-table-footer
-		[totalItems]="totalTenants"
+		[totalItems]="totalSections"
 		[itemsPerPage]="itemsPerPage()"
 		[currentPage]="currentPage()"
 		(pageChange)="handlePageChange($event)"

@@ -1,7 +1,7 @@
 import { Component, signal, effect, ViewChild } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { sector } from '../../../models/sector.model';
+import { section } from '../../../models/section.model';
 
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
@@ -11,23 +11,30 @@ import { TableRowComponent } from '../table-row/table-row.component';
 import { RentalService } from '../../../services/rentals.service';
 
 @Component({
-	selector: 'app-list-rental-sectors',
+	selector: 'app-list-rental-sections',
 	imports: [AngularSvgIconModule, TableFooterComponent, ToggleSwitchComponent, SortHeaderComponent, TableRowComponent],
-	templateUrl: './list-rental-sectors.component.html',
-	styleUrl: './list-rental-sectors.component.css',
+	templateUrl: './list-rental-sections.component.html',
+	styleUrl: './list-rental-sections.component.css',
 })
-export class ListRentalSectorsComponent {
+export class ListRentalSectionsComponent {
 	private searchDebounceTimer?: any;
+	sectorId?: number | null;
+
 	constructor(private _getRentalService: RentalService) {
 		effect(() => {
-			this.loadSectors();
+			const id = this._getRentalService.selectedId();
+			this.sectorId = id;
+			console.log('Cargando secciones del sector:', this.sectorId);
+		});
+		effect(() => {
+			this.loadSections();
 		});
 	}
 
 	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
 
-	sectors = signal<sector[]>([]);
-	totalSectors!: number;
+	sections = signal<section[]>([]);
+	totalSections!: number;
 	isActive = signal<boolean>(true);
 	search = signal<string>(' ');
 	sortBy = signal<string>('id');
@@ -35,17 +42,18 @@ export class ListRentalSectorsComponent {
 	currentPage = signal<number>(1);
 	itemsPerPage = signal<number>(5);
 
-	loadSectors(): void {
+	loadSections(): void {
+		const id = this.sectorId;
 		const status = +this.isActive();
 		const searchTerm = this.search();
 		const page = this.currentPage() - 1;
 		const size = this.itemsPerPage();
 		const sort = [`${this.sortBy()},${this.sortDirection()}`];
 
-		this._getRentalService.getSectors(status, searchTerm, { page, size, sort }).subscribe((data) => {
-			this.totalSectors = data.totalElements;
-			this.sectors.set(data.content);
-			console.log('Sectors loaded:', this.sectors());
+		this._getRentalService.getSections(status, searchTerm, { page, size, sort }).subscribe((data) => {
+			this.totalSections = data.totalElements;
+			this.sections.set(data.content);
+			console.log('Sectors loaded:', this.sections());
 		});
 	}
 
@@ -87,24 +95,24 @@ export class ListRentalSectorsComponent {
 	}
 
 	addData(): void {
-		this.childComponent.addUpdateSector();
+		//this.childComponent.addUpdateSection();
 	}
 
 	handleDataSave(res: any) {
 		switch (res.action) {
 			case 'add':
-				this.loadSectors();
+				this.loadSections();
 				break;
 			case 'edit':
-				this.sectors.update((sectors) =>
-					sectors.map((sector) => (sector.cods === res.id ? { ...sector, ...res.data } : sector)),
+				this.sections.update((sections) =>
+					sections.map((section) => (section.codsec === res.id ? { ...section, ...res.data } : section)),
 				);
 				break;
 			case 'delete':
 			case 'enable':
 				const newStatus = res.action === 'enable' ? 1 : 0;
-				this.sectors.update((sectors) =>
-					sectors.map((sector) => (sector.cods === res.id ? { ...sector, estado: newStatus } : sector)),
+				this.sections.update((sections) =>
+					sections.map((section) => (section.codsec === res.id ? { ...section, estado: newStatus } : section)),
 				);
 				break;
 		}
