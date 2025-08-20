@@ -1,17 +1,20 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { Pageable, PaginatedResponse } from '../models/pageable.model';
 import { sector } from '../models/sector.model';
+import { section } from '../models/section.model';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class SectorService {
+export class RentalService {
 	private apiURL = `${environment.apiUrl}`;
 	_http = inject(HttpClient);
+	selectedId = signal<number | null>(null);
+	view = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
 
 	getSectors(status: number, buscar: string, pageable: Pageable): Observable<PaginatedResponse<sector>> {
 		const url = `${this.apiURL}/api/sectores/dto/${status}/${buscar}`;
@@ -36,5 +39,25 @@ export class SectorService {
 	modData(data: sector, cods: number): Observable<sector> {
 		const url = `${this.apiURL}/api/sectores/${cods}`;
 		return this._http.put<sector>(url, data);
+	}
+
+	setView(view: 'all' | 'sectores' | 'secciones' | 'predios', id: number | null) {
+		this.view.set(view);
+		this.selectedId.set(id);
+	}
+
+	getSections(status: number, buscar: string, pageable: Pageable): Observable<PaginatedResponse<section>> {
+		const url = `${this.apiURL}/api/secciones/dto/${status}/${buscar}`;
+		const params = {
+			page: pageable.page,
+			size: pageable.size,
+			sort: pageable.sort,
+		};
+		return this._http.get<PaginatedResponse<section>>(url, { params });
+	}
+
+	modSectionStatus(xid: number, xestadoactual: number): Observable<sector> {
+		const url = `${this.apiURL}/api/secciones/${xestadoactual}/${xid}`;
+		return this._http.delete<sector>(url);
 	}
 }

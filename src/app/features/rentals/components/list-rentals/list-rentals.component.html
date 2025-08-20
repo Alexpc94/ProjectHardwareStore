@@ -9,17 +9,25 @@
 			class="btn bg-primary text-primary-foreground flex-none rounded-md border-0 p-2 text-xs font-semibold"
 			type="radio"
 			name="metaframeworks"
-			aria-label="sectores" />
+			aria-label="sectores"
+			(change)="_getRentalService.setView('sectores', null)" />
 		<input
 			class="btn bg-primary text-primary-foreground flex-none rounded-md border-0 p-2 text-xs font-semibold"
 			type="radio"
 			name="metaframeworks"
-			aria-label="secciones" />
+			aria-label="secciones"
+			(change)="_getRentalService.setView('secciones', null)" />
 		<input
 			class="btn bg-primary text-primary-foreground flex-none rounded-md border-0 p-2 text-xs font-semibold"
 			type="radio"
 			name="metaframeworks"
-			aria-label="predios" />
+			aria-label="predios"
+			(change)="_getRentalService.setView('predios', null)" />
 	</div>
+
+	@if (_getRentalService.view() === 'all' || _getRentalService.view() === 'sectores') {
 	<app-list-rental-sectors></app-list-rental-sectors>
+	} @else if (_getRentalService.view() === 'secciones') {
+	<app-list-rental-sections></app-list-rental-sections>
+	} @else if (_getRentalService.view() === 'predios') { holi predio }
 </div>

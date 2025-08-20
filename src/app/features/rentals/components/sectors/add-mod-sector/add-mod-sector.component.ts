@@ -7,9 +7,9 @@ import { ValidationComponent } from 'src/app/shared/components/validation/valida
 import { sector } from '../../../models/sector.model';
 import { ActionEvent } from '../../../models/actions.model';
 
-import { toLowerCase } from 'src/app/shared/utils/stringData';
+import { capitalizeWords } from 'src/app/shared/utils/stringData';
 
-import { SectorService } from './../../../services/sectors.service';
+import { RentalService } from '../../../services/rentals.service';
 
 @Component({
 	selector: 'app-add-mod-sector',
@@ -18,7 +18,7 @@ import { SectorService } from './../../../services/sectors.service';
 	styleUrl: './add-mod-sector.component.css',
 })
 export class AddModSectorComponent implements OnInit {
-	private _getSectorService = inject(SectorService);
+	private _getRentalService = inject(RentalService);
 
 	@Output() save = new EventEmitter<ActionEvent>();
 
@@ -75,11 +75,11 @@ export class AddModSectorComponent implements OnInit {
 		const { ...values } = this.form.value;
 		const data: sector = {
 			...values,
-			nombre: toLowerCase(values.nombre),
+			nombre: capitalizeWords(values.nombre),
 		};
 		console.log('Form values:', data);
 		if (this.selectedID) {
-			this._getSectorService.modData(data, this.selectedID).subscribe({
+			this._getRentalService.modData(data, this.selectedID).subscribe({
 				next: () => {
 					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
 					this.close();
@@ -89,7 +89,7 @@ export class AddModSectorComponent implements OnInit {
 				},
 			});
 		} else {
-			this._getSectorService.addData(data).subscribe({
+			this._getRentalService.addData(data).subscribe({
 				next: () => {
 					this.save.emit({ action: 'add', success: true, data });
 					this.close();

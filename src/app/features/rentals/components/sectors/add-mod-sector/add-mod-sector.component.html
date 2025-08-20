@@ -1,7 +1,7 @@
 @if (showModal) {
 <div class="modal modal-open">
 	<div class="modal-box bg-background border-border border">
-		<h3 class="mb-4 text-lg font-bold">Detalles del Personal</h3>
+		<h3 class="mb-4 text-lg font-bold">Sector</h3>
 		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 		<form [formGroup]="form">
 			<div class="mb-4 flex gap-2">
@@ -14,7 +14,7 @@
 							placeholder=" "
 							formControlName="nombre"
 							autocomplete="given-name" />
-						<label for="nombre" class="floating-label"> Nombres </label>
+						<label for="nombre" class="floating-label"> Nombre </label>
 					</div>
 					<app-validation [control]="f['nombre']" [submitted]="submitted"></app-validation>
 				</div>

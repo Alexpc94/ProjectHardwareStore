@@ -3,28 +3,28 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
-import { AddModSectorComponent } from '../add-mod-sector/add-mod-sector.component';
+import { AddModSectionComponent } from '../add-mod-section/add-mod-section.component';
 
-import { sector } from '../../../models/sector.model';
+import { section } from '../../../models/section.model';
 import { ActionEvent } from '../../../models/actions.model';
 
 import { RentalService } from '../../../services/rentals.service';
 
 @Component({
 	selector: '[app-table-row]',
-	imports: [AngularSvgIconModule, AlertsComponent, ConfirmChangeStatusComponent, AddModSectorComponent],
+	imports: [AngularSvgIconModule, AlertsComponent, ConfirmChangeStatusComponent, AddModSectionComponent],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
 })
 export class TableRowComponent {
 	private _getRentalService = inject(RentalService);
-	@Input() sectors!: sector;
+	@Input() sections!: section;
 	@Output() save = new EventEmitter<ActionEvent>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
-	@ViewChild(AddModSectorComponent) sectorModal!: AddModSectorComponent;
+	@ViewChild(AddModSectionComponent) sectionModal!: AddModSectionComponent;
 
-	selectedSector: Partial<sector> = {};
+	selectedSection: Partial<section> = {};
 	selectedID?: number | null;
 	selectedName?: string;
 	selectedView = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
@@ -37,18 +37,18 @@ export class TableRowComponent {
 		}, 0);
 	}
 
-	openModalToUpdateStatus(cods: number, nombre: string, estado: number) {
-		this.selectedSector = { cods, nombre, estado };
+	openModalToUpdateStatus(codsec: number, nombre: string, estado: number) {
+		this.selectedSection = { codsec, nombre, estado };
 		this.confirmDialog.message = estado ? 'dar de baja' : 'habilitar';
 		this.confirmDialog.show();
 	}
 
 	changeStatus() {
-		if (!this.selectedSector) return;
-		const { cods, estado } = this.selectedSector;
-		this._getRentalService.modStatus(cods!, estado!).subscribe({
+		if (!this.selectedSection) return;
+		const { codsec, estado } = this.selectedSection;
+		this._getRentalService.modSectionStatus(codsec!, estado!).subscribe({
 			next: (response) => {
-				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: cods });
+				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: codsec });
 				this.showAlert('success');
 			},
 			error: (err) => {
@@ -56,13 +56,13 @@ export class TableRowComponent {
 				this.showAlert('error');
 			},
 		});
-		this.selectedSector = {};
+		this.selectedSection = {};
 	}
 
 	addUpdateSector(sectorID?: number, nombre?: string) {
 		this.selectedID = sectorID ?? null;
 		this.selectedName = nombre ?? '';
-		this.sectorModal.open(this.selectedID, this.selectedName);
+		//this.sectionModal.open(this.selectedID, this.selectedName);
 	}
 
 	addModSave(res: any) {
@@ -72,7 +72,7 @@ export class TableRowComponent {
 		this.showAlert('success');
 	}
 
-	redirectSection(sectorID?: number) {
+	redirectProperty(sectorID?: number) {
 		if (!sectorID) return;
 		this._getRentalService.setView('secciones', sectorID);
 	}
