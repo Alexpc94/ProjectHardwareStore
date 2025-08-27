@@ -46,15 +46,15 @@ export class AddModSectionComponent implements OnInit {
 		}, 0);
 	}
 
-	open(userID: number | null, name: string, cods: number | null): void {
-		if (userID && cods) {
+	open(userID: number | null, name: string, cods: number): void {
+		console.log(userID, cods);
+		if (userID) {
 			this.selectedID = userID;
-			this.codsID = cods;
 			this.selectedName = name;
-			this.patchForm();
 		}
+		this.codsID = cods;
+		this.patchForm();
 		this.showModal = true;
-		this.getSectors();
 	}
 
 	close() {
@@ -69,6 +69,7 @@ export class AddModSectionComponent implements OnInit {
 
 	ngOnInit() {
 		this.buildForm();
+		this.getSectors();
 	}
 
 	buildForm(): void {
@@ -88,7 +89,6 @@ export class AddModSectionComponent implements OnInit {
 	getSectors(): void {
 		this._getRentalService.getListSectors().subscribe((data) => {
 			this.sectors = data.content;
-			console.log('Sectors:', this.sectors);
 		});
 	}
 

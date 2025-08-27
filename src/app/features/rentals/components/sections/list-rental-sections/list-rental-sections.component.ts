@@ -45,7 +45,7 @@ export class ListRentalSectionsComponent implements OnInit {
 	@ViewChild(AddModSectionComponent) sectionModal!: AddModSectionComponent;
 
 	selectedID?: number | null;
-	codsID?: number | null;
+	codsID?: number;
 	selectedName?: string;
 	sections = signal<section[]>([]);
 	totalSections!: number;
@@ -129,7 +129,7 @@ export class ListRentalSectionsComponent implements OnInit {
 		console.log('Editando sección ID:', sectionID, 'Nombre:', name, 'Cods:', cods);
 		this.selectedID = sectionID ?? null;
 		this.selectedName = name ?? '';
-		this.codsID = cods ?? null;
+		this.codsID = cods ?? this.sectorId ?? 0;
 		this.sectionModal.open(this.selectedID, this.selectedName, this.codsID);
 	}
 
