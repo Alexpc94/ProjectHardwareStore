@@ -13,7 +13,7 @@ import { section } from '../models/section.model';
 export class RentalService {
 	private apiURL = `${environment.apiUrl}`;
 	_http = inject(HttpClient);
-	selectedId = signal<number | null>(null);
+	selectedId = signal<number>(0);
 	view = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
 
 	getSectors(status: number, buscar: string, pageable: Pageable): Observable<PaginatedResponse<sector>> {
@@ -26,28 +26,42 @@ export class RentalService {
 		return this._http.get<PaginatedResponse<sector>>(url, { params });
 	}
 
+	getListSectors(): Observable<PaginatedResponse<sector>> {
+		const buscar = ' ';
+		const url = `${this.apiURL}/api/sectores/dto/1/${buscar}`;
+		const params = {
+			sort: ['cods,ASC'],
+		};
+		return this._http.get<PaginatedResponse<sector>>(url, { params });
+	}
+
 	modStatus(xid: number, xestadoactual: number): Observable<sector> {
 		const url = `${this.apiURL}/api/sectores/${xestadoactual}/${xid}`;
 		return this._http.delete<sector>(url);
 	}
 
-	addData(data: sector): Observable<sector> {
+	addSectorData(data: sector): Observable<sector> {
 		const url = `${this.apiURL}/api/sectores`;
 		return this._http.post<sector>(url, data);
 	}
 
-	modData(data: sector, cods: number): Observable<sector> {
+	modSectorData(data: sector, cods: number): Observable<sector> {
 		const url = `${this.apiURL}/api/sectores/${cods}`;
 		return this._http.put<sector>(url, data);
 	}
 
-	setView(view: 'all' | 'sectores' | 'secciones' | 'predios', id: number | null) {
+	setView(view: 'all' | 'sectores' | 'secciones' | 'predios', id: number) {
 		this.view.set(view);
 		this.selectedId.set(id);
 	}
 
-	getSections(status: number, buscar: string, pageable: Pageable): Observable<PaginatedResponse<section>> {
-		const url = `${this.apiURL}/api/secciones/dto/${status}/${buscar}`;
+	getSections(
+		codsector: number,
+		status: number,
+		buscar: string,
+		pageable: Pageable,
+	): Observable<PaginatedResponse<section>> {
+		const url = `${this.apiURL}/api/secciones/dto/${status}/${codsector}/${buscar}`;
 		const params = {
 			page: pageable.page,
 			size: pageable.size,
@@ -59,5 +73,15 @@ export class RentalService {
 	modSectionStatus(xid: number, xestadoactual: number): Observable<sector> {
 		const url = `${this.apiURL}/api/secciones/${xestadoactual}/${xid}`;
 		return this._http.delete<sector>(url);
+	}
+
+	addSectionData(data: section): Observable<section> {
+		const url = `${this.apiURL}/api/secciones`;
+		return this._http.post<section>(url, data);
+	}
+
+	modSectionData(data: section, codsec: number): Observable<section> {
+		const url = `${this.apiURL}/api/secciones/${codsec}`;
+		return this._http.put<section>(url, data);
 	}
 }

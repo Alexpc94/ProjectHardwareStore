@@ -77,9 +77,9 @@ export class AddModSectorComponent implements OnInit {
 			...values,
 			nombre: capitalizeWords(values.nombre),
 		};
-		console.log('Form values:', data);
+		//console.log('Form values:', data);
 		if (this.selectedID) {
-			this._getRentalService.modData(data, this.selectedID).subscribe({
+			this._getRentalService.modSectorData(data, this.selectedID).subscribe({
 				next: () => {
 					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
 					this.close();
@@ -89,7 +89,7 @@ export class AddModSectorComponent implements OnInit {
 				},
 			});
 		} else {
-			this._getRentalService.addData(data).subscribe({
+			this._getRentalService.addSectorData(data).subscribe({
 				next: () => {
 					this.save.emit({ action: 'add', success: true, data });
 					this.close();

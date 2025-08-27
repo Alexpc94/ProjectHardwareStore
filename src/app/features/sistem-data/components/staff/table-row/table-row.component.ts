@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { environment } from 'src/environments/environment.prod';
 
-import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 import { ViewStaffComponent } from '../view-staff/view-staff.component';
 import { UpdateImageComponent } from '../update-image/update-image.component';
 import { CredentialStaffComponent } from '../credential-staff/credential-staff.component';
@@ -20,7 +19,6 @@ import { StaffService } from '../../../services/staff.service';
 	imports: [
 		FormsModule,
 		AngularSvgIconModule,
-		AddModStaffComponent,
 		AlertsComponent,
 		ConfirmChangeStatusComponent,
 		CredentialStaffComponent,
@@ -36,15 +34,14 @@ export class TableRowComponent {
 
 	@Input() user!: staff;
 	@Output() save = new EventEmitter<ActionEvent>();
+	@Output() addModModal = new EventEmitter<{ userID?: number; tipoPer?: string }>();
 
-	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 	@ViewChild(ViewStaffComponent) userViewModal!: ViewStaffComponent;
 	@ViewChild(UpdateImageComponent) userImageModal!: UpdateImageComponent;
 	@ViewChild(CredentialStaffComponent) userCredentialModal!: CredentialStaffComponent;
 	@ViewChild(RoleAssignmentComponent) roleAssignmentModal!: RoleAssignmentComponent;
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
-	selectedID: any = null;
 	selectedUser: any;
 	storageUrl = environment.storageUrl;
 	typeModalOpen = false;
@@ -88,16 +85,8 @@ export class TableRowComponent {
 		this.showAlert('success');
 	}
 
-	addUpdateUser(userID?: number) {
-		this.selectedID = userID ?? null;
-		this.userModal.open(this.selectedID, this.user.tipoper);
-	}
-
-	addModSave(res: any) {
-		//console.log('let me see:', res);
-		if (!res.success) return this.showAlert('error');
-		this.save.emit(res);
-		this.showAlert('success');
+	UpdateUser(userID: number, tipoPer: string) {
+		this.addModModal.emit({ userID, tipoPer });
 	}
 
 	openModalToUpdateStatus(id: number, name: string, status: boolean) {

@@ -26,6 +26,7 @@ export class TableRowComponent {
 
 	selectedSection: Partial<section> = {};
 	selectedID?: number | null;
+	codsID?: number | null;
 	selectedName?: string;
 	selectedView = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
 
@@ -59,10 +60,12 @@ export class TableRowComponent {
 		this.selectedSection = {};
 	}
 
-	addUpdateSector(sectorID?: number, nombre?: string) {
-		this.selectedID = sectorID ?? null;
+	addUpdateSection(sectionID?: number, nombre?: string, cods?: number) {
+		console.log('Editando sección ID:', sectionID, 'Nombre:', nombre, 'Cods:', cods);
+		this.selectedID = sectionID ?? null;
 		this.selectedName = nombre ?? '';
-		//this.sectionModal.open(this.selectedID, this.selectedName);
+		this.codsID = cods ?? null;
+		this.sectionModal.open(this.selectedID, this.selectedName, this.codsID);
 	}
 
 	addModSave(res: any) {
@@ -72,8 +75,8 @@ export class TableRowComponent {
 		this.showAlert('success');
 	}
 
-	redirectProperty(sectorID?: number) {
-		if (!sectorID) return;
-		this._getRentalService.setView('secciones', sectorID);
+	redirectProperty(sectionID?: number) {
+		if (!sectionID) return;
+		this._getRentalService.setView('predios', sectionID);
 	}
 }

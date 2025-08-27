@@ -45,7 +45,6 @@ export class ListRentalSectorsComponent {
 		this._getRentalService.getSectors(status, searchTerm, { page, size, sort }).subscribe((data) => {
 			this.totalSectors = data.totalElements;
 			this.sectors.set(data.content);
-			console.log('Sectors loaded:', this.sectors());
 		});
 	}
 

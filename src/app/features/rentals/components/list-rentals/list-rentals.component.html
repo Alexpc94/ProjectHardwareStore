@@ -4,25 +4,36 @@
 			class="btn bg-primary text-primary-foreground filter-reset flex-none rounded-md border-0 p-2 text-xs font-semibold"
 			type="radio"
 			name="metaframeworks"
+			[value]="'all'"
+			[checked]="_getRentalService.view() === 'all'"
+			(click)="_getRentalService.setView('all', 0)"
 			aria-label="All" />
+
 		<input
 			class="btn bg-primary text-primary-foreground flex-none rounded-md border-0 p-2 text-xs font-semibold"
 			type="radio"
 			name="metaframeworks"
-			aria-label="sectores"
-			(change)="_getRentalService.setView('sectores', null)" />
+			[value]="'sectores'"
+			[checked]="_getRentalService.view() === 'sectores'"
+			(click)="_getRentalService.setView('sectores', 0)"
+			aria-label="sectores" />
+
 		<input
 			class="btn bg-primary text-primary-foreground flex-none rounded-md border-0 p-2 text-xs font-semibold"
 			type="radio"
 			name="metaframeworks"
-			aria-label="secciones"
-			(change)="_getRentalService.setView('secciones', null)" />
+			[checked]="_getRentalService.view() === 'secciones'"
+			(click)="_getRentalService.setView('secciones', 0)"
+			aria-label="secciones" />
+
 		<input
 			class="btn bg-primary text-primary-foreground flex-none rounded-md border-0 p-2 text-xs font-semibold"
 			type="radio"
 			name="metaframeworks"
-			aria-label="predios"
-			(change)="_getRentalService.setView('predios', null)" />
+			[value]="'predios'"
+			[checked]="_getRentalService.view() === 'predios'"
+			(click)="_getRentalService.setView('predios', 0)"
+			aria-label="predios" />
 	</div>
 
 	@if (_getRentalService.view() === 'all' || _getRentalService.view() === 'sectores') {
