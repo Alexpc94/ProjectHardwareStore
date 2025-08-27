@@ -2,6 +2,7 @@ import { Component, OnInit, signal, computed, inject, ViewChild } from '@angular
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { TableRowComponent } from '../table-row/table-row.component';
+import { AddModStaffComponent } from '../add-mod-staff/add-mod-staff.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
@@ -12,7 +13,14 @@ import { TableFilterService } from '../../../services/table-filter.service';
 import { StaffService } from '../../../services/staff.service';
 @Component({
 	selector: 'app-list-staff',
-	imports: [AngularSvgIconModule, TableRowComponent, TableFooterComponent, SortHeaderComponent, ToggleSwitchComponent],
+	imports: [
+		AngularSvgIconModule,
+		TableRowComponent,
+		TableFooterComponent,
+		SortHeaderComponent,
+		ToggleSwitchComponent,
+		AddModStaffComponent,
+	],
 	templateUrl: './list-staff.component.html',
 	styleUrl: './list-staff.component.css',
 })
@@ -20,17 +28,16 @@ export class ListStaffComponent implements OnInit {
 	private _filterService = inject(TableFilterService);
 	private _getStaffService = inject(StaffService);
 
-	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
+	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 
+	selectedID: any = null;
+	selectedTipoPer?: string;
 	users = signal<staff[]>([]);
 	totalUsers = computed(() => this.users().length);
 	itemsPerPage = signal(5);
 	currentPage = signal(1);
 	isActive: boolean = true;
 	userType: string = 'Sistema';
-	addUser(): void {
-		this.childComponent.addUpdateUser();
-	}
 
 	ngOnInit(): void {
 		this.loadUsers(true, this.userType);
@@ -93,8 +100,13 @@ export class ListStaffComponent implements OnInit {
 		this.currentPage.set(1);
 	}
 
+	addUpdateUser(userID?: number, tipoPer?: string) {
+		this.selectedID = userID ?? null;
+		this.selectedTipoPer = tipoPer ?? this.userType;
+		this.userModal.open(this.selectedID, this.selectedTipoPer);
+	}
+
 	handleDataSave(res: any) {
-		// console.log('User save response:', res);
 		switch (res.action) {
 			case 'add':
 				this.loadUsers(this.isActive, this.userType);

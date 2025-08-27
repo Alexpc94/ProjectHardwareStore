@@ -1,1 +1,50 @@
-<p>add-mod-section works!</p>
+@if (showModal) {
+<div class="modal modal-open">
+	<div class="modal-box bg-background border-border max-w-sm border">
+		<h3 class="mb-4 text-lg font-bold">Seccion</h3>
+		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+		<form [formGroup]="form">
+			<div class="mb-4 flex gap-2">
+				<div class="form__group w-full">
+					<div class="relative">
+						<input
+							type="text"
+							id="nombre"
+							class="peer block"
+							placeholder=" "
+							formControlName="nombre"
+							autocomplete="given-name" />
+						<label for="nombre" class="floating-label"> Nombre </label>
+					</div>
+					<app-validation [control]="f['nombre']" [submitted]="submitted"></app-validation>
+				</div>
+			</div>
+			<div class="mb-4 flex gap-2">
+				<div class="form__group w-full">
+					<div class="relative">
+						<label
+							for="type"
+							class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
+							Tipo de Personal
+						</label>
+						<select id="type" name="type" class="text-muted-foreground mt-2 rounded border p-2" formControlName="cods">
+							@for (str of sectors; track $index) {
+							<option [value]="str.cods">
+								{{ str.nombre }}
+							</option>
+							}
+						</select>
+					</div>
+					<app-validation [control]="f['cods']" [submitted]="submitted"></app-validation>
+				</div>
+			</div>
+			<div class="modal-action">
+				<button type="button" class="btn" (click)="close()">Cerrar</button>
+				<button type="button" class="btn btn-primary" (click)="onPreSubmit()">Aceptar</button>
+			</div>
+		</form>
+	</div>
+	<app-confirm-dialog #confirmModal [message]="'¿Estás seguro?'" (confirm)="saveData()"></app-confirm-dialog>
+</div>
+}
+<app-alerts [type]="alertType"></app-alerts>

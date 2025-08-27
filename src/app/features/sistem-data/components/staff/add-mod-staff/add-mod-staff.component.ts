@@ -10,11 +10,12 @@ import { ValidationComponent } from 'src/app/shared/components/validation/valida
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { CustomValidators } from 'src/app/shared/components/validation/custom-validators';
 import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-upload.component';
+import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { StaffService } from '../../../services/staff.service';
 @Component({
 	selector: 'app-add-mod-staff',
-	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent, FileUploadComponent],
+	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent, FileUploadComponent, AlertsComponent],
 	providers: [DatePipe],
 	templateUrl: './add-mod-staff.component.html',
 	styleUrl: './add-mod-staff.component.css',
@@ -37,6 +38,14 @@ export class AddModStaffComponent implements OnInit {
 	selectedID?: number;
 	selectedTipoper?: string;
 
+	alertType: any;
+	showAlert(type: 'success' | 'error' | 'info') {
+		this.alertType = '';
+		setTimeout(() => {
+			this.alertType = type;
+		}, 0);
+	}
+
 	ngOnInit() {
 		this.buildForm();
 	}
@@ -57,6 +66,10 @@ export class AddModStaffComponent implements OnInit {
 		this.form.reset();
 		this.submitted = false;
 		this.showModal = false;
+
+		this.selectedID = undefined;
+		this.selectedTipoper = undefined;
+		this.selectedData = undefined;
 	}
 
 	buildForm(): void {
@@ -138,10 +151,12 @@ export class AddModStaffComponent implements OnInit {
 					//console.log('user updated:', response);
 					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
 					this.close();
+					this.showAlert('success');
 				},
 				error: (error) => {
 					if (this.handleCedulaError(error)) return;
 					this.save.emit({ action: 'edit', success: false });
+					this.showAlert('error');
 				},
 			});
 		} else {
@@ -150,10 +165,12 @@ export class AddModStaffComponent implements OnInit {
 					//console.log('User added:', response);
 					this.save.emit({ action: 'add', success: true, data });
 					this.close();
+					this.showAlert('success');
 				},
 				error: (error) => {
 					if (this.handleCedulaError(error)) return;
 					this.save.emit({ action: 'add', success: false });
+					this.showAlert('error');
 				},
 			});
 		}

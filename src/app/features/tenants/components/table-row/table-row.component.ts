@@ -1,7 +1,6 @@
 import { Component, Input, ViewChild, Output, EventEmitter, inject } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { AddModTenantComponent } from '../add-mod-tenant/add-mod-tenant.component';
 import { ViewTenantComponent } from '../view-tenant/view-tenant.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { OpenStreetMapComponent } from 'src/app/shared/components/open-street-map/open-street-map.component';
@@ -18,7 +17,6 @@ import { TenantService } from '../../services/tenant.service';
 		AngularSvgIconModule,
 		ConfirmChangeStatusComponent,
 		AlertsComponent,
-		AddModTenantComponent,
 		ViewTenantComponent,
 		OpenStreetMapComponent,
 	],
@@ -29,9 +27,9 @@ export class TableRowComponent {
 	private _getTenantService = inject(TenantService);
 	@Input() tenant!: tenant;
 	@Output() save = new EventEmitter<ActionEvent>();
+	@Output() addModModal = new EventEmitter<number>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
-	@ViewChild(AddModTenantComponent) tenantModal!: AddModTenantComponent;
 	@ViewChild(ViewTenantComponent) tenantViewModal!: ViewTenantComponent;
 
 	selectedtenant: Partial<tenant> = {};
@@ -70,16 +68,8 @@ export class TableRowComponent {
 		this.selectedtenant = {};
 	}
 
-	addUpdateUser(userID?: number) {
-		this.selectedID = userID ?? null;
-		this.tenantModal.open(this.selectedID);
-	}
-
-	addModSave(res: any) {
-		//console.log('let me see:', res);
-		if (!res.success) return this.showAlert('error');
-		this.save.emit(res);
-		this.showAlert('success');
+	UpdateUser(userID: number) {
+		this.addModModal.emit(userID);
 	}
 
 	viewTenant(tenantID: number) {

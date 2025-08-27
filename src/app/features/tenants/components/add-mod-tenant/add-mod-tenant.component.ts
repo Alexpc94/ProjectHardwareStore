@@ -12,6 +12,7 @@ import { CustomValidators } from 'src/app/shared/components/validation/custom-va
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-upload.component';
 import { OpenStreetMapComponent } from 'src/app/shared/components/open-street-map/open-street-map.component';
+import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { TenantService } from '../../services/tenant.service';
 
@@ -24,6 +25,7 @@ import { TenantService } from '../../services/tenant.service';
 		FileUploadComponent,
 		AngularSvgIconModule,
 		OpenStreetMapComponent,
+		AlertsComponent,
 	],
 	templateUrl: './add-mod-tenant.component.html',
 	styleUrl: './add-mod-tenant.component.css',
@@ -46,6 +48,14 @@ export class AddModTenantComponent implements OnInit {
 	latitude?: number;
 	longitude?: number;
 
+	alertType: any;
+	showAlert(type: 'success' | 'error' | 'info') {
+		this.alertType = '';
+		setTimeout(() => {
+			this.alertType = type;
+		}, 0);
+	}
+
 	ngOnInit() {
 		this.buildForm();
 	}
@@ -65,6 +75,10 @@ export class AddModTenantComponent implements OnInit {
 		this.form.reset();
 		this.submitted = false;
 		this.showModal = false;
+		this.selectedID = undefined;
+		this.selectedData = undefined;
+		this.latitude = undefined;
+		this.longitude = undefined;
 	}
 
 	closeMap() {
@@ -92,7 +106,7 @@ export class AddModTenantComponent implements OnInit {
 	}
 
 	patchForm(): void {
-		console.log(this.selectedData);
+		//console.log(this.selectedData);
 		if (this.selectedData) {
 			this.form.patchValue({
 				cedula: this.selectedData.cedula,
@@ -153,10 +167,12 @@ export class AddModTenantComponent implements OnInit {
 					//console.log('user updated:', response);
 					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
 					this.close();
+					this.showAlert('success');
 				},
 				error: (error) => {
 					if (this.handleCedulaError(error)) return;
 					this.save.emit({ action: 'edit', success: false });
+					this.showAlert('error');
 				},
 			});
 		} else {
@@ -165,10 +181,12 @@ export class AddModTenantComponent implements OnInit {
 					//console.log('User added:', response);
 					this.save.emit({ action: 'add', success: true, data });
 					this.close();
+					this.showAlert('success');
 				},
 				error: (error) => {
 					if (this.handleCedulaError(error)) return;
 					this.save.emit({ action: 'add', success: false });
+					this.showAlert('error');
 				},
 			});
 		}

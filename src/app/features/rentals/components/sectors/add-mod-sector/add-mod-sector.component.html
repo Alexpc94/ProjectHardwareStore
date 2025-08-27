@@ -1,6 +1,6 @@
 @if (showModal) {
 <div class="modal modal-open">
-	<div class="modal-box bg-background border-border border">
+	<div class="modal-box bg-background border-border max-w-sm border">
 		<h3 class="mb-4 text-lg font-bold">Sector</h3>
 		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 		<form [formGroup]="form">
@@ -28,3 +28,4 @@
 	<app-confirm-dialog #confirmModal [message]="'¿Estás seguro?'" (confirm)="saveData()"></app-confirm-dialog>
 </div>
 }
+<app-alerts [type]="alertType"></app-alerts>

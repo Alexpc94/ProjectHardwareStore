@@ -31,7 +31,7 @@
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="tenant.estado ? 'Modificar Usuario' : 'Usuario inactivo'">
-				<button (click)="addUpdateUser(tenant.id)" class="block w-full px-1 py-1" [disabled]="!tenant.estado">
+				<button (click)="UpdateUser(tenant.id)" class="block w-full px-1 py-1" [disabled]="!tenant.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 	</td>
-	<app-add-mod-tenant (save)="addModSave($event)"> </app-add-mod-tenant>
+
 	<app-view-tenant> </app-view-tenant>
 	@if(showMap) {
 	<div class="modal modal-open">

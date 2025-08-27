@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } 
 
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
+import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { sector } from '../../../models/sector.model';
 import { ActionEvent } from '../../../models/actions.model';
@@ -13,7 +14,7 @@ import { RentalService } from '../../../services/rentals.service';
 
 @Component({
 	selector: 'app-add-mod-sector',
-	imports: [ReactiveFormsModule, ConfirmDialogComponent, ValidationComponent],
+	imports: [ReactiveFormsModule, ConfirmDialogComponent, ValidationComponent, AlertsComponent],
 	templateUrl: './add-mod-sector.component.html',
 	styleUrl: './add-mod-sector.component.css',
 })
@@ -34,6 +35,14 @@ export class AddModSectorComponent implements OnInit {
 	selectedID?: number;
 	selectedName?: string;
 
+	alertType: any;
+	showAlert(type: 'success' | 'error' | 'info') {
+		this.alertType = '';
+		setTimeout(() => {
+			this.alertType = type;
+		}, 0);
+	}
+
 	open(userID: number | null, name: string): void {
 		if (userID) {
 			this.selectedID = userID;
@@ -47,6 +56,9 @@ export class AddModSectorComponent implements OnInit {
 		this.form.reset();
 		this.submitted = false;
 		this.showModal = false;
+
+		this.selectedID = undefined;
+		this.selectedName = undefined;
 	}
 
 	ngOnInit() {
@@ -77,25 +89,29 @@ export class AddModSectorComponent implements OnInit {
 			...values,
 			nombre: capitalizeWords(values.nombre),
 		};
-		console.log('Form values:', data);
+		//console.log('Form values:', data);
 		if (this.selectedID) {
-			this._getRentalService.modData(data, this.selectedID).subscribe({
+			this._getRentalService.modSectorData(data, this.selectedID).subscribe({
 				next: () => {
 					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
 					this.close();
+					this.showAlert('success');
 				},
 				error: () => {
 					this.save.emit({ action: 'edit', success: false });
+					this.showAlert('error');
 				},
 			});
 		} else {
-			this._getRentalService.addData(data).subscribe({
+			this._getRentalService.addSectorData(data).subscribe({
 				next: () => {
 					this.save.emit({ action: 'add', success: true, data });
 					this.close();
+					this.showAlert('success');
 				},
 				error: () => {
 					this.save.emit({ action: 'add', success: false });
+					this.showAlert('error');
 				},
 			});
 		}

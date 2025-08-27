@@ -36,7 +36,7 @@
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="user.status ? 'Modificar Usuario' : 'Usuario inactivo'">
-				<button (click)="addUpdateUser(user.id)" class="block w-full px-1 py-1" [disabled]="!user.status">
+				<button (click)="UpdateUser(user.id, user.tipoper)" class="block w-full px-1 py-1" [disabled]="!user.status">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
@@ -93,7 +93,6 @@
 		</div>
 	</td>
 
-	<app-add-mod-staff (save)="addModSave($event)"> </app-add-mod-staff>
 	<app-credential-staff (save)="addModSaveCredential($event)"> </app-credential-staff>
 	<app-view-staff> </app-view-staff>
 	<app-update-image (save)="ImageUpdated($event)"> </app-update-image>
