@@ -20,7 +20,7 @@
 			</div>
 			<div class="tooltip" [attr.data-tip]="sections.estado ? 'Modificar Sector' : 'Sector inactivo'">
 				<button
-					(click)="addUpdateSection(sections.codsec, sections.nombre, sections.cods)"
+					(click)="updateSection(sections.codsec, sections.nombre, sections.cods)"
 					class="block w-full px-1 py-1"
 					[disabled]="!sections.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
@@ -49,4 +49,3 @@
 	[name]="selectedSection.nombre"
 	[message]="confirmDialog.message"
 	(confirm)="changeStatus()"></app-confirm-change-status>
-<app-add-mod-section (save)="addModSave($event)"> </app-add-mod-section>

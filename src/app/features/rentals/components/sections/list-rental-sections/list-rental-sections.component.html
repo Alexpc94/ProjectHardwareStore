@@ -40,7 +40,7 @@
 		<div class="tooltip tooltip-bottom" data-tip="Agregar Seccion">
 			<button
 				class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
-				(click)="addData()">
+				(click)="addUpdateSection()">
 				Nuevo
 			</button>
 		</div>
@@ -90,7 +90,8 @@
 					class="border-border hover:bg-card/50 border-b"
 					app-table-row
 					[sections]="strs"
-					(save)="handleDataSave($event)"></tr>
+					(save)="handleDataSave($event)"
+					(addModModal)="addUpdateSection($event.sectionID, $event.name, $event.cods)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
@@ -106,3 +107,4 @@
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
+<app-add-mod-section (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-section>

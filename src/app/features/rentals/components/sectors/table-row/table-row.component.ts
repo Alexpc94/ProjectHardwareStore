@@ -3,7 +3,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
-import { AddModSectorComponent } from '../add-mod-sector/add-mod-sector.component';
 
 import { sector } from '../../../models/sector.model';
 import { ActionEvent } from '../../../models/actions.model';
@@ -12,7 +11,7 @@ import { RentalService } from '../../../services/rentals.service';
 
 @Component({
 	selector: '[app-table-row]',
-	imports: [AngularSvgIconModule, AlertsComponent, ConfirmChangeStatusComponent, AddModSectorComponent],
+	imports: [AngularSvgIconModule, AlertsComponent, ConfirmChangeStatusComponent],
 	templateUrl: './table-row.component.html',
 	styleUrl: './table-row.component.css',
 })
@@ -20,13 +19,11 @@ export class TableRowComponent {
 	private _getRentalService = inject(RentalService);
 	@Input() sectors!: sector;
 	@Output() save = new EventEmitter<ActionEvent>();
+	@Output() addModModal = new EventEmitter<{ sectorID: number; sectorName: string }>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
-	@ViewChild(AddModSectorComponent) sectorModal!: AddModSectorComponent;
 
 	selectedSector: Partial<sector> = {};
-	selectedID?: number | null;
-	selectedName?: string;
 	selectedView = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
 
 	alertType: any;
@@ -59,17 +56,8 @@ export class TableRowComponent {
 		this.selectedSector = {};
 	}
 
-	addUpdateSector(sectorID?: number, nombre?: string) {
-		this.selectedID = sectorID ?? null;
-		this.selectedName = nombre ?? '';
-		this.sectorModal.open(this.selectedID, this.selectedName);
-	}
-
-	addModSave(res: any) {
-		//console.log('let me see:', res);
-		if (!res.success) return this.showAlert('error');
-		this.save.emit(res);
-		this.showAlert('success');
+	updateSector(sectorID: number, sectorName: string) {
+		this.addModModal.emit({ sectorID, sectorName });
 	}
 
 	redirectSection(sectorID?: number) {

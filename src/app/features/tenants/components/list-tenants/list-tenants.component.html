@@ -21,7 +21,7 @@
 		<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
 			<button
 				class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
-				(click)="addUser()">
+				(click)="addUpdateUser()">
 				Nuevo inquilino
 			</button>
 		</div>
@@ -78,7 +78,8 @@
 					class="border-border hover:bg-card/50 border-b"
 					app-table-row
 					[tenant]="tenant"
-					(save)="handleDataSave($event)"></tr>
+					(save)="handleDataSave($event)"
+					(addModModal)="addUpdateUser($event)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
@@ -94,3 +95,5 @@
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
+
+<app-add-mod-tenant (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-tenant>

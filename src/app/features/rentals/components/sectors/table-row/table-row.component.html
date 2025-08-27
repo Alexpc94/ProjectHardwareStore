@@ -20,7 +20,7 @@
 			</div>
 			<div class="tooltip" [attr.data-tip]="sectors.estado ? 'Modificar Sector' : 'Sector inactivo'">
 				<button
-					(click)="addUpdateSector(sectors.cods, sectors.nombre)"
+					(click)="updateSector(sectors.cods, sectors.nombre)"
 					class="block w-full px-1 py-1"
 					[disabled]="!sectors.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
@@ -43,7 +43,6 @@
 		</div>
 	</td>
 </ng-container>
-<app-add-mod-sector (save)="addModSave($event)"> </app-add-mod-sector>
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status
 	#confirmDialog

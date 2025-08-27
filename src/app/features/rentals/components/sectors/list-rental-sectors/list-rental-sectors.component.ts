@@ -7,12 +7,20 @@ import { TableFooterComponent } from 'src/app/shared/components/table-footer/tab
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { TableRowComponent } from '../table-row/table-row.component';
+import { AddModSectorComponent } from '../add-mod-sector/add-mod-sector.component';
 
 import { RentalService } from '../../../services/rentals.service';
 
 @Component({
 	selector: 'app-list-rental-sectors',
-	imports: [AngularSvgIconModule, TableFooterComponent, ToggleSwitchComponent, SortHeaderComponent, TableRowComponent],
+	imports: [
+		AngularSvgIconModule,
+		TableFooterComponent,
+		ToggleSwitchComponent,
+		SortHeaderComponent,
+		TableRowComponent,
+		AddModSectorComponent,
+	],
 	templateUrl: './list-rental-sectors.component.html',
 	styleUrl: './list-rental-sectors.component.css',
 })
@@ -24,8 +32,10 @@ export class ListRentalSectorsComponent {
 		});
 	}
 
-	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
+	@ViewChild(AddModSectorComponent) sectorModal!: AddModSectorComponent;
 
+	selectedID: any = null;
+	selectedName?: string;
 	sectors = signal<sector[]>([]);
 	totalSectors!: number;
 	isActive = signal<boolean>(true);
@@ -85,8 +95,10 @@ export class ListRentalSectorsComponent {
 		this.currentPage.set(1);
 	}
 
-	addData(): void {
-		this.childComponent.addUpdateSector();
+	addUpdateSector(sectorID?: number, sectorName?: string) {
+		this.selectedID = sectorID ?? null;
+		this.selectedName = sectorName ?? '';
+		this.sectorModal.open(this.selectedID, this.selectedName);
 	}
 
 	handleDataSave(res: any) {

@@ -60,7 +60,6 @@ export class AddModStaffComponent implements OnInit {
 		}
 		this.selectedTipoper = tipoper;
 		this.showModal = true;
-		console.log(this.selectedID, this.selectedTipoper);
 	}
 
 	close() {

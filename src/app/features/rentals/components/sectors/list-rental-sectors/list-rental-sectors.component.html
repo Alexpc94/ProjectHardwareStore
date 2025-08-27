@@ -21,7 +21,7 @@
 		<div class="tooltip tooltip-bottom" data-tip="Agregar Sectores">
 			<button
 				class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
-				(click)="addData()">
+				(click)="addUpdateSector()">
 				Nuevo
 			</button>
 		</div>
@@ -71,7 +71,8 @@
 					class="border-border hover:bg-card/50 border-b"
 					app-table-row
 					[sectors]="strs"
-					(save)="handleDataSave($event)"></tr>
+					(save)="handleDataSave($event)"
+					(addModModal)="addUpdateSector($event.sectorID, $event.sectorName)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
@@ -87,3 +88,4 @@
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
+<app-add-mod-sector (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-sector>

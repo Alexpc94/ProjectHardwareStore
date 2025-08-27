@@ -4,6 +4,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { tenant } from '../../models/tenant.model';
 
 import { TableRowComponent } from '../table-row/table-row.component';
+import { AddModTenantComponent } from '../add-mod-tenant/add-mod-tenant.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
@@ -12,7 +13,14 @@ import { TenantService } from '../../services/tenant.service';
 
 @Component({
 	selector: 'app-list-tenants',
-	imports: [ToggleSwitchComponent, TableFooterComponent, SortHeaderComponent, AngularSvgIconModule, TableRowComponent],
+	imports: [
+		ToggleSwitchComponent,
+		TableFooterComponent,
+		SortHeaderComponent,
+		AngularSvgIconModule,
+		TableRowComponent,
+		AddModTenantComponent,
+	],
 	templateUrl: './list-tenants.component.html',
 	styleUrl: './list-tenants.component.css',
 })
@@ -23,8 +31,10 @@ export class ListTenantsComponent {
 			this.loadTenants();
 		});
 	}
-	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
 
+	@ViewChild(AddModTenantComponent) tenantModal!: AddModTenantComponent;
+
+	selectedID: any = null;
 	tenants = signal<tenant[]>([]);
 	totalTenants!: number;
 	isActive = signal<boolean>(true);
@@ -45,10 +55,6 @@ export class ListTenantsComponent {
 			this.totalTenants = data.totalElements;
 			this.tenants.set(data.content);
 		});
-	}
-
-	addUser(): void {
-		this.childComponent.addUpdateUser();
 	}
 
 	onToggleChange(status: boolean) {
@@ -86,6 +92,11 @@ export class ListTenantsComponent {
 			this.sortDirection.set('ASC');
 		}
 		this.currentPage.set(1);
+	}
+
+	addUpdateUser(userID?: number) {
+		this.selectedID = userID ?? null;
+		this.tenantModal.open(this.selectedID);
 	}
 
 	handleDataSave(res: any) {

@@ -28,7 +28,6 @@ export class ListStaffComponent implements OnInit {
 	private _filterService = inject(TableFilterService);
 	private _getStaffService = inject(StaffService);
 
-	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
 	@ViewChild(AddModStaffComponent) userModal!: AddModStaffComponent;
 
 	selectedID: any = null;

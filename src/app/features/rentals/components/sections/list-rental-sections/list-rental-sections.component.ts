@@ -10,6 +10,7 @@ import { TableFooterComponent } from 'src/app/shared/components/table-footer/tab
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { TableRowComponent } from '../table-row/table-row.component';
+import { AddModSectionComponent } from '../add-mod-section/add-mod-section.component';
 
 import { RentalService } from '../../../services/rentals.service';
 
@@ -21,6 +22,7 @@ import { RentalService } from '../../../services/rentals.service';
 		ToggleSwitchComponent,
 		SortHeaderComponent,
 		TableRowComponent,
+		AddModSectionComponent,
 		FormsModule,
 	],
 	templateUrl: './list-rental-sections.component.html',
@@ -40,8 +42,11 @@ export class ListRentalSectionsComponent implements OnInit {
 		});
 	}
 
-	@ViewChild(TableRowComponent) childComponent!: TableRowComponent;
+	@ViewChild(AddModSectionComponent) sectionModal!: AddModSectionComponent;
 
+	selectedID?: number | null;
+	codsID?: number | null;
+	selectedName?: string;
 	sections = signal<section[]>([]);
 	totalSections!: number;
 	isActive = signal<boolean>(true);
@@ -120,8 +125,12 @@ export class ListRentalSectionsComponent implements OnInit {
 		this._getRentalService.setView('secciones', Number(newId));
 	}
 
-	addData(): void {
-		this.childComponent.addUpdateSection();
+	addUpdateSection(sectionID?: number, name?: string, cods?: number) {
+		console.log('Editando sección ID:', sectionID, 'Nombre:', name, 'Cods:', cods);
+		this.selectedID = sectionID ?? null;
+		this.selectedName = name ?? '';
+		this.codsID = cods ?? null;
+		this.sectionModal.open(this.selectedID, this.selectedName, this.codsID);
 	}
 
 	handleDataSave(res: any) {

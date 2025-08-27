@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } 
 
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
+import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
 import { section } from '../../../models/section.model';
 import { sector } from '../../../models/sector.model';
@@ -14,7 +15,7 @@ import { RentalService } from '../../../services/rentals.service';
 
 @Component({
 	selector: 'app-add-mod-section',
-	imports: [ReactiveFormsModule, ConfirmDialogComponent, ValidationComponent],
+	imports: [ReactiveFormsModule, ConfirmDialogComponent, ValidationComponent, AlertsComponent],
 	templateUrl: './add-mod-section.component.html',
 	styleUrl: './add-mod-section.component.css',
 })
@@ -37,6 +38,14 @@ export class AddModSectionComponent implements OnInit {
 	selectedName?: string;
 	sectors: sector[] = [];
 
+	alertType: any;
+	showAlert(type: 'success' | 'error' | 'info') {
+		this.alertType = '';
+		setTimeout(() => {
+			this.alertType = type;
+		}, 0);
+	}
+
 	open(userID: number | null, name: string, cods: number | null): void {
 		if (userID && cods) {
 			this.selectedID = userID;
@@ -52,6 +61,10 @@ export class AddModSectionComponent implements OnInit {
 		this.form.reset();
 		this.submitted = false;
 		this.showModal = false;
+
+		this.selectedID = undefined;
+		this.codsID = undefined;
+		this.selectedName = undefined;
 	}
 
 	ngOnInit() {
@@ -97,9 +110,11 @@ export class AddModSectionComponent implements OnInit {
 				next: () => {
 					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
 					this.close();
+					this.showAlert('success');
 				},
 				error: () => {
 					this.save.emit({ action: 'edit', success: false });
+					this.showAlert('error');
 				},
 			});
 		} else {
@@ -107,9 +122,11 @@ export class AddModSectionComponent implements OnInit {
 				next: () => {
 					this.save.emit({ action: 'add', success: true, data });
 					this.close();
+					this.showAlert('success');
 				},
 				error: () => {
 					this.save.emit({ action: 'add', success: false });
+					this.showAlert('error');
 				},
 			});
 		}
