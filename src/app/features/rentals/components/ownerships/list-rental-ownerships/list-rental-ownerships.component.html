@@ -1,0 +1,110 @@
+<div class="mb-4 flex justify-between">
+	<!-- <div class="flex items-center space-x-4"></div> -->
+	<div class="inline-block">
+		<h3 class="text-foreground font-semibold">Gestion Predios</h3>
+		<div class="text-muted-foreground space-x-1 text-xs font-medium">
+			<p>
+				Total Registros: <span class="text-foreground">{{ totalOwnerships }}</span>
+			</p>
+		</div>
+	</div>
+	<div class="relative max-w-xs">
+		<label
+			for="type"
+			class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
+			Secciones
+		</label>
+		<select
+			id="type"
+			name="type"
+			class="text-muted-foreground w-60! mt-2 rounded border p-2"
+			[(ngModel)]="sectionId"
+			(change)="onTypeChange($event)">
+			<option value="0" selected>Todos</option>
+			@for (str of sections; track $index) {
+			<option [value]="str.codsec">
+				{{ str.nombre }}
+			</option>
+			}
+		</select>
+	</div>
+	<div class="items-center space-x-2">
+		<p class="text-muted-foreground font-semibold">{{ isActive() ? 'Activos' : 'Inactivos' }}</p>
+		<app-toggle-switch [checked]="isActive()" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
+	</div>
+	<div class="inline-block space-x-4">
+		<button
+			class="bg-muted text-muted-foreground hover:text-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold">
+			Importar CSV
+		</button>
+		<div class="tooltip tooltip-bottom" data-tip="Agregar Seccion">
+			<button
+				class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
+				(click)="addUpdateOwnership()">
+				Nuevo
+			</button>
+		</div>
+	</div>
+</div>
+<div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
+	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
+		<h3 class="text-muted-foreground text-sm font-medium">
+			Mostrando {{ ownerships().length }} de {{ totalOwnerships }} Secciones
+		</h3>
+		<div class="flex flex-wrap gap-2">
+			<div class="flex">
+				<label class="text-muted-foreground relative">
+					<div class="absolute left-2.5 top-2.5">
+						<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+					</div>
+					<input
+						name="search"
+						class="py-2 pl-8 pr-2"
+						placeholder="Buscar"
+						type="text"
+						value=""
+						(input)="onSearchChange($event)" />
+				</label>
+			</div>
+		</div>
+	</div>
+	<div
+		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5">
+		<table
+			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
+			<thead class="border-muted/20 text-muted-foreground border text-xs">
+				<tr>
+					<th class="min-w-[300px]">
+						<app-sort-header
+							[label]="'Nombre'"
+							[sortField]="'nombre'"
+							(click)="onSortChange('nombre')"></app-sort-header>
+					</th>
+					<th class="min-w-[90px]">Estado Secciones</th>
+					<th class="min-w-[100px]">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (strs of ownerships(); track $index) {
+				<tr
+					class="border-border hover:bg-card/50 border-b"
+					app-table-row
+					[ownerships]="strs"
+					(save)="handleDataSave($event)"
+					(addModModal)="addUpdateOwnership($event.codpreID, $event.name, $event.codsec)"></tr>
+				} @empty {
+				<tr>
+					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+	<app-table-footer
+		[totalItems]="totalOwnerships"
+		[itemsPerPage]="itemsPerPage()"
+		[currentPage]="currentPage()"
+		(pageChange)="handlePageChange($event)"
+		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
+</div>
+<app-add-mod-ownerships (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-ownerships>
