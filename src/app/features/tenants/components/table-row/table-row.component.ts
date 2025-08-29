@@ -72,8 +72,8 @@ export class TableRowComponent {
 		this.addModModal.emit(userID);
 	}
 
-	viewTenant(tenantID: number) {
-		this.tenantViewModal.open(tenantID);
+	viewTenant() {
+		this.tenantViewModal.open(this.tenant.id);
 	}
 
 	toggleMap(id: number, lat?: number, lng?: number) {

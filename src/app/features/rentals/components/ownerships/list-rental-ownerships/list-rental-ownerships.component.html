@@ -1,10 +1,10 @@
 <div class="mb-4 flex justify-between">
 	<!-- <div class="flex items-center space-x-4"></div> -->
 	<div class="inline-block">
-		<h3 class="text-foreground font-semibold">Gestion Secciones</h3>
+		<h3 class="text-foreground font-semibold">Gestion Predios</h3>
 		<div class="text-muted-foreground space-x-1 text-xs font-medium">
 			<p>
-				Total Registros: <span class="text-foreground">{{ totalSections }}</span>
+				Total Registros: <span class="text-foreground">{{ totalOwnerships }}</span>
 			</p>
 		</div>
 	</div>
@@ -12,17 +12,17 @@
 		<label
 			for="type"
 			class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
-			Sectores
+			Secciones
 		</label>
 		<select
 			id="type"
 			name="type"
 			class="text-muted-foreground w-60! mt-2 rounded border p-2"
-			[(ngModel)]="sectorId"
+			[(ngModel)]="sectionId"
 			(change)="onTypeChange($event)">
 			<option value="0" selected>Todos</option>
-			@for (str of sectors; track $index) {
-			<option [value]="str.cods">
+			@for (str of sections; track $index) {
+			<option [value]="str.codsec">
 				{{ str.nombre }}
 			</option>
 			}
@@ -40,7 +40,7 @@
 		<div class="tooltip tooltip-bottom" data-tip="Agregar Seccion">
 			<button
 				class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
-				(click)="addUpdateSection()">
+				(click)="addUpdateOwnership()">
 				Nuevo
 			</button>
 		</div>
@@ -49,7 +49,7 @@
 <div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
 	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
 		<h3 class="text-muted-foreground text-sm font-medium">
-			Mostrando {{ sections().length }} de {{ totalSections }} Secciones
+			Mostrando {{ ownerships().length }} de {{ totalOwnerships }} Secciones
 		</h3>
 		<div class="flex flex-wrap gap-2">
 			<div class="flex">
@@ -74,6 +74,12 @@
 			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
 			<thead class="border-muted/20 text-muted-foreground border text-xs">
 				<tr>
+					<th class="min-w-[100px]">
+						<app-sort-header
+							[label]="'Codigo Identificador'"
+							[sortField]="'codpre'"
+							(click)="onSortChange('codpre')"></app-sort-header>
+					</th>
 					<th class="min-w-[300px]">
 						<app-sort-header
 							[label]="'Nombre'"
@@ -85,13 +91,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for (strs of sections(); track $index) {
+				@for (strs of ownerships(); track $index) {
 				<tr
 					class="border-border hover:bg-card/50 border-b"
 					app-table-row
-					[sections]="strs"
+					[ownerships]="strs"
 					(save)="handleDataSave($event)"
-					(addModModal)="addUpdateSection($event.codsec, $event.nombre, $event.cods)"></tr>
+					(addModModal)="addUpdateOwnership($event.ownershipID)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
@@ -101,10 +107,10 @@
 		</table>
 	</div>
 	<app-table-footer
-		[totalItems]="totalSections"
+		[totalItems]="totalOwnerships"
 		[itemsPerPage]="itemsPerPage()"
 		[currentPage]="currentPage()"
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
-<app-add-mod-section (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-section>
+<app-add-mod-ownerships (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-ownerships>

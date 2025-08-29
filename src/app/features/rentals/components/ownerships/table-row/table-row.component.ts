@@ -4,7 +4,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
-import { sector } from '../../../models/sector.model';
+import { ownership } from '../../../models/ownership.model';
 import { ActionEvent } from '../../../models/actions.model';
 
 import { RentalService } from '../../../services/rentals.service';
@@ -17,9 +17,9 @@ import { RentalService } from '../../../services/rentals.service';
 })
 export class TableRowComponent {
 	private _getRentalService = inject(RentalService);
-	@Input() sectors!: sector;
+	@Input() ownerships!: ownership;
 	@Output() save = new EventEmitter<ActionEvent>();
-	@Output() addModModal = new EventEmitter<{ sectorID: number; sectorName: string }>();
+	@Output() addModModal = new EventEmitter<{ ownershipID: string }>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
@@ -34,15 +34,15 @@ export class TableRowComponent {
 	}
 
 	openModalToUpdateStatus() {
-		this.confirmDialog.message = this.sectors.estado ? 'dar de baja' : 'habilitar';
+		this.confirmDialog.message = this.ownerships.estado ? 'dar de baja' : 'habilitar';
 		this.confirmDialog.show();
 	}
 
 	changeStatus() {
-		const { cods, estado } = this.sectors;
-		this._getRentalService.modStatus(cods, estado).subscribe({
+		const { codpre, estado } = this.ownerships;
+		this._getRentalService.modOwnershipStatus(codpre!, estado!).subscribe({
 			next: (response) => {
-				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: cods });
+				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: codpre });
 				this.showAlert('success');
 			},
 			error: (err) => {
@@ -52,14 +52,7 @@ export class TableRowComponent {
 		});
 	}
 
-	updateSector() {
-		this.addModModal.emit({
-			sectorID: this.sectors.cods,
-			sectorName: this.sectors.nombre,
-		});
-	}
-
-	redirectSection() {
-		this._getRentalService.setView('secciones', this.sectors.cods);
+	updateSection() {
+		this.addModModal.emit({ ownershipID: this.ownerships.codpre });
 	}
 }

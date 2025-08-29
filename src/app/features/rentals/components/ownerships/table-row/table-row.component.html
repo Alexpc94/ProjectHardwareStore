@@ -1,33 +1,33 @@
 <ng-container>
 	<td>
 		<div class="flex flex-col items-start">
-			<span class="text-foreground text-sm font-semibold"> {{ sectors.nombre }} </span>
+			<span class="text-foreground text-sm font-semibold"> {{ ownerships.codpre }} </span>
+		</div>
+	</td>
+	<td>
+		<div class="flex flex-col items-start">
+			<span class="text-foreground text-sm font-semibold"> {{ ownerships.nombre }} </span>
 		</div>
 	</td>
 	<td>
 		<span
 			class="rounded-[30px] px-2 py-0.5 text-xs font-medium"
-			[class]="sectors.estado ? 'bg-green-500/10 text-green-800' : 'bg-red-500/10 text-red-800'">
-			{{ sectors.estado ? 'Activo' : 'Inactivo' }}
+			[class]="ownerships.estado ? 'bg-green-500/10 text-green-800' : 'bg-red-500/10 text-red-800'">
+			{{ ownerships.estado ? 'Activo' : 'Inactivo' }}
 		</span>
 	</td>
 	<td>
 		<div class="flex">
-			<div class="tooltip" data-tip="Ver Secciones del Sector">
-				<button (click)="redirectSection()" class="block w-full px-1 py-1">
-					<svg-icon src="./assets/icons/usericons/list-check-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
-				</button>
-			</div>
-			<div class="tooltip" [attr.data-tip]="sectors.estado ? 'Modificar Sector' : 'Sector inactivo'">
-				<button (click)="updateSector()" class="block w-full px-1 py-1" [disabled]="!sectors.estado">
+			<div class="tooltip" [attr.data-tip]="ownerships.estado ? 'Modificar Predio' : 'Predio inactivo'">
+				<button (click)="updateSection()" class="block w-full px-1 py-1" [disabled]="!ownerships.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
-			<div class="tooltip" [attr.data-tip]="sectors.estado ? 'Dar de Baja' : 'Habilitar'">
+			<div class="tooltip" [attr.data-tip]="ownerships.estado ? 'Dar de Baja' : 'Habilitar'">
 				<button (click)="openModalToUpdateStatus()" class="block w-full px-1 py-1">
 					<svg-icon
 						[src]="
-							sectors.estado
+							ownerships.estado
 								? './assets/icons/usericons/delete-2-svgrepo-com.svg'
 								: './assets/icons/tablericons/repeat.svg'
 						"
@@ -41,6 +41,6 @@
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status
 	#confirmDialog
-	[name]="sectors.nombre"
+	[name]="ownerships.nombre"
 	[message]="confirmDialog.message"
 	(confirm)="changeStatus()"></app-confirm-change-status>

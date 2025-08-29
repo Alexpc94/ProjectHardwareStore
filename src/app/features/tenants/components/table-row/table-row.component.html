@@ -17,7 +17,7 @@
 	<td>
 		<div class="flex">
 			<div class="tooltip" data-tip="Ver Inquilino">
-				<button (click)="viewTenant(tenant.id)" class="block w-full px-1 py-1">
+				<button (click)="viewTenant()" class="block w-full px-1 py-1">
 					<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
@@ -74,6 +74,6 @@
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status
 	#confirmDialog
-	[name]="selectedtenant.nombre"
+	[name]="tenant.nombre"
 	[message]="confirmDialog.message"
 	(confirm)="changeStatus()"></app-confirm-change-status>
