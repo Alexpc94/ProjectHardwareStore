@@ -23,7 +23,6 @@ export class TableRowComponent {
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
-	selectedSector: Partial<sector> = {};
 	selectedView = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
 
 	alertType: any;
@@ -34,16 +33,14 @@ export class TableRowComponent {
 		}, 0);
 	}
 
-	openModalToUpdateStatus(cods: number, nombre: string, estado: number) {
-		this.selectedSector = { cods, nombre, estado };
-		this.confirmDialog.message = estado ? 'dar de baja' : 'habilitar';
+	openModalToUpdateStatus() {
+		this.confirmDialog.message = this.sectors.estado ? 'dar de baja' : 'habilitar';
 		this.confirmDialog.show();
 	}
 
 	changeStatus() {
-		if (!this.selectedSector) return;
-		const { cods, estado } = this.selectedSector;
-		this._getRentalService.modStatus(cods!, estado!).subscribe({
+		const { cods, estado } = this.sectors;
+		this._getRentalService.modStatus(cods, estado).subscribe({
 			next: (response) => {
 				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: cods });
 				this.showAlert('success');
@@ -53,15 +50,16 @@ export class TableRowComponent {
 				this.showAlert('error');
 			},
 		});
-		this.selectedSector = {};
 	}
 
-	updateSector(sectorID: number, sectorName: string) {
-		this.addModModal.emit({ sectorID, sectorName });
+	updateSector() {
+		this.addModModal.emit({
+			sectorID: this.sectors.cods,
+			sectorName: this.sectors.nombre,
+		});
 	}
 
-	redirectSection(sectorID?: number) {
-		if (!sectorID) return;
-		this._getRentalService.setView('secciones', sectorID);
+	redirectSection() {
+		this._getRentalService.setView('secciones', this.sectors.cods);
 	}
 }

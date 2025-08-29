@@ -19,12 +19,10 @@ export class TableRowComponent {
 	private _getRentalService = inject(RentalService);
 	@Input() ownerships!: ownership;
 	@Output() save = new EventEmitter<ActionEvent>();
-	@Output() addModModal = new EventEmitter<{ codpreID: number; name: string; codsec: number }>();
+	@Output() addModModal = new EventEmitter<{ ownershipID: string }>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
-	selectedOwnership: Partial<ownership> = {};
-	selectedName?: string;
 	selectedView = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
 
 	alertType: any;
@@ -33,5 +31,28 @@ export class TableRowComponent {
 		setTimeout(() => {
 			this.alertType = type;
 		}, 0);
+	}
+
+	openModalToUpdateStatus() {
+		this.confirmDialog.message = this.ownerships.estado ? 'dar de baja' : 'habilitar';
+		this.confirmDialog.show();
+	}
+
+	changeStatus() {
+		const { codpre, estado } = this.ownerships;
+		this._getRentalService.modOwnershipStatus(codpre!, estado!).subscribe({
+			next: (response) => {
+				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: codpre });
+				this.showAlert('success');
+			},
+			error: (err) => {
+				console.error('Error:', err);
+				this.showAlert('error');
+			},
+		});
+	}
+
+	updateSection() {
+		this.addModModal.emit({ ownershipID: this.ownerships.codpre });
 	}
 }

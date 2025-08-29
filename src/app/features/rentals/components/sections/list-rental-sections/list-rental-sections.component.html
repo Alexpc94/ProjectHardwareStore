@@ -91,7 +91,7 @@
 					app-table-row
 					[sections]="strs"
 					(save)="handleDataSave($event)"
-					(addModModal)="addUpdateSection($event.sectionID, $event.name, $event.cods)"></tr>
+					(addModModal)="addUpdateSection($event.codsec, $event.nombre, $event.cods)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>

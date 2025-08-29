@@ -14,22 +14,17 @@
 	<td>
 		<div class="flex">
 			<div class="tooltip" data-tip="Ver Predios de Seccion">
-				<button (click)="redirectProperty(sections.codsec)" class="block w-full px-1 py-1">
+				<button (click)="redirectProperty()" class="block w-full px-1 py-1">
 					<svg-icon src="./assets/icons/usericons/list-check-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="sections.estado ? 'Modificar Sector' : 'Sector inactivo'">
-				<button
-					(click)="updateSection(sections.codsec, sections.nombre, sections.cods)"
-					class="block w-full px-1 py-1"
-					[disabled]="!sections.estado">
+				<button (click)="updateSection()" class="block w-full px-1 py-1" [disabled]="!sections.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="sections.estado ? 'Dar de Baja' : 'Habilitar'">
-				<button
-					(click)="openModalToUpdateStatus(sections.codsec, sections.nombre, sections.estado)"
-					class="block w-full px-1 py-1">
+				<button (click)="openModalToUpdateStatus()" class="block w-full px-1 py-1">
 					<svg-icon
 						[src]="
 							sections.estado
@@ -46,6 +41,6 @@
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status
 	#confirmDialog
-	[name]="selectedSection.nombre"
+	[name]="sections.nombre"
 	[message]="confirmDialog.message"
 	(confirm)="changeStatus()"></app-confirm-change-status>

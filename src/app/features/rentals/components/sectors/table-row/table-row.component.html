@@ -14,22 +14,17 @@
 	<td>
 		<div class="flex">
 			<div class="tooltip" data-tip="Ver Secciones del Sector">
-				<button (click)="redirectSection(sectors.cods)" class="block w-full px-1 py-1">
+				<button (click)="redirectSection()" class="block w-full px-1 py-1">
 					<svg-icon src="./assets/icons/usericons/list-check-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="sectors.estado ? 'Modificar Sector' : 'Sector inactivo'">
-				<button
-					(click)="updateSector(sectors.cods, sectors.nombre)"
-					class="block w-full px-1 py-1"
-					[disabled]="!sectors.estado">
+				<button (click)="updateSector()" class="block w-full px-1 py-1" [disabled]="!sectors.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="sectors.estado ? 'Dar de Baja' : 'Habilitar'">
-				<button
-					(click)="openModalToUpdateStatus(sectors.cods, sectors.nombre, sectors.estado)"
-					class="block w-full px-1 py-1">
+				<button (click)="openModalToUpdateStatus()" class="block w-full px-1 py-1">
 					<svg-icon
 						[src]="
 							sectors.estado
@@ -46,6 +41,6 @@
 <app-alerts [type]="alertType"></app-alerts>
 <app-confirm-change-status
 	#confirmDialog
-	[name]="selectedSector.nombre"
+	[name]="sectors.nombre"
 	[message]="confirmDialog.message"
 	(confirm)="changeStatus()"></app-confirm-change-status>

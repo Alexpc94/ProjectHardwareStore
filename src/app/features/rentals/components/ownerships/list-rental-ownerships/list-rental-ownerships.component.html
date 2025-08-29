@@ -74,6 +74,12 @@
 			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
 			<thead class="border-muted/20 text-muted-foreground border text-xs">
 				<tr>
+					<th class="min-w-[100px]">
+						<app-sort-header
+							[label]="'Codigo Identificador'"
+							[sortField]="'codpre'"
+							(click)="onSortChange('codpre')"></app-sort-header>
+					</th>
 					<th class="min-w-[300px]">
 						<app-sort-header
 							[label]="'Nombre'"
@@ -91,7 +97,7 @@
 					app-table-row
 					[ownerships]="strs"
 					(save)="handleDataSave($event)"
-					(addModModal)="addUpdateOwnership($event.codpreID, $event.name, $event.codsec)"></tr>
+					(addModModal)="addUpdateOwnership($event.ownershipID)"></tr>
 				} @empty {
 				<tr>
 					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>

@@ -19,12 +19,10 @@ export class TableRowComponent {
 	private _getRentalService = inject(RentalService);
 	@Input() sections!: section;
 	@Output() save = new EventEmitter<ActionEvent>();
-	@Output() addModModal = new EventEmitter<{ sectionID: number; name: string; cods: number }>();
+	@Output() addModModal = new EventEmitter<{ codsec: number; nombre: string; cods: number }>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
-	selectedSection: Partial<section> = {};
-	selectedName?: string;
 	selectedView = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
 
 	alertType: any;
@@ -35,15 +33,13 @@ export class TableRowComponent {
 		}, 0);
 	}
 
-	openModalToUpdateStatus(codsec: number, nombre: string, estado: number) {
-		this.selectedSection = { codsec, nombre, estado };
-		this.confirmDialog.message = estado ? 'dar de baja' : 'habilitar';
+	openModalToUpdateStatus() {
+		this.confirmDialog.message = this.sections.estado ? 'dar de baja' : 'habilitar';
 		this.confirmDialog.show();
 	}
 
 	changeStatus() {
-		if (!this.selectedSection) return;
-		const { codsec, estado } = this.selectedSection;
+		const { codsec, estado } = this.sections;
 		this._getRentalService.modSectionStatus(codsec!, estado!).subscribe({
 			next: (response) => {
 				this.save.emit({ action: estado ? 'delete' : 'enable', success: true, id: codsec });
@@ -54,15 +50,14 @@ export class TableRowComponent {
 				this.showAlert('error');
 			},
 		});
-		this.selectedSection = {};
 	}
 
-	updateSection(sectionID: number, name: string, cods: number) {
-		this.addModModal.emit({ sectionID, name, cods });
+	updateSection() {
+		const { codsec, nombre, cods } = this.sections;
+		this.addModModal.emit({ codsec, nombre, cods });
 	}
 
-	redirectProperty(sectionID?: number) {
-		if (!sectionID) return;
-		this._getRentalService.setView('predios', sectionID);
+	redirectProperty() {
+		this._getRentalService.setView('predios', this.sections.codsec);
 	}
 }

@@ -109,4 +109,24 @@ export class RentalService {
 		};
 		return this._http.get<PaginatedResponse<ownership>>(url, { params });
 	}
+
+	getOwnershipById(codpre: string): Observable<any> {
+		const url = `${this.apiURL}/api/predios/${codpre}`;
+		return this._http.get<{ data: any }>(url).pipe(map((response) => response));
+	}
+
+	modOwnershipStatus(codpre: string, xestadoactual: number): Observable<ownership> {
+		const url = `${this.apiURL}/api/predios/${xestadoactual}/${codpre}`;
+		return this._http.delete<ownership>(url);
+	}
+
+	addOwnershipData(data: ownership): Observable<ownership> {
+		const url = `${this.apiURL}/api/predios`;
+		return this._http.post<ownership>(url, data);
+	}
+
+	modOwnershipData(data: ownership, codpre?: string): Observable<ownership> {
+		const url = `${this.apiURL}/api/predios/${codpre}`;
+		return this._http.put<ownership>(url, data);
+	}
 }

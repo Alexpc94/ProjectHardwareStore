@@ -43,9 +43,8 @@ export class ListRentalOwnershipsComponent {
 
 	@ViewChild(AddModOwnershipsComponent) sectionModal!: AddModOwnershipsComponent;
 
-	selectedID?: number | null;
-	codsID?: number;
-	selectedName?: string;
+	selectedID?: string;
+	codsecID?: number;
 	ownerships = signal<ownership[]>([]);
 	totalOwnerships!: number;
 	isActive = signal<boolean>(true);
@@ -124,12 +123,10 @@ export class ListRentalOwnershipsComponent {
 		this._getRentalService.setView('predios', Number(newId));
 	}
 
-	addUpdateOwnership(codpreID?: number, name?: string, codsec?: number) {
-		console.log('Editando predio ID:', codpreID, 'Nombre:', name, 'Codsec:', codsec);
-		// this.selectedID = sectionID ?? null;
-		// this.selectedName = name ?? '';
-		// this.codsID = cods ?? this.sectorId ?? 0;
-		// this.sectionModal.open(this.selectedID, this.selectedName, this.codsID);
+	addUpdateOwnership(codpreID?: string) {
+		this.selectedID = codpreID ?? '';
+		this.codsecID = this.sectionId ?? 0;
+		this.sectionModal.open(this.selectedID, this.codsecID);
 	}
 
 	handleDataSave(res: any) {
