@@ -70,7 +70,10 @@ export function generateDynamicMenu(menuData: any[], id_role: number): MenuItem[
 				icon: 'assets/icons/heroicons/outline/cube.svg',
 				label: 'Alquileres',
 				route: '/rentals',
-				children: [{ label: 'Sectores', route: '/rentals/sectors' }],
+				children: [
+					{ label: 'Sectores', route: '/rentals/sectors' },
+					{ label: 'Predios', route: '/rentals/Bsectors' },
+				],
 			},
 			{
 				icon: 'assets/icons/heroicons/outline/bookmark.svg',
