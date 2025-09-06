@@ -32,6 +32,10 @@ export class AlertsComponent implements OnChanges {
 				this.message = 'Operación realizada con éxito.';
 				this.iconPath = 'assets/icons/usericons/check-circle-svgrepo-com.svg';
 				break;
+			case 'dependency-error':
+				this.message = 'Se debe Eliminar datos dependientes primero.';
+				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
+				break;
 			case 'error':
 				this.message = 'Ha ocurrido un error inesperado.';
 				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';

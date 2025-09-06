@@ -21,4 +21,11 @@ import { RentalService } from '../../services/rentals.service';
 export class ListRentalsComponent {
 	_getRentalService = inject(RentalService);
 	selectedView = signal<'all' | 'sectores' | 'secciones' | 'predios'>('all');
+
+	onBack() {
+		// Aquí puedes definir qué acción hacer al volver, por ejemplo:
+		console.log('Volver presionado');
+		// o redirigir a otra vista:
+		// this._getRentalService.setView('predios', 0);
+	}
 }

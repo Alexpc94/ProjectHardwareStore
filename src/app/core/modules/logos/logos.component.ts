@@ -58,14 +58,12 @@ export class LogosComponent {
 		{ name: 'google-logo', src: 'assets/icons/google-logo.svg' },
 		{ name: 'logo', src: 'assets/icons/logo.svg' },
 		{ name: 'add-1-svgrepo-com', src: 'assets/icons/usericons/add-1-svgrepo-com.svg' },
-		{ name: 'add-call-svgrepo-com', src: 'assets/icons/usericons/add-call-svgrepo-com.svg' },
 		{ name: 'add-email-svgrepo-com', src: 'assets/icons/usericons/add-email-svgrepo-com.svg' },
 		{ name: 'add-file-svgrepo-com', src: 'assets/icons/usericons/add-file-svgrepo-com.svg' },
 		{ name: 'add-folder-svgrepo-com', src: 'assets/icons/usericons/add-folder-svgrepo-com.svg' },
 		{ name: 'add-note-svgrepo-com', src: 'assets/icons/usericons/add-note-svgrepo-com.svg' },
 		{ name: 'add-photo-svgrepo-com', src: 'assets/icons/usericons/add-photo-svgrepo-com.svg' },
 		{ name: 'add-svgrepo-com', src: 'assets/icons/usericons/add-svgrepo-com.svg' },
-		{ name: 'add-to-cart-svgrepo-com', src: 'assets/icons/usericons/add-to-cart-svgrepo-com.svg' },
 		{ name: 'add-to-queue-svgrepo-com', src: 'assets/icons/usericons/add-to-queue-svgrepo-com.svg' },
 		{ name: 'delete-2-svgrepo-com', src: 'assets/icons/usericons/delete-2-svgrepo-com.svg' },
 		{ name: 'download-email-svgrepo-com', src: 'assets/icons/usericons/download-email-svgrepo-com.svg' },
@@ -107,6 +105,10 @@ export class LogosComponent {
 		{
 			name: 'location-information-svgrepo-com',
 			src: 'assets/icons/usericons/location-information-svgrepo-com.svg',
+		},
+		{
+			name: 'arrow-go-back',
+			src: 'assets/icons/usericons/arrow-go-back.svg',
 		},
 	];
 }
