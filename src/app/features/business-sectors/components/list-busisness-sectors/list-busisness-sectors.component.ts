@@ -116,9 +116,10 @@ export class ListBusisnessSectorsComponent {
 		this.currentPage.set(1);
 	}
 
-	addUpdateBSector(businessSectorID?: string) {
+	addUpdateBSector(businessSectorID?: string, codpadreId?: string) {
 		this.selectedID = businessSectorID ?? '';
-		//this.tenantModal.open(this.selectedID);
+		//console.log(this.selectedID, 'el id de padre es', codpadreId ?? '');
+		this.tenantModal.open(this.selectedID, codpadreId ?? '');
 	}
 
 	dependencyListBSector(businessSectorID: string) {

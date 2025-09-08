@@ -36,4 +36,19 @@ export class BusinessSectorsService {
 		const url = `${this.apiURL}/api/rubros/${xid}`;
 		return this._http.delete<ApiResponse<BSector>>(url);
 	}
+
+	addBsectorData(data: BSector): Observable<BSector> {
+		const url = `${this.apiURL}/api/rubros`;
+		return this._http.post<BSector>(url, data);
+	}
+
+	modBsectorData(data: BSector, codc?: string): Observable<BSector> {
+		const url = `${this.apiURL}/api/rubros/${codc}`;
+		return this._http.put<BSector>(url, data);
+	}
+
+	getBusinessSectorById(codc: string): Observable<any> {
+		const url = `${this.apiURL}/api/rubros/${codc}`;
+		return this._http.get<{ data: any }>(url).pipe(map((response) => response));
+	}
 }

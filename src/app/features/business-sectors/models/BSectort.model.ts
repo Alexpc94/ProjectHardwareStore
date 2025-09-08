@@ -4,5 +4,6 @@ export interface BSector {
 	estado: number;
 	tipo: number;
 	deta: string;
+	padre: string;
 	hijo?: BSector;
 }

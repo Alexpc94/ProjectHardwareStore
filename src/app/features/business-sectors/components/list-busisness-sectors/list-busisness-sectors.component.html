@@ -94,8 +94,8 @@
 								<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
 									<button
 										class="bg-primary text-primary-foreground flex-none rounded-md px-2 py-1.5 text-xs font-semibold"
-										(click)="addUpdateBSector()">
-										Nuevo Rubro
+										(click)="addUpdateBSector('', codpadreId())">
+										Nuevo Detalle Rubro
 									</button>
 								</div>
 							</div>
@@ -122,7 +122,8 @@
 										class="border-border hover:bg-card/50 text-xs"
 										app-table-row-son
 										[bsectors]="bsectors"
-										(save)="handleDataSonSave($event)"></tr>
+										(save)="handleDataSonSave($event)"
+										(addModModal)="addUpdateBSector($event)"></tr>
 									}
 								</tbody>
 							</table>

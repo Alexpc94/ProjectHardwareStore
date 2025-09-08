@@ -72,7 +72,7 @@ export function generateDynamicMenu(menuData: any[], id_role: number): MenuItem[
 				route: '/rentals',
 				children: [
 					{ label: 'Sectores', route: '/rentals/sectors' },
-					{ label: 'Predios', route: '/rentals/Bsectors' },
+					{ label: 'Rubros', route: '/rentals/Bsectors' },
 				],
 			},
 			{
