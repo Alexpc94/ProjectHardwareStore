@@ -118,7 +118,6 @@ export class ListBusisnessSectorsComponent {
 
 	addUpdateBSector(businessSectorID?: string, codpadreId?: string) {
 		this.selectedID = businessSectorID ?? '';
-		//console.log(this.selectedID, 'el id de padre es', codpadreId ?? '');
 		this.tenantModal.open(this.selectedID, codpadreId ?? '');
 	}
 
@@ -128,6 +127,7 @@ export class ListBusisnessSectorsComponent {
 	}
 
 	handleDataSave(res: any) {
+		console.log('evento padre', res);
 		switch (res.action) {
 			case 'add':
 				this.loadBusinessSectors();
@@ -147,6 +147,7 @@ export class ListBusisnessSectorsComponent {
 		}
 	}
 	handleDataSonSave(res: any) {
+		console.log('evento hijo', res);
 		switch (res.action) {
 			case 'add':
 				this.loadBusinessSectorsSon();

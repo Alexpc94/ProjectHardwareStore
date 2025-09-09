@@ -19,7 +19,7 @@ export class TabeRowSonComponent {
 	private _getBusinessSectorsService = inject(BusinessSectorsService);
 	@Input() bsectors!: BSector;
 	@Output() save = new EventEmitter<ActionEvent>();
-	@Output() addModModal = new EventEmitter<string>();
+	@Output() addModModal = new EventEmitter<{ codc: string; padre: string }>();
 	@Output() dependencyList = new EventEmitter<string>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
@@ -55,6 +55,6 @@ export class TabeRowSonComponent {
 	}
 
 	updateSection() {
-		this.addModModal.emit(this.bsectors.codc);
+		this.addModModal.emit({ codc: this.bsectors.codc, padre: this.bsectors.padre });
 	}
 }

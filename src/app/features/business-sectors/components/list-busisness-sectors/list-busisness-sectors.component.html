@@ -123,7 +123,7 @@
 										app-table-row-son
 										[bsectors]="bsectors"
 										(save)="handleDataSonSave($event)"
-										(addModModal)="addUpdateBSector($event)"></tr>
+										(addModModal)="addUpdateBSector($event.codc, $event.padre)"></tr>
 									}
 								</tbody>
 							</table>
@@ -146,5 +146,8 @@
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
 
-<app-add-mod-business-sector (save)="handleDataSave($event)" class="text-muted-foreground">
+<app-add-mod-business-sector
+	(save)="handleDataSave($event)"
+	(saveSon)="handleDataSonSave($event)"
+	class="text-muted-foreground">
 </app-add-mod-business-sector>

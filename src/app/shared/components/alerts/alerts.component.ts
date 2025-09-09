@@ -36,6 +36,10 @@ export class AlertsComponent implements OnChanges {
 				this.message = 'Se debe Eliminar datos dependientes primero.';
 				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
 				break;
+			case 'dependency-data-error':
+				this.message = 'Existe duplicidad en el dato.';
+				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
+				break;
 			case 'error':
 				this.message = 'Ha ocurrido un error inesperado.';
 				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';

@@ -37,9 +37,9 @@ export class BusinessSectorsService {
 		return this._http.delete<ApiResponse<BSector>>(url);
 	}
 
-	addBsectorData(data: BSector): Observable<BSector> {
+	addBsectorData(data: BSector): Observable<ApiResponse<BSector>> {
 		const url = `${this.apiURL}/api/rubros`;
-		return this._http.post<BSector>(url, data);
+		return this._http.post<ApiResponse<BSector>>(url, data);
 	}
 
 	modBsectorData(data: BSector, codc?: string): Observable<BSector> {
@@ -50,5 +50,10 @@ export class BusinessSectorsService {
 	getBusinessSectorById(codc: string): Observable<any> {
 		const url = `${this.apiURL}/api/rubros/${codc}`;
 		return this._http.get<{ data: any }>(url).pipe(map((response) => response));
+	}
+
+	getListBsectors(): Observable<BSector[]> {
+		const url = `${this.apiURL}/api/padres/rubros`;
+		return this._http.get<{ data: BSector[] }>(url).pipe(map((response) => response.data));
 	}
 }

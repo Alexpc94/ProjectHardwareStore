@@ -36,6 +36,26 @@
 					<app-validation [control]="f['nombre']" [submitted]="submitted"></app-validation>
 				</div>
 			</div>
+			@if (isFather) {
+			<div class="mb-4 flex gap-2">
+				<div class="form__group w-full">
+					<div class="relative">
+						<label
+							for="type"
+							class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
+							Listado de Rubros
+						</label>
+						<select id="type" name="type" class="text-muted-foreground mt-2 rounded border p-2" formControlName="padre">
+							@for (str of bsectorList; track $index) {
+							<option [value]="str.codc">
+								{{ str.nombre }}
+							</option>
+							}
+						</select>
+					</div>
+				</div>
+			</div>
+			}
 			<div class="modal-action">
 				<button type="button" class="btn" (click)="close()">Cerrar</button>
 				<button type="button" class="btn btn-primary" (click)="onPreSubmit()">Aceptar</button>
