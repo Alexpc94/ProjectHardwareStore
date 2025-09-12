@@ -115,7 +115,7 @@ export class AddModBusinessSectorComponent {
 			...values,
 			codc: this.isEditing ? this.selectedData?.codc : values.codc,
 			nombre: capitalizeWords(values.nombre),
-			padre: values.padre || '',
+			padre: values.padre || '0',
 		};
 		if (this.isEditing) {
 			this._getBusinessSectorsService.modBsectorData(data, this.selectedData?.codc).subscribe({

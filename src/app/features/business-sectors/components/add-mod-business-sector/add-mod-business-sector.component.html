@@ -47,9 +47,7 @@
 						</label>
 						<select id="type" name="type" class="text-muted-foreground mt-2 rounded border p-2" formControlName="padre">
 							@for (str of bsectorList; track $index) {
-							<option [value]="str.codc">
-								{{ str.nombre }}
-							</option>
+							<option [value]="str.codc">codigo {{ str.codc }} - {{ str.nombre }}</option>
 							}
 						</select>
 					</div>
