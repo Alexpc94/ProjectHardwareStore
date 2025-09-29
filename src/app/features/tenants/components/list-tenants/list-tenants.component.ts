@@ -55,6 +55,7 @@ export class ListTenantsComponent {
 			this.totalTenants = data.totalElements;
 			this.tenants.set(data.content);
 		});
+		console.log(this.tenants());
 	}
 
 	onToggleChange(status: boolean) {

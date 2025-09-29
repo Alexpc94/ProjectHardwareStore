@@ -27,6 +27,10 @@ const routes: Routes = [
 				loadChildren: () => import('./features/rentals/rentals.module').then((m) => m.RentalsModule),
 			},
 			{
+				path: 'services',
+				loadChildren: () => import('./features/contracts/contracts.module').then((m) => m.ContractsSectosModule),
+			},
+			{
 				path: 'logos',
 				loadComponent: () => import('./core/modules/logos/logos.component').then((m) => m.LogosComponent),
 			},
