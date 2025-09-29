@@ -1,0 +1,79 @@
+<div class="mb-4 flex flex-col space-y-4">
+	<!-- Primera fila: título y botones -->
+	<div class="flex items-center justify-between">
+		<!-- Título y total -->
+		<div class="inline-block">
+			<h3 class="text-foreground font-semibold">Gestión contrato de alquiler de predios</h3>
+			<div class="text-muted-foreground space-x-1 text-xs font-medium">
+				Total Registros: <span class="text-foreground">{{ totalContracts }}</span>
+			</div>
+		</div>
+
+		<!-- Botones -->
+		<div class="inline-flex space-x-4">
+			<button class="bg-muted text-muted-foreground hover:text-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
+				Importar CSV
+			</button>
+			<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
+				<button class="bg-primary text-primary-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
+					Nuevo Contrato
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Segunda fila: fechas y toggle -->
+	<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+		<!-- Fecha desde -->
+		<div class="relative">
+			<input type="date" id="dateFrom" class="peer block" placeholder=" " />
+			<label for="dateFrom" class="floating-label">Desde</label>
+		</div>
+
+		<!-- Fecha hasta -->
+		<div class="relative">
+			<input type="date" id="dateTo" class="peer block" placeholder=" " />
+			<label for="dateTo" class="floating-label">Hasta</label>
+		</div>
+
+		<!-- Toggle activo/inactivo -->
+		<div class="inline-flex items-center space-x-2">
+			<app-toggle-switch [checked]="isActive()" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
+			<p class="text-muted-foreground font-semibold">
+				{{ isActive() ? 'Activos' : 'Inactivos' }}
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
+	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
+		<h3 class="text-muted-foreground text-sm font-medium">
+			Mostrando {{ contracts().length }} de {{ totalContracts }} contratos
+		</h3>
+		<div class="flex flex-wrap gap-2">
+			<div class="flex">
+				<label class="text-muted-foreground relative">
+					<div class="absolute left-2.5 top-2.5">
+						<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+					</div>
+					<input
+						name="search"
+						class="py-2 pl-8 pr-2"
+						placeholder="Buscar"
+						type="text"
+						value=""
+						(input)="onSearchChange($event)" />
+				</label>
+			</div>
+		</div>
+	</div>
+	<div
+		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5"></div>
+	<app-table-footer
+		[totalItems]="totalContracts"
+		[itemsPerPage]="itemsPerPage()"
+		[currentPage]="currentPage()"
+		(pageChange)="handlePageChange($event)"
+		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
+</div>
