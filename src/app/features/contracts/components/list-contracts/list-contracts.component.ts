@@ -63,7 +63,7 @@ export class ListContractsComponent {
 			.subscribe((data) => {
 				this.totalContracts = data.totalElements;
 				this.contracts.set(data.content);
-				console.log(this.contracts());
+				//console.log(this.contracts());
 			});
 	}
 
@@ -143,7 +143,7 @@ export class ListContractsComponent {
 
 	dependencyListContract(contract: contract) {
 		this.contractDetail.set(this.contractDetail()?.codcon === contract.codcon ? null : contract);
-		console.log(this.contractDetail());
+		//console.log(this.contractDetail());
 	}
 
 	handleDataSave(res: any) {}
