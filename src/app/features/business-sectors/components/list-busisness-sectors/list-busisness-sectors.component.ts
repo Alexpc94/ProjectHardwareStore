@@ -70,7 +70,7 @@ export class ListBusisnessSectorsComponent {
 		const codpadre = this.codpadreId();
 		if (!codpadre) return;
 		this._getBusinessSectorsService.getBusinessSectorsSon(+status, codpadre).subscribe((data) => {
-			console.log(data.content);
+			//console.log(data.content);
 			this.businessSectorsSon.set(data.content);
 		});
 	}

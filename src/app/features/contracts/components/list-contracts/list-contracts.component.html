@@ -1,15 +1,12 @@
 <div class="mb-4 flex flex-col space-y-4">
-	<!-- Primera fila: título y botones -->
 	<div class="flex items-center justify-between">
-		<!-- Título y total -->
 		<div class="inline-block">
 			<h3 class="text-foreground font-semibold">Gestión contrato de alquiler de predios</h3>
 			<div class="text-muted-foreground space-x-1 text-xs font-medium">
-				Total Registros: <span class="text-foreground">{{ totalContracts }}</span>
+				<!-- Total Registros: <span class="text-foreground">{{ totalContracts }}</span> -->
 			</div>
 		</div>
 
-		<!-- Botones -->
 		<div class="inline-flex space-x-4">
 			<button class="bg-muted text-muted-foreground hover:text-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
 				Importar CSV
@@ -22,21 +19,27 @@
 		</div>
 	</div>
 
-	<!-- Segunda fila: fechas y toggle -->
 	<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
-		<!-- Fecha desde -->
 		<div class="relative">
-			<input type="date" id="dateFrom" class="peer block" placeholder=" " />
+			<input
+				type="date"
+				id="dateFrom"
+				class="peer block"
+				[value]="fechaIni() | date: 'yyyy-MM-dd'"
+				(input)="onFechaInicioChange($event)" />
 			<label for="dateFrom" class="floating-label">Desde</label>
 		</div>
 
-		<!-- Fecha hasta -->
 		<div class="relative">
-			<input type="date" id="dateTo" class="peer block" placeholder=" " />
+			<input
+				type="date"
+				id="dateTo"
+				class="peer block"
+				[value]="fechaFin() | date: 'yyyy-MM-dd'"
+				(input)="onFechaFinChange($event)" />
 			<label for="dateTo" class="floating-label">Hasta</label>
 		</div>
 
-		<!-- Toggle activo/inactivo -->
 		<div class="inline-flex items-center space-x-2">
 			<app-toggle-switch [checked]="isActive()" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
 			<p class="text-muted-foreground font-semibold">
@@ -69,7 +72,144 @@
 		</div>
 	</div>
 	<div
-		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5"></div>
+		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5">
+		<table
+			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
+			<thead class="border-muted/20 text-muted-foreground border text-xs">
+				<tr>
+					<th>
+						<app-sort-header
+							[label]="'#'"
+							[sortField]="'contador'"
+							[data]="contracts()"
+							(sortedData)="contracts.set($event)"></app-sort-header>
+					</th>
+					<th class="min-w-[140px]">Codigo</th>
+					<th class="min-w-[110px]">
+						<app-sort-header
+							[label]="'Fecha Ini.'"
+							[sortField]="'fechaini'"
+							[data]="contracts()"
+							(sortedData)="contracts.set($event)"></app-sort-header>
+					</th>
+					<th class="min-w-[110px]">
+						<app-sort-header
+							[label]="'Fecha Fin.'"
+							[sortField]="'fechafin'"
+							[data]="contracts()"
+							(sortedData)="contracts.set($event)"></app-sort-header>
+					</th>
+					<th class="min-w-[200px]">
+						<app-sort-header
+							[label]="'Inquilino'"
+							[sortField]="'inquilino'"
+							[data]="contracts()"
+							(sortedData)="contracts.set($event)"></app-sort-header>
+					</th>
+					<th>Monto</th>
+					<th>Estado</th>
+					<th class="min-w-[100px]">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (contract of contracts(); track $index) {
+				<tr
+					class="border-border hover:bg-card/50 border-b"
+					app-table-row
+					[contract]="contract"
+					(save)="handleDataSave($event)"
+					(addModModal)="addUpdateUser($event)"
+					(dependencyList)="dependencyListContract($event)"></tr>
+				@if (contract.codcon == contractDetail()?.codcon){
+				<tr>
+					<td colspan="8">
+						<div class="mx-auto flex w-3/4 flex-col space-y-1">
+							<div class="flex items-center justify-between">
+								<h3 class="text-foreground text-lg font-semibold">Detalle de Contratos</h3>
+							</div>
+
+							<div class="border-border bg-card text-muted-foreground rounded-xl border p-3 text-sm shadow-sm">
+								<div class="grid grid-cols-3 gap-1">
+									<div>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Codigo <span class="text-foreground font-normal">{{ contractDetail()?.codcon }}</span>
+										</p>
+
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Fecha Elaboracion
+											<span class="text-foreground font-normal">{{
+												contractDetail()?.fechareg | date: 'dd/MM/yyyy'
+											}}</span>
+										</p>
+
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Monto total <span class="text-foreground font-normal">{{ contractDetail()?.monto }}</span>
+										</p>
+									</div>
+
+									<div>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Inquilino <span class="text-foreground font-normal">{{ contractDetail()?.inquilino }}</span>
+										</p>
+
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Fecha Inicio
+											<span class="text-foreground font-normal">{{
+												contractDetail()?.fechaini | date: 'dd/MM/yyyy'
+											}}</span>
+										</p>
+
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Obs <span class="text-foreground font-normal">{{ contractDetail()?.obs }}</span>
+										</p>
+									</div>
+
+									<div>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Encargado <span class="text-foreground font-normal">{{ contractDetail()?.persona_resp }}</span>
+										</p>
+
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Fecha Fin
+											<span class="text-foreground font-normal">{{
+												contractDetail()?.fechafin | date: 'dd/MM/yyyy'
+											}}</span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div
+							class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted mx-auto flex w-3/4 grow overflow-x-auto">
+							<table
+								class="text-muted-foreground table w-full table-auto border-collapse text-left align-middle leading-5">
+								<thead class="text-muted-foreground text-xs">
+									<tr>
+										<th class="min-w-[300px]">Rubros</th>
+										<th class="min-w-[100px]">Predio</th>
+										<th>Importe</th>
+									</tr>
+								</thead>
+								<tbody>
+									@for (contractDetail of contractDetail()?.dcontratos; track $index) {
+									<tr
+										class="border-border hover:bg-card/50 border-b text-xs"
+										app-table-row-son
+										[contractDetail]="contractDetail"></tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					</td>
+				</tr>
+				} } @empty {
+				<tr>
+					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 	<app-table-footer
 		[totalItems]="totalContracts"
 		[itemsPerPage]="itemsPerPage()"

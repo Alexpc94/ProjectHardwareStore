@@ -1,0 +1,53 @@
+<ng-container>
+	<td>
+		{{ contract.contador }}
+	</td>
+	<td>
+		{{ contract.codcon }}
+	</td>
+	<td>{{ contract.fechaini | date: 'dd/MM/yyyy' }}</td>
+	<td>{{ contract.fechafin | date: 'dd/MM/yyyy' }}</td>
+	<td>{{ contract.inquilino }}</td>
+	<td>{{ contract.monto }}</td>
+	<td>
+		<span
+			class="rounded-[30px] px-2 py-0.5 text-xs font-medium"
+			[class]="contract.estado ? 'bg-green-500/10 text-green-800' : 'bg-red-500/10 text-red-800'">
+			{{ contract.estado ? 'Activo' : 'Inactivo' }}
+		</span>
+	</td>
+	<td>
+		<div class="flex">
+			<div class="tooltip" data-tip="Detalle">
+				<button class="block w-full py-1 px-2" (click)="selectRecursiveData(contract)">
+					<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+				</button>
+			</div>
+			<div class="tooltip" [attr.data-tip]="contract.estado ? 'Modificar Contrato' : 'Contrato eliminado'">
+				<button class="block w-full px-1 py-1" [disabled]="!contract.estado">
+					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+				</button>
+			</div>
+			<div class="tooltip" [attr.data-tip]="contract.estado ? 'Dar de Baja' : 'Habilitar'">
+				<button
+					(click)="openModalToUpdateStatus(contract.codcon, contract.inquilino, contract.estado)"
+					class="block w-full px-1 py-1">
+					<svg-icon
+						[src]="
+							contract.estado
+								? './assets/icons/usericons/delete-2-svgrepo-com.svg'
+								: './assets/icons/tablericons/repeat.svg'
+						"
+						[svgClass]="'h-5 w-5'">
+					</svg-icon>
+				</button>
+			</div>
+		</div>
+	</td>
+</ng-container>
+<app-alerts [type]="alertType"></app-alerts>
+<app-confirm-change-status
+	#confirmDialog
+	[name]="selectedUser?.name"
+	[message]="confirmDialog.message"
+	(confirm)="changeStatus()"></app-confirm-change-status>
