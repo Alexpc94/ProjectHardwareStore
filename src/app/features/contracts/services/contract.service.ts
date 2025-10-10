@@ -32,6 +32,11 @@ export class ContractService {
 		return this._http.get<PaginatedResponse<contract>>(url, { params });
 	}
 
+	getContractById(codcon: string): Observable<any> {
+		const url = `${this.apiURL}/api/mcontratos/id/${codcon}`;
+		return this._http.get<{ data: any }>(url).pipe(map((response) => response));
+	}
+
 	private formatDate(date: Date): string {
 		if (!date || isNaN(date.getTime())) {
 			return new Date().toISOString().split('T')[0];

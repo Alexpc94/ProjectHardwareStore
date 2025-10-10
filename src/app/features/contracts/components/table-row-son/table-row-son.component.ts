@@ -1,6 +1,6 @@
-import { Component, Input, ViewChild, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-
+import { decinalFormat } from 'src/app/shared/utils/number-format';
 import { ContractDetail } from '../../models/contracts.model';
 
 @Component({
@@ -11,4 +11,5 @@ import { ContractDetail } from '../../models/contracts.model';
 })
 export class TableRowSonComponent {
 	@Input() contractDetail!: ContractDetail;
+	decinalFormat = decinalFormat;
 }

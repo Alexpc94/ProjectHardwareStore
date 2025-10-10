@@ -12,7 +12,9 @@
 				Importar CSV
 			</button>
 			<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
-				<button class="bg-primary text-primary-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
+				<button
+					(click)="addUpdateContract()"
+					class="bg-primary text-primary-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
 					Nuevo Contrato
 				</button>
 			</div>
@@ -84,7 +86,7 @@
 							[data]="contracts()"
 							(sortedData)="contracts.set($event)"></app-sort-header>
 					</th>
-					<th class="min-w-[140px]">Codigo</th>
+					<th class="min-w-[100px]">Codigo</th>
 					<th class="min-w-[110px]">
 						<app-sort-header
 							[label]="'Fecha Ini.'"
@@ -118,7 +120,7 @@
 					app-table-row
 					[contract]="contract"
 					(save)="handleDataSave($event)"
-					(addModModal)="addUpdateUser($event)"
+					(addModModal)="addUpdateContract($event)"
 					(dependencyList)="dependencyListContract($event)"></tr>
 				@if (contract.codcon == contractDetail()?.codcon){
 				<tr>
@@ -143,7 +145,8 @@
 										</p>
 
 										<p class="text-muted-foreground/70 text-xs font-medium">
-											Monto total <span class="text-foreground font-normal">{{ contractDetail()?.monto }}</span>
+											Monto total
+											<span class="text-foreground font-normal">{{ decinalFormat(contractDetail()?.monto) }}</span>
 										</p>
 									</div>
 
@@ -185,7 +188,7 @@
 								class="text-muted-foreground table w-full table-auto border-collapse text-left align-middle leading-5">
 								<thead class="text-muted-foreground text-xs">
 									<tr>
-										<th class="min-w-[300px]">Rubros</th>
+										<th class="min-w-[250px]">Rubros</th>
 										<th class="min-w-[100px]">Predio</th>
 										<th>Importe</th>
 									</tr>
@@ -217,3 +220,5 @@
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
+
+<app-add-mod-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-contract>

@@ -8,7 +8,7 @@
 	<td>{{ contract.fechaini | date: 'dd/MM/yyyy' }}</td>
 	<td>{{ contract.fechafin | date: 'dd/MM/yyyy' }}</td>
 	<td>{{ contract.inquilino }}</td>
-	<td>{{ contract.monto }}</td>
+	<td class="text-right">{{ decinalFormat(contract.monto) }}</td>
 	<td>
 		<span
 			class="rounded-[30px] px-2 py-0.5 text-xs font-medium"
@@ -24,7 +24,7 @@
 				</button>
 			</div>
 			<div class="tooltip" [attr.data-tip]="contract.estado ? 'Modificar Contrato' : 'Contrato eliminado'">
-				<button class="block w-full px-1 py-1" [disabled]="!contract.estado">
+				<button (click)="updateContract()" class="block w-full px-1 py-1" [disabled]="!contract.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
