@@ -5,7 +5,7 @@
 	<td>
 		<span class="text-foreground font-semibold"> {{ contractDetail.predio }} </span>
 	</td>
-	<td>
-		<span class="text-foreground font-semibold"> {{ contractDetail.importe }} </span>
+	<td class="text-right">
+		<span class="text-foreground font-semibold"> {{ decinalFormat(contractDetail.importe) }} </span>
 	</td>
 </ng-container>

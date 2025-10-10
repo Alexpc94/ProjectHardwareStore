@@ -5,6 +5,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
+import { decinalFormat } from 'src/app/shared/utils/number-format';
 
 import { contract } from './../../models/contracts.model';
 import { ActionEvent } from './../../models/actions.model';
@@ -22,10 +23,12 @@ export class TableRowComponent {
 
 	@Input() contract!: contract;
 	@Output() save = new EventEmitter<ActionEvent>();
+	@Output() addModModal = new EventEmitter<string>();
 	@Output() dependencyList = new EventEmitter<contract>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
+	decinalFormat = decinalFormat;
 	selectedUser: any;
 	alertType: any;
 	showAlert(type: 'success' | 'error' | 'info') {
@@ -57,7 +60,12 @@ export class TableRowComponent {
 		this.selectedUser = null;
 	}
 
+	updateContract() {
+		this.addModModal.emit(this.contract.codcon);
+	}
+
 	selectRecursiveData(contract: contract) {
+		//console.log('Selected contract for dependencies:', contract);
 		this.dependencyList.emit(contract);
 	}
 }

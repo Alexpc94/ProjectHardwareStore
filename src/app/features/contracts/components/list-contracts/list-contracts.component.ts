@@ -6,10 +6,11 @@ import { contract } from '../../models/contracts.model';
 
 import { TableRowComponent } from '../table-row/table-row.component';
 import { TableRowSonComponent } from '../table-row-son/table-row-son.component';
-//import { AddModTenantComponent } from '../add-mod-tenant/add-mod-tenant.component';
+import { AddModContractComponent } from '../add-mod-contract/add-mod-contract.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
+import { decinalFormat } from 'src/app/shared/utils/number-format';
 
 import { ContractService } from '../../services/contract.service';
 @Component({
@@ -22,6 +23,7 @@ import { ContractService } from '../../services/contract.service';
 		AngularSvgIconModule,
 		TableRowComponent,
 		TableRowSonComponent,
+		AddModContractComponent,
 	],
 	templateUrl: './list-contracts.component.html',
 	styleUrl: './list-contracts.component.css',
@@ -34,7 +36,7 @@ export class ListContractsComponent {
 		});
 	}
 
-	// @ViewChild(AddModTenantComponent) tenantModal!: AddModTenantComponent;
+	@ViewChild(AddModContractComponent) contractModal!: AddModContractComponent;
 
 	selectedID: any = null;
 	contracts = signal<contract[]>([]);
@@ -48,7 +50,7 @@ export class ListContractsComponent {
 	sortDirection = signal<'ASC' | 'DESC'>('ASC');
 	currentPage = signal<number>(1);
 	itemsPerPage = signal<number>(5);
-
+	decinalFormat = decinalFormat;
 	loadContracts(): void {
 		const status = +this.isActive();
 		const fechaInicio = this.fechaIni();
@@ -143,10 +145,12 @@ export class ListContractsComponent {
 
 	dependencyListContract(contract: contract) {
 		this.contractDetail.set(this.contractDetail()?.codcon === contract.codcon ? null : contract);
-		//console.log(this.contractDetail());
 	}
 
 	handleDataSave(res: any) {}
 
-	addUpdateUser(res: any) {}
+	addUpdateContract(codcon?: string) {
+		console.log('llego', codcon);
+		this.contractModal.open(codcon ?? '');
+	}
 }

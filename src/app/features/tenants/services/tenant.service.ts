@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { tenant } from '../models/tenant.model';
+import { tenant, TenantResponse } from '../models/tenant.model';
 import { Pageable, PaginatedResponse } from '../models/pageable.model';
 
 @Injectable({
@@ -20,6 +20,11 @@ export class TenantService {
 			sort: pageable.sort,
 		};
 		return this._http.get<PaginatedResponse<tenant>>(url, { params });
+	}
+
+	getAllTenants(): Observable<TenantResponse> {
+		const url = `${this.apiURL}/api/inquilinos/true`;
+		return this._http.get<TenantResponse>(url);
 	}
 
 	getTenantById(id: number): Observable<any> {

@@ -16,3 +16,11 @@ export interface UbicacionGps {
 	longitude: number;
 	latitude: number;
 }
+
+export interface TenantResponse {
+	httpHeaders: any;
+	httpStatusCode: number;
+	message: string;
+	otherParams: any;
+	data: tenant[];
+}
