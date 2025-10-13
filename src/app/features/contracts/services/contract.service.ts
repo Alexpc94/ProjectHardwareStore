@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { contract } from '../models/contracts.model';
+import { ApiResponse } from '../models/response.model';
 import { Pageable, PaginatedResponse } from '../models/pageable.model';
 
 @Injectable({
@@ -42,5 +43,10 @@ export class ContractService {
 			return new Date().toISOString().split('T')[0];
 		}
 		return date.toISOString().split('T')[0];
+	}
+
+	addContractrData(data: contract): Observable<ApiResponse<contract>> {
+		const url = `${this.apiURL}/api/mcontratos`;
+		return this._http.post<ApiResponse<contract>>(url, data);
 	}
 }

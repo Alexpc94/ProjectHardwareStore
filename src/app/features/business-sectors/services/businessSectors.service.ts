@@ -32,6 +32,11 @@ export class BusinessSectorsService {
 		return this._http.get<PaginatedResponse<BSector>>(url, { params });
 	}
 
+	getBusinessSectorSonFiltered(): Observable<any> {
+		const url = `${this.apiURL}/api/rubros/hijos`;
+		return this._http.get<{ data: any }>(url).pipe(map((response) => response));
+	}
+
 	modStatus(xid: string): Observable<ApiResponse<BSector>> {
 		const url = `${this.apiURL}/api/rubros/${xid}`;
 		return this._http.delete<ApiResponse<BSector>>(url);

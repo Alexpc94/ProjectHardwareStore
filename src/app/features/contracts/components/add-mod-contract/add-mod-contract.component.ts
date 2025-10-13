@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Output, ViewChild, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 
 import { contract } from '../../models/contracts.model';
 import { tenant } from '../../../tenants/models/tenant.model';
+import { freeOwnership } from '../../../rentals/models/ownership.model';
+import { BSector } from '../../../business-sectors/models/BSectort.model';
 import { ActionEvent } from '../../models/actions.model';
 
 import { capitalizeWords } from 'src/app/shared/utils/stringData';
@@ -16,6 +18,9 @@ import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.compone
 
 import { ContractService } from '../../services/contract.service';
 import { TenantService } from '../../../tenants/services/tenant.service';
+import { RentalService } from '../../../rentals/services/rentals.service';
+import { BusinessSectorsService } from '../../../business-sectors/services/businessSectors.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
 	selector: 'app-add-mod-contract',
@@ -33,6 +38,10 @@ import { TenantService } from '../../../tenants/services/tenant.service';
 export class AddModContractComponent implements OnInit {
 	private _getContractService = inject(ContractService);
 	private _getTenantService = inject(TenantService);
+	private _getRentalService = inject(RentalService);
+	private _getBusinessSectorService = inject(BusinessSectorsService);
+	public userData: any = {};
+	_loginAccessService = inject(AuthService);
 	_formBuilder = inject(FormBuilder);
 	@Output() save = new EventEmitter<ActionEvent>();
 
@@ -46,9 +55,16 @@ export class AddModContractComponent implements OnInit {
 	submitted: boolean = false;
 	selectedData?: contract;
 	selectedID?: string;
+	activeInput: string = '';
+
 	tenants: tenant[] = [];
 	filteredTenants: tenant[] = [];
-	showInput = false;
+
+	ownerships: freeOwnership[] = [];
+	filteredOwnerships: freeOwnership[] = [];
+
+	bSector: BSector[] = [];
+	filteredBsector: BSector[] = [];
 
 	alertType: any;
 	showAlert(type: 'success' | 'error' | 'info') {
@@ -69,8 +85,10 @@ export class AddModContractComponent implements OnInit {
 		this.showModal = true;
 	}
 
-	toggleInput() {
-		this.showInput = !this.showInput;
+	toggleInput(type: string) {
+		this.activeInput = this.activeInput === type ? '' : type;
+		this.filteredTenants = [...this.tenants];
+		this.filteredOwnerships = [...this.ownerships];
 	}
 
 	close() {
@@ -79,35 +97,80 @@ export class AddModContractComponent implements OnInit {
 		this.showModal = false;
 		this.selectedID = undefined;
 		this.selectedData = undefined;
-		this.showInput = false;
+		this.activeInput = '';
 	}
 
 	ngOnInit() {
+		this.userData = this._loginAccessService.getCurrentSession('currentUser');
+		console.log('user data', this.userData);
 		this.buildForm();
 		this.getTenants();
+		this.getFreeOwnerships();
+		this.getBusinessSectorFiltered();
 	}
 
 	getTenants(): void {
 		this._getTenantService.getAllTenants().subscribe((data) => {
 			this.tenants = data.data;
 			this.filteredTenants = [...this.tenants];
-			console.log('inquilinos', this.tenants);
+			//console.log('inquilinos', this.tenants);
 		});
 	}
 
-	filterTenants(term: string | undefined) {
+	getFreeOwnerships(): void {
+		this._getRentalService.getFreeOwnership().subscribe((data) => {
+			this.ownerships = data.data;
+			this.filteredOwnerships = [...this.ownerships];
+			//console.log('predios libres', this.ownerships);
+		});
+	}
+
+	getBusinessSectorFiltered(): void {
+		this._getBusinessSectorService.getBusinessSectorSonFiltered().subscribe((data) => {
+			this.bSector = data.data;
+			this.filteredBsector = [...this.bSector];
+			//console.log('Rubros', this.bSector);
+		});
+	}
+
+	filterTenants(term: string | undefined): void {
+		this.filteredTenants = this.filterArray(this.tenants, term, ['cedula', 'ap', 'am', 'nombre']);
+	}
+
+	filterOwnerships(term: string | undefined): void {
+		this.filteredOwnerships = this.filterArray(this.ownerships, term, ['codpre', 'nompredio', 'nomseccion']);
+	}
+
+	filterBsector(term: string | undefined): void {
+		this.filteredBsector = this.filterArray(this.bSector, term, ['codc', 'nombre']);
+	}
+
+	private filterArray<T>(source: T[], term: string | undefined, keys: (keyof T)[]): T[] {
 		const search = term?.toLowerCase() ?? '';
-		if (!search) {
-			this.filteredTenants = [...this.tenants];
-		} else {
-			this.filteredTenants = this.tenants.filter(
-				(t) =>
-					t.cedula.toLowerCase().includes(search) ||
-					t.ap.toLowerCase().includes(search) ||
-					t.am.toLowerCase().includes(search) ||
-					t.nombre.toLowerCase().includes(search),
-			);
-		}
+		if (!search) return [...source];
+		return source.filter((item) =>
+			keys.some((key) => {
+				const value = item[key];
+				return typeof value === 'string' && value.toLowerCase().includes(search);
+			}),
+		);
+	}
+
+	get dcontratos(): FormArray {
+		return this.form.get('dcontratos') as FormArray;
+	}
+
+	addDetail(): void {
+		const detalleGroup = this._formBuilder.group({
+			codc: new FormControl('', [Validators.required]),
+			codpre: new FormControl('', [Validators.required]),
+			importe: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]),
+		});
+		this.dcontratos.push(detalleGroup);
+	}
+
+	removeDetail(index: number): void {
+		this.dcontratos.removeAt(index);
 	}
 
 	buildForm(): void {
@@ -115,10 +178,12 @@ export class AddModContractComponent implements OnInit {
 			codcon: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
 			fechaini: new FormControl('', [Validators.required]),
 			fechafin: new FormControl(''),
-			fecha: new FormControl('', [Validators.required]),
+			fecha: new FormControl(this.userData.otherParams.fecha),
 			inquilino: new FormControl('', [Validators.required]),
 			obs: new FormControl(''),
+			dcontratos: this._formBuilder.array([]),
 		});
+		this.form.get('fecha')?.disable();
 	}
 
 	patchForm(): void {
@@ -147,8 +212,22 @@ export class AddModContractComponent implements OnInit {
 		const data: contract = {
 			...values,
 			codcliente: inquilino,
+			codresponsable: this.userData.otherParams.codusuario,
 		};
 
+		this._getContractService.addContractrData(data).subscribe({
+			next: () => {
+				this.save.emit({ action: 'add', success: true, data });
+				this.close();
+				this.showAlert('success');
+			},
+			error: (error) => {
+				// if (this.handleNombreError(error)) return;
+				// if (this.handleCodpreError(error)) return;
+				this.save.emit({ action: 'add', success: false });
+				this.showAlert('error');
+			},
+		});
 		console.log('shego esto', data);
 	}
 }
