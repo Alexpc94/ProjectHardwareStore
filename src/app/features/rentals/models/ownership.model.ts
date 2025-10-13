@@ -6,3 +6,10 @@ export interface ownership {
 	estado: number;
 	libre: string;
 }
+
+export interface freeOwnership {
+	codpre: string;
+	nompredio: string;
+	nomseccion: string;
+	nomsector: string;
+}
