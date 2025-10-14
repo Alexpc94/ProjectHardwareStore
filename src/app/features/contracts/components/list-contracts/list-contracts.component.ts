@@ -147,7 +147,13 @@ export class ListContractsComponent {
 		this.contractDetail.set(this.contractDetail()?.codcon === contract.codcon ? null : contract);
 	}
 
-	handleDataSave(res: any) {}
+	handleDataSave(res: any) {
+		switch (res.action) {
+			case 'add':
+				this.loadContracts();
+				break;
+		}
+	}
 
 	addUpdateContract(codcon?: string) {
 		console.log('llego', codcon);
