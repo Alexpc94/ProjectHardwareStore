@@ -65,7 +65,7 @@ export class ListContractsComponent {
 			.subscribe((data) => {
 				this.totalContracts = data.totalElements;
 				this.contracts.set(data.content);
-				//console.log(this.contracts());
+				console.log(this.contracts());
 			});
 	}
 
