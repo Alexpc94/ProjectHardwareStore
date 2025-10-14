@@ -93,6 +93,9 @@ export class AddModContractComponent implements OnInit {
 
 	close() {
 		this.form.reset();
+		this.form.patchValue({
+			fecha: this.userData.otherParams.fecha,
+		});
 		this.submitted = false;
 		this.showModal = false;
 		this.selectedID = undefined;
@@ -102,7 +105,7 @@ export class AddModContractComponent implements OnInit {
 
 	ngOnInit() {
 		this.userData = this._loginAccessService.getCurrentSession('currentUser');
-		console.log('user data', this.userData);
+		//console.log('user data', this.userData);
 		this.buildForm();
 		this.getTenants();
 		this.getFreeOwnerships();
@@ -181,9 +184,9 @@ export class AddModContractComponent implements OnInit {
 			fecha: new FormControl(this.userData.otherParams.fecha),
 			inquilino: new FormControl('', [Validators.required]),
 			obs: new FormControl(''),
+			indefinido: new FormControl(''),
 			dcontratos: this._formBuilder.array([]),
 		});
-		this.form.get('fecha')?.disable();
 	}
 
 	patchForm(): void {
@@ -208,11 +211,12 @@ export class AddModContractComponent implements OnInit {
 
 	saveData(): void {
 		const { inquilino, ...values } = this.form.value;
-
 		const data: contract = {
 			...values,
 			codcliente: inquilino,
-			codresponsable: this.userData.otherParams.codusuario,
+			codresponsable: this.userData.otherParams.id,
+			fecha: this.userData.otherParams.fecha,
+			indefinido: values.indefinido ? 1 : 0,
 		};
 
 		this._getContractService.addContractrData(data).subscribe({
