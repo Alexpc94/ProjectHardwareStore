@@ -131,37 +131,21 @@
 							</div>
 
 							<div class="border-border bg-card text-muted-foreground rounded-xl border p-3 text-sm shadow-sm">
-								<div class="grid grid-cols-3 gap-1">
-									<div>
-										<p class="text-muted-foreground/70 text-xs font-medium">
-											Codigo <span class="text-foreground font-normal">{{ contractDetail()?.codcon }}</span>
-										</p>
-
-										<p class="text-muted-foreground/70 text-xs font-medium">
-											Fecha Elaboracion
-											<span class="text-foreground font-normal">{{
-												contractDetail()?.fechareg | date: 'dd/MM/yyyy'
-											}}</span>
-										</p>
-
-										<p class="text-muted-foreground/70 text-xs font-medium">
-											Monto total
-											<span class="text-foreground font-normal">{{ decinalFormat(contractDetail()?.monto) }}</span>
-										</p>
-									</div>
-
+								<div class="grid grid-cols-2 gap-1">
 									<div>
 										<p class="text-muted-foreground/70 text-xs font-medium">
 											Inquilino <span class="text-foreground font-normal">{{ contractDetail()?.inquilino }}</span>
 										</p>
-
 										<p class="text-muted-foreground/70 text-xs font-medium">
-											Fecha Inicio
-											<span class="text-foreground font-normal">{{
-												contractDetail()?.fechaini | date: 'dd/MM/yyyy'
-											}}</span>
+											Rubro <span class="text-foreground font-normal">{{ contractDetail()?.rubro }}</span>
 										</p>
-
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Predio <span class="text-foreground font-normal">{{ contractDetail()?.predio }}</span>
+										</p>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Monto total
+											<span class="text-foreground font-normal">{{ decinalFormat(contractDetail()?.monto) }}</span>
+										</p>
 										<p class="text-muted-foreground/70 text-xs font-medium">
 											Obs <span class="text-foreground font-normal">{{ contractDetail()?.obs }}</span>
 										</p>
@@ -171,7 +155,18 @@
 										<p class="text-muted-foreground/70 text-xs font-medium">
 											Encargado <span class="text-foreground font-normal">{{ contractDetail()?.persona_resp }}</span>
 										</p>
-
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Fecha Elaboracion
+											<span class="text-foreground font-normal">{{
+												contractDetail()?.fechareg | date: 'dd/MM/yyyy'
+											}}</span>
+										</p>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Fecha Inicio
+											<span class="text-foreground font-normal">{{
+												contractDetail()?.fechaini | date: 'dd/MM/yyyy'
+											}}</span>
+										</p>
 										<p class="text-muted-foreground/70 text-xs font-medium">
 											Fecha Fin
 											<span class="text-foreground font-normal">{{
@@ -188,9 +183,8 @@
 								class="text-muted-foreground table w-full table-auto border-collapse text-left align-middle leading-5">
 								<thead class="text-muted-foreground text-xs">
 									<tr>
-										<th class="min-w-[250px]">Rubros</th>
-										<th class="min-w-[100px]">Predio</th>
-										<th>Importe</th>
+										<th class="min-w-[250px]">Rubros Secundarios</th>
+										<th>Importe (Bs)</th>
 									</tr>
 								</thead>
 								<tbody>

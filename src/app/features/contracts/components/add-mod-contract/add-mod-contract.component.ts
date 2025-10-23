@@ -65,6 +65,7 @@ export class AddModContractComponent implements OnInit {
 
 	bSector: BSector[] = [];
 	filteredBsector: BSector[] = [];
+	searchTerms: string[] = [];
 
 	alertType: any;
 	showAlert(type: 'success' | 'error' | 'info') {
@@ -89,6 +90,7 @@ export class AddModContractComponent implements OnInit {
 		this.activeInput = this.activeInput === type ? '' : type;
 		this.filteredTenants = [...this.tenants];
 		this.filteredOwnerships = [...this.ownerships];
+		this.filteredBsector = [...this.bSector];
 	}
 
 	close() {
@@ -101,6 +103,10 @@ export class AddModContractComponent implements OnInit {
 		this.selectedID = undefined;
 		this.selectedData = undefined;
 		this.activeInput = '';
+		this.filteredTenants = [...this.tenants];
+		this.filteredOwnerships = [...this.ownerships];
+		this.filteredBsector = [...this.bSector];
+		this.searchTerms = [];
 	}
 
 	ngOnInit() {
@@ -137,26 +143,49 @@ export class AddModContractComponent implements OnInit {
 	}
 
 	filterTenants(term: string | undefined): void {
-		this.filteredTenants = this.filterArray(this.tenants, term, ['cedula', 'ap', 'am', 'nombre']);
+		this.filteredTenants = this.filterArray(this.tenants, term, ['cedula', 'ap', 'am', 'nombre'], 'inquilino');
 	}
 
 	filterOwnerships(term: string | undefined): void {
-		this.filteredOwnerships = this.filterArray(this.ownerships, term, ['codpre', 'nompredio', 'nomseccion']);
+		this.filteredOwnerships = this.filterArray(this.ownerships, term, ['codpre', 'nompredio', 'nomseccion'], 'codpre');
 	}
 
 	filterBsector(term: string | undefined): void {
-		this.filteredBsector = this.filterArray(this.bSector, term, ['codc', 'nombre']);
+		this.filteredBsector = this.filterArray(this.bSector, term, ['codc', 'nombre'], 'codc');
 	}
 
-	private filterArray<T>(source: T[], term: string | undefined, keys: (keyof T)[]): T[] {
+	filterListBsectors(term: string | undefined): BSector[] {
 		const search = term?.toLowerCase() ?? '';
-		if (!search) return [...source];
-		return source.filter((item) =>
-			keys.some((key) => {
-				const value = item[key];
+		if (!search) return [...this.bSector];
+		return this.bSector.filter((item) =>
+			['codc', 'nombre'].some((key) => {
+				const value = item[key as keyof BSector];
 				return typeof value === 'string' && value.toLowerCase().includes(search);
 			}),
 		);
+	}
+
+	private filterArray<T>(source: T[], term: string | undefined, keys: (keyof T)[], controlName: string): T[] {
+		const search = term?.toLowerCase() ?? '';
+		let filtered = source;
+
+		if (search) {
+			filtered = source.filter((item) =>
+				keys.some((key) => {
+					const value = item[key];
+					return typeof value === 'string' && value.toLowerCase().includes(search);
+				}),
+			);
+		}
+
+		const control = this.form.get(controlName);
+		if (control) {
+			const currentValue = control.value;
+			const stillExists = filtered.some((item: any) => item.id === currentValue);
+			if (!stillExists) control.setValue('');
+		}
+
+		return filtered;
 	}
 
 	get dcontratos(): FormArray {
@@ -166,8 +195,10 @@ export class AddModContractComponent implements OnInit {
 	addDetail(): void {
 		const detalleGroup = this._formBuilder.group({
 			codc: new FormControl('', [Validators.required]),
-			codpre: new FormControl('', [Validators.required]),
-			importe: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]),
+			importe: new FormControl({ value: 0, disabled: true }, [
+				Validators.required,
+				Validators.pattern(/^\d+(\.\d{1,2})?$/),
+			]),
 		});
 		this.dcontratos.push(detalleGroup);
 	}
@@ -178,13 +209,15 @@ export class AddModContractComponent implements OnInit {
 
 	buildForm(): void {
 		this.form = this._formBuilder.group({
-			codcon: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]),
+			monto: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]),
 			fechaini: new FormControl('', [Validators.required]),
-			fechafin: new FormControl(''),
+			fechafin: new FormControl('', [Validators.required]),
 			fecha: new FormControl(this.userData.otherParams.fecha),
 			inquilino: new FormControl('', [Validators.required]),
 			obs: new FormControl(''),
 			indefinido: new FormControl(''),
+			codpre: new FormControl('', [Validators.required]),
+			codc: new FormControl('', [Validators.required]),
 			dcontratos: this._formBuilder.array([]),
 		});
 	}
@@ -193,7 +226,7 @@ export class AddModContractComponent implements OnInit {
 		//console.log(this.selectedData);
 		if (this.selectedData) {
 			this.form.patchValue({
-				codcon: this.selectedData.codcon,
+				monto: this.selectedData.monto,
 				inquilino: this.selectedData.inquilino,
 				fechaini: this.selectedData.fechaini,
 				fechafin: this.selectedData.fechafin,
@@ -217,6 +250,11 @@ export class AddModContractComponent implements OnInit {
 			codresponsable: this.userData.otherParams.id,
 			fecha: this.userData.otherParams.fecha,
 			indefinido: values.indefinido ? 1 : 0,
+			dcontratos:
+				values.dcontratos?.map((item: any) => ({
+					...item,
+					importe: item.importe ?? 0, // Si no tiene importe, lo agrega como 0
+				})) || [],
 		};
 
 		this._getContractService.addContractrData(data).subscribe({

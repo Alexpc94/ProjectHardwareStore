@@ -1,8 +1,5 @@
 export interface ContractDetail {
 	importe: number;
-	principal: number;
-	lectura: number;
-	predio: string;
 	rubro: string;
 }
 
@@ -21,5 +18,7 @@ export interface contract {
 	fechareg: Date;
 	inquilino: string;
 	persona_resp: string;
+	rubro: string;
+	predio: string;
 	dcontratos: ContractDetail[];
 }

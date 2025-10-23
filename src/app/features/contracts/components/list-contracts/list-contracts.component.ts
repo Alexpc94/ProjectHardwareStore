@@ -74,49 +74,29 @@ export class ListContractsComponent {
 		this.currentPage.set(1);
 	}
 
-	onFechaInicioChange(event: Event): void {
+	handleDateChange(event: Event, setter: (d: Date) => void): void {
 		const input = event.target as HTMLInputElement;
-		if (this.DebounceTimer) {
-			clearTimeout(this.DebounceTimer);
-		}
+		clearTimeout(this.DebounceTimer);
 		this.DebounceTimer = setTimeout(() => {
-			let newDate = new Date();
-			if (input.value) {
-				const parsedDate = new Date(input.value);
-				if (!isNaN(parsedDate.getTime())) {
-					newDate = parsedDate;
-				}
-			}
-
-			this.fechaIni.set(newDate);
+			const [year, month, day] = input.value.split('-').map(Number);
+			const localDate = new Date(year, month - 1, day);
+			setter(localDate);
 			this.currentPage.set(1);
-		}, 1000);
+		}, 1200);
+	}
+
+	onFechaInicioChange(event: Event): void {
+		this.handleDateChange(event, this.fechaIni.set);
 	}
 
 	onFechaFinChange(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		if (this.DebounceTimer) {
-			clearTimeout(this.DebounceTimer);
-		}
-		this.DebounceTimer = setTimeout(() => {
-			let newDate = new Date();
-			if (input.value) {
-				const parsedDate = new Date(input.value);
-				if (!isNaN(parsedDate.getTime())) {
-					newDate = parsedDate;
-				}
-			}
-			this.fechaFin.set(newDate);
-			this.currentPage.set(1);
-		}, 1000);
+		this.handleDateChange(event, this.fechaFin.set);
 	}
 
 	onSearchChange(event: Event) {
 		const inputValue = (event.target as HTMLInputElement).value?.toLowerCase().trim();
 		const input = inputValue ? inputValue : ' ';
-		if (this.DebounceTimer) {
-			clearTimeout(this.DebounceTimer);
-		}
+		clearTimeout(this.DebounceTimer);
 		this.DebounceTimer = setTimeout(() => {
 			this.search.set(input);
 			this.currentPage.set(1);

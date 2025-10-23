@@ -47,18 +47,18 @@
 					<div class="mb-4 flex gap-2">
 						<div class="form__group w-full">
 							<div class="relative">
-								<input type="text" id="codcon" class="peer block" placeholder=" " formControlName="codcon" />
-								<label for="codcon" class="floating-label"> Codigo contrato </label>
+								<input type="number" id="monto" class="peer block" placeholder=" " formControlName="monto" />
+								<label for="monto" class="floating-label"> Monto Total </label>
 							</div>
-							<app-validation [control]="f['codcon']" [submitted]="submitted"></app-validation>
+							<app-validation [control]="f['monto']" [submitted]="submitted"></app-validation>
 						</div>
-					</div>
-					<div class="mb-4 flex gap-2">
 						<div class="form__group relative w-full">
 							<input type="date" id="fecha" class="peer block" placeholder=" " formControlName="fecha" readonly />
 							<label for="fecha" class="floating-label"> Fecha </label>
 							<app-validation [control]="f['fecha']" [submitted]="submitted"></app-validation>
 						</div>
+					</div>
+					<div class="mb-4 flex gap-2">
 						<div class="form__group relative w-full">
 							<input
 								type="date"
@@ -71,8 +71,6 @@
 							<label for="fechaini" class="floating-label"> Fecha Inicio</label>
 							<app-validation [control]="f['fechaini']" [submitted]="submitted"></app-validation>
 						</div>
-					</div>
-					<div class="mb-4 flex gap-2">
 						<div class="form__group relative w-full">
 							<input
 								type="date"
@@ -85,6 +83,8 @@
 							<label for="fechafin" class="floating-label"> Fecha Fin</label>
 							<app-validation [control]="f['fechafin']" [submitted]="submitted"></app-validation>
 						</div>
+					</div>
+					<div class="mb-4 flex gap-2">
 						<div class="form__group relative w-full">
 							<input
 								class="checkbox"
@@ -92,7 +92,7 @@
 								type="checkbox"
 								id="indefinido"
 								formControlName="indefinido" />
-							<label for="indefinido" class="text-sm"> sin fecha limite</label>
+							<label for="indefinido" class="text-sm"> Tiempo Indefinido</label>
 						</div>
 					</div>
 					<div class="mb-4 flex gap-2">
@@ -111,140 +111,173 @@
 							</label>
 						</div>
 					</div>
-					<div class="mb-4 flex gap-2">
-						<div class="form__group relative w-full">
-							<input class="checkbox" data-datatable-row-check="true" type="checkbox" id="puesto" />
-							<label for="puesto" class="text-sm"> sin Puesto</label>
-						</div>
-					</div>
 				</div>
 				<div class="flex-1">
-					<ul formArrayName="dcontratos" class="list bg-background rounded-box shadow-md">
-						<li class="font-bold tracking-wide opacity-90">
-							detalles de contrato
-							<div class="tooltip" data-tip="Nuevo">
-								<button type="button" class="btn btn-success btn-sm" (click)="addDetail()">
-									<svg-icon src="assets/icons/heroicons/outline/plus.svg" [svgClass]="'h-5 w-5 text-foreground'">
-									</svg-icon>
-								</button>
-							</div>
-							@if(dcontratos.length > 0){
-							<div class="tooltip" data-tip="quitar">
-								<button type="button" class="btn btn-error btn-sm" (click)="removeDetail(dcontratos.length - 1)">
-									<svg-icon src="assets/icons/heroicons/outline/minus.svg" [svgClass]="'h-5 w-5 text-foreground'">
-									</svg-icon>
-								</button>
-							</div>
-							}
-						</li>
-						@for (d of dcontratos.controls; track $index) {
-						<li class="list-row flex gap-2" [formGroupName]="$index">
-							<div class="border-border min-w-25 max-w-26 border-r pr-2">
-								<div class="text-muted-foreground mt-5 text-center text-4xl font-thin tabular-nums">
-									{{ $index + 1 }}.
+					<ul class="list bg-background rounded-box pb-2 shadow-md">
+						<li>
+							<h3 class="text-muted-foreground text-sm">Listado de Predios</h3>
+							<div class="m-2 mt-0 flex gap-2">
+								<div class="form__group relative w-full">
+									<div class="bg-background mt-2 flex items-center rounded">
+										<div class="tooltip tooltip-bottom" data-tip="Buscar">
+											<button
+												type="button"
+												class="border-border bg-background flex items-center justify-center px-2 transition"
+												(click)="toggleInput('codpre')">
+												<svg-icon
+													src="assets/icons/heroicons/outline/magnifying-glass.svg"
+													[svgClass]="'h-5 w-5 text-foreground'">
+												</svg-icon>
+											</button>
+										</div>
+										<select
+											id="codpre"
+											class="text-muted-foreground bg-background focus:border-primary flex-1 rounded-l-md p-2 text-sm focus:ring-0"
+											formControlName="codpre">
+											<option value="" disabled selected>Seleccione Predio</option>
+											@for (f of filteredOwnerships; track $index) {
+											<option [value]="f.codpre">{{ f.nomsector }} - {{ f.nomseccion }} - {{ f.nompredio }}</option>
+											}
+										</select>
+									</div>
+
+									<app-validation [control]="f['codpre']" [submitted]="submitted"></app-validation>
 								</div>
-								<div class="mt-1 flex gap-2">
-									<div class="form__group">
-										<div class="relative">
+								@if(activeInput === 'codpre'){
+								<div class="form__group relative w-1/3">
+									<input
+										type="text"
+										placeholder="Filtrar..."
+										class="border-border bg-background text-foreground mt-2 w-full rounded-md border px-2 py-2"
+										(input)="filterOwnerships($any($event.target).value)" />
+								</div>
+								}
+							</div>
+
+							<h3 class="text-muted-foreground text-sm">Listado de Rubros</h3>
+							<div class="m-2 mt-0 flex gap-2">
+								<div class="form__group relative w-full">
+									<div class="bg-background mt-2 flex items-center rounded">
+										<div class="tooltip tooltip-bottom" data-tip="Buscar">
+											<button
+												type="button"
+												class="border-border bg-background flex items-center justify-center px-2 transition"
+												(click)="toggleInput('codc')">
+												<svg-icon
+													src="assets/icons/heroicons/outline/magnifying-glass.svg"
+													[svgClass]="'h-5 w-5 text-foreground'">
+												</svg-icon>
+											</button>
+										</div>
+										<select
+											id="codc"
+											class="text-muted-foreground bg-background focus:border-primary flex-1 rounded-l-md p-2 text-sm focus:ring-0"
+											formControlName="codc">
+											<option value="" disabled selected>Seleccione Rubro</option>
+											@for (f of filteredBsector; track $index) {
+											<option [value]="f.codc">{{ f.nombre }}</option>
+											}
+										</select>
+									</div>
+									<app-validation [control]="f['codc']" [submitted]="submitted"></app-validation>
+								</div>
+								@if(activeInput === 'codc'){
+								<div class="form__group relative w-1/3">
+									<input
+										type="text"
+										placeholder="Filtrar..."
+										class="border-border bg-background text-foreground mt-2 w-full rounded-md border px-2 py-2"
+										(input)="filterBsector($any($event.target).value)" />
+								</div>
+								}
+							</div>
+						</li>
+						<div formArrayName="dcontratos">
+							<li class="font-bold tracking-wide opacity-90">
+								detalles de contrato
+								<div class="tooltip" data-tip="Nuevo">
+									<button type="button" class="btn btn-success btn-sm" (click)="addDetail()">
+										<svg-icon src="assets/icons/heroicons/outline/plus.svg" [svgClass]="'h-5 w-5 text-foreground'">
+										</svg-icon>
+									</button>
+								</div>
+								@if(dcontratos.length > 0){
+								<div class="tooltip" data-tip="quitar">
+									<button type="button" class="btn btn-error btn-sm" (click)="removeDetail(dcontratos.length - 1)">
+										<svg-icon src="assets/icons/heroicons/outline/minus.svg" [svgClass]="'h-5 w-5 text-foreground'">
+										</svg-icon>
+									</button>
+								</div>
+								}
+							</li>
+							@for (d of dcontratos.controls; track $index) {
+							<li class="list-row flex gap-2" [formGroupName]="$index">
+								<div class="border-border w-10 border-r">
+									<div class="text-muted-foreground mt-5 text-center text-3xl font-thin tabular-nums">
+										{{ $index + 1 }}.
+									</div>
+								</div>
+
+								<div class="w-full">
+									<h3 class="text-muted-foreground text-sm">Listado de Rubros</h3>
+									<div class="flex gap-2">
+										<div class="form__group relative w-full">
+											<div class="bg-background mt-2 flex items-center rounded">
+												<div class="tooltip tooltip-bottom" data-tip="Buscar">
+													<button
+														type="button"
+														class="border-border bg-background flex items-center justify-center px-2 transition"
+														(click)="toggleInput('codc-' + $index)">
+														<svg-icon
+															src="assets/icons/heroicons/outline/magnifying-glass.svg"
+															[svgClass]="'h-5 w-5 text-foreground'">
+														</svg-icon>
+													</button>
+												</div>
+												<select
+													id="codc-{{ $index }}"
+													class="text-muted-foreground bg-background focus:border-primary flex-1 rounded-l-md p-2 text-sm focus:ring-0"
+													formControlName="codc">
+													<option value="" disabled selected>Seleccione Rubro</option>
+													@for (f of filterListBsectors(searchTerms[$index]); track f.codc) {
+													<option [value]="f.codc">{{ f.nombre }}</option>
+													}
+												</select>
+											</div>
+											<app-validation
+												[control]="dcontratos.at($index).get('codc')"
+												[submitted]="submitted"></app-validation>
+										</div>
+										@if (activeInput === 'codc-' + $index) {
+										<div class="form__group relative w-1/3">
 											<input
 												type="text"
-												id="importe-{{ $index }}"
-												class="peer block"
-												placeholder=" "
-												formControlName="importe" />
-											<label for="importe-{{ $index }}" class="floating-label"> Importe </label>
+												placeholder="Filtrar..."
+												class="border-border bg-background text-foreground mt-2 w-full rounded-md border px-2 py-2"
+												(input)="searchTerms[$index] = $any($event.target).value" />
 										</div>
-										<app-validation
-											[control]="dcontratos.at($index).get('importe')"
-											[submitted]="submitted"></app-validation>
-									</div>
-								</div>
-							</div>
-
-							<div class="w-full">
-								<h3 class="text-muted-foreground text-sm">Listado de Rubros</h3>
-								<div class="flex gap-2">
-									<div class="form__group relative w-full">
-										<div class="bg-background mt-2 flex items-center rounded">
-											<div class="tooltip tooltip-bottom" data-tip="Buscar">
-												<button
-													type="button"
-													class="border-border bg-background flex items-center justify-center px-2 transition"
-													(click)="toggleInput('codc')">
-													<svg-icon
-														src="assets/icons/heroicons/outline/magnifying-glass.svg"
-														[svgClass]="'h-5 w-5 text-foreground'">
-													</svg-icon>
-												</button>
+										}
+										<div class="mt-2">
+											<div class="form__group">
+												<div class="relative">
+													<input
+														type="number"
+														id="importe-{{ $index }}"
+														class="peer block"
+														placeholder=" "
+														formControlName="importe" />
+													<label for="importe-{{ $index }}" class="floating-label"> Importe </label>
+												</div>
+												<app-validation
+													[control]="dcontratos.at($index).get('importe')"
+													[submitted]="submitted"></app-validation>
 											</div>
-											<select
-												id="codc-{{ $index }}"
-												class="text-muted-foreground bg-background focus:border-primary flex-1 rounded-l-md p-2 text-sm focus:ring-0"
-												formControlName="codc">
-												<option value="" disabled selected>Seleccione Rubro</option>
-												@for (f of filteredBsector; track $index) {
-												<option [value]="f.codc">{{ f.nombre }}</option>
-												}
-											</select>
 										</div>
-
-										<app-validation
-											[control]="dcontratos.at($index).get('codc')"
-											[submitted]="submitted"></app-validation>
 									</div>
-									@if(activeInput === 'codc'){
-									<div class="form__group relative w-1/3">
-										<input
-											type="text"
-											placeholder="Filtrar..."
-											class="border-border bg-background text-foreground mt-2 w-full rounded-md border px-2 py-2"
-											(input)="filterBsector($any($event.target).value)" />
-									</div>
-									}
 								</div>
-								<h3 class="text-muted-foreground text-sm">Listado de Predios</h3>
-								<div class="mb-2 flex gap-2">
-									<div class="form__group relative w-full">
-										<div class="bg-background mt-2 flex items-center rounded">
-											<div class="tooltip tooltip-bottom" data-tip="Buscar">
-												<button
-													type="button"
-													class="border-border bg-background flex items-center justify-center px-2 transition"
-													(click)="toggleInput('codpre')">
-													<svg-icon
-														src="assets/icons/heroicons/outline/magnifying-glass.svg"
-														[svgClass]="'h-5 w-5 text-foreground'">
-													</svg-icon>
-												</button>
-											</div>
-											<select
-												id="codpre-{{ $index }}"
-												class="text-muted-foreground bg-background focus:border-primary flex-1 rounded-l-md p-2 text-sm focus:ring-0"
-												formControlName="codpre">
-												<option value="" disabled selected>Seleccione Predio</option>
-												@for (f of filteredOwnerships; track $index) {
-												<option [value]="f.codpre">{{ f.nomsector }} - {{ f.nomseccion }} - {{ f.nompredio }}</option>
-												}
-											</select>
-										</div>
-
-										<app-validation
-											[control]="dcontratos.at($index).get('codpre')"
-											[submitted]="submitted"></app-validation>
-									</div>
-									@if(activeInput === 'codpre'){
-									<div class="form__group relative w-1/3">
-										<input
-											type="text"
-											placeholder="Filtrar..."
-											class="border-border bg-background text-foreground mt-2 w-full rounded-md border px-2 py-2"
-											(input)="filterOwnerships($any($event.target).value)" />
-									</div>
-									}
-								</div>
-							</div>
-						</li>
-						}
+							</li>
+							}
+						</div>
 					</ul>
 				</div>
 			</div>
