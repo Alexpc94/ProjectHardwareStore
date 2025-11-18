@@ -28,20 +28,22 @@
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
-			<div class="tooltip" [attr.data-tip]="contract.estado ? 'Dar de Baja' : 'Habilitar'">
+			@if(contract.estado){
+			<div class="tooltip" data-tip="Dar de Baja">
 				<button
 					(click)="openModalToUpdateStatus(contract.codcon, contract.inquilino, contract.estado)"
 					class="block w-full px-1 py-1">
-					<svg-icon
-						[src]="
-							contract.estado
-								? './assets/icons/usericons/delete-2-svgrepo-com.svg'
-								: './assets/icons/tablericons/repeat.svg'
-						"
-						[svgClass]="'h-5 w-5'">
+					<svg-icon src="./assets/icons/usericons/delete-2-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+				</button>
+			</div>
+			} @if(!contract.stop){
+			<div class="tooltip" data-tip="Detener Contrato">
+				<button (click)="stopContract()" class="block w-full px-1 py-1" [disabled]="!contract.estado">
+					<svg-icon src="./assets/icons/usericons/calendar-xmark-svgrepo-com.svg" [svgClass]="'h-5 w-5 text-red-500'">
 					</svg-icon>
 				</button>
 			</div>
+			}
 		</div>
 	</td>
 </ng-container>
@@ -51,3 +53,38 @@
 	[name]="selectedUser?.name"
 	[message]="confirmDialog.message"
 	(confirm)="changeStatus()"></app-confirm-change-status>
+
+@if(stopModalOpen){
+<div class="modal modal-open">
+	<div class="modal-box bg-background border-border max-w-md border">
+		<h2 class="mb-4 text-lg font-semibold">Detener contrato</h2>
+		<button (click)="closeTypeModal()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+		<form [formGroup]="formStop">
+			<h2 class="mb-2">Código contrato: {{ contract.codcon }}</h2>
+			<div class="mb-4 flex gap-2">
+				<div class="form__group relative w-full">
+					<textarea
+						id="obs"
+						formControlName="obs"
+						rows="2"
+						class="border-border bg-background text-foreground focus:border-primary peer block w-full rounded-md border px-2 pt-4 pb-2 text-sm focus:ring-0"
+						placeholder=" ">
+					</textarea>
+
+					<label
+						for="obs"
+						class="floating-label text-muted-foreground text-sm transition-all duration-200 peer-placeholder-shown:top-2 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs">
+						Observaciones
+					</label>
+				</div>
+			</div>
+
+			<div class="mt-6 flex justify-end gap-2">
+				<button type="button" class="btn" (click)="closeTypeModal()">Cancelar</button>
+				<button type="button" class="btn btn-primary" (click)="sendStop()">Confirmar</button>
+			</div>
+		</form>
+	</div>
+</div>
+}
