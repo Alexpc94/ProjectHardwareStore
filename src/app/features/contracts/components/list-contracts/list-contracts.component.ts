@@ -43,6 +43,7 @@ export class ListContractsComponent {
 	contractDetail = signal<contract | null>(null);
 	totalContracts!: number;
 	isActive = signal<boolean>(true);
+	isStop = signal<number>(0);
 	fechaIni = signal<Date>(new Date());
 	fechaFin = signal<Date>(new Date());
 	search = signal<string>(' ');
@@ -53,6 +54,7 @@ export class ListContractsComponent {
 	decinalFormat = decinalFormat;
 	loadContracts(): void {
 		const status = +this.isActive();
+		const stop = +this.isStop();
 		const fechaInicio = this.fechaIni();
 		const fechaFinal = this.fechaFin();
 		const searchTerm = this.search();
@@ -61,7 +63,7 @@ export class ListContractsComponent {
 		const sort = [`${this.sortBy()},${this.sortDirection()}`];
 
 		this._getContractService
-			.getContracts(status, searchTerm, { page, size, sort }, fechaInicio, fechaFinal)
+			.getContracts(status, stop, searchTerm, { page, size, sort }, fechaInicio, fechaFinal)
 			.subscribe((data) => {
 				this.totalContracts = data.totalElements;
 				this.contracts.set(data.content);
@@ -71,6 +73,12 @@ export class ListContractsComponent {
 
 	onToggleChange(status: boolean) {
 		this.isActive.set(status);
+		this.currentPage.set(1);
+	}
+
+	onChangeStop(event: Event) {
+		const value = Number((event.target as HTMLInputElement).value);
+		this.isStop.set(value);
 		this.currentPage.set(1);
 	}
 
@@ -131,6 +139,11 @@ export class ListContractsComponent {
 		switch (res.action) {
 			case 'add':
 				this.loadContracts();
+				break;
+			case 'stop':
+				this.contracts.update((contracts) =>
+					contracts.map((contract) => (contract.codcon === res.id ? { ...contract, stop: 1 } : contract)),
+				);
 				break;
 		}
 	}

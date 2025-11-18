@@ -22,6 +22,33 @@
 	</div>
 
 	<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+		<div class="inline-flex items-center space-x-2">
+			<div class="relative">
+				<label class="flex items-center gap-2" for="stopV">
+					<input
+						type="radio"
+						id="stopV"
+						name="stop"
+						value="0"
+						class="radio radio-xs"
+						[checked]="isStop() === 0"
+						(change)="onChangeStop($event)" />
+					<span class="text-muted-foreground text-sm">Cto. Vigente</span>
+				</label>
+
+				<label class="flex items-center gap-2" for="stopF">
+					<input
+						type="radio"
+						id="stopF"
+						name="stop"
+						value="1"
+						class="radio radio-xs"
+						[checked]="isStop() === 1"
+						(change)="onChangeStop($event)" />
+					<span class="text-muted-foreground text-sm">Cto. Finalizado</span>
+				</label>
+			</div>
+		</div>
 		<div class="relative">
 			<input
 				type="date"
@@ -45,7 +72,7 @@
 		<div class="inline-flex items-center space-x-2">
 			<app-toggle-switch [checked]="isActive()" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
 			<p class="text-muted-foreground font-semibold">
-				{{ isActive() ? 'Activos' : 'Inactivos' }}
+				{{ isActive() ? 'Estado Activo' : 'Estado Inactivos' }}
 			</p>
 		</div>
 	</div>
