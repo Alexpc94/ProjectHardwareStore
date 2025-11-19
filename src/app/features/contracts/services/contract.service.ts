@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { contract } from '../models/contracts.model';
@@ -53,14 +53,14 @@ export class ContractService {
 	}
 
 	modContractStatus(codcon: string, idresponsable: number): Observable<contract> {
-		const safeCodcon = encodeURIComponent(codcon);
-		const url = `${this.apiURL}/api/mcontratos?codcon=${safeCodcon}&idresponsable=${idresponsable}`;
-		return this._http.delete<contract>(url);
+		const params = new HttpParams().set('codcon', codcon).set('idresponsable', idresponsable);
+		const url = `${this.apiURL}/api/mcontratos`;
+		return this._http.delete<contract>(url, { params });
 	}
 
 	stopContract(codcon: string, data: any): Observable<contract> {
-		const safeCodcon = encodeURIComponent(codcon);
-		const url = `${this.apiURL}/api/mcontratos/stop/${safeCodcon}`;
-		return this._http.put<contract>(url, data);
+		const params = new HttpParams().set('codcon', codcon);
+		const url = `${this.apiURL}/api/mcontratos/stop`;
+		return this._http.put<contract>(url, data, { params });
 	}
 }

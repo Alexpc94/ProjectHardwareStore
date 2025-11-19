@@ -145,6 +145,13 @@ export class ListContractsComponent {
 					contracts.map((contract) => (contract.codcon === res.id ? { ...contract, stop: 1 } : contract)),
 				);
 				break;
+			case 'delete':
+			case 'enable':
+				const newStatus = res.action === 'enable' ? 1 : 0;
+				this.contracts.update((contracts) =>
+					contracts.map((contract) => (contract.codcon === res.id ? { ...contract, estado: newStatus } : contract)),
+				);
+				break;
 		}
 	}
 
