@@ -75,14 +75,7 @@ export class AddModContractComponent implements OnInit {
 		}, 0);
 	}
 
-	open(contractID: string): void {
-		if (contractID) {
-			this._getContractService.getContractById(contractID).subscribe((contract) => {
-				this.selectedData = contract.data;
-				this.selectedID = contractID;
-				this.patchForm();
-			});
-		}
+	open(): void {
 		this.showModal = true;
 	}
 
@@ -220,20 +213,6 @@ export class AddModContractComponent implements OnInit {
 			codc: new FormControl('', [Validators.required]),
 			dcontratos: this._formBuilder.array([]),
 		});
-	}
-
-	patchForm(): void {
-		//console.log(this.selectedData);
-		if (this.selectedData) {
-			this.form.patchValue({
-				monto: this.selectedData.monto,
-				inquilino: this.selectedData.inquilino,
-				fechaini: this.selectedData.fechaini,
-				fechafin: this.selectedData.fechafin,
-				fecha: this.selectedData.fecha,
-				obs: this.selectedData.obs,
-			});
-		}
 	}
 
 	onPreSubmit(): void {

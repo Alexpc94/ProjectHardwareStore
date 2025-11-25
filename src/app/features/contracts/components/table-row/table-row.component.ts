@@ -100,7 +100,7 @@ export class TableRowComponent {
 	});
 
 	sendStop() {
-		console.log('shego esto', this.contract.codcon);
+		//console.log('shego esto', this.contract.codcon);
 		const obsValue = this.formStop.get('obs')?.value || '';
 
 		const data = {

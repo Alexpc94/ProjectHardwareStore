@@ -36,8 +36,9 @@ export class ContractService {
 	}
 
 	getContractById(codcon: string): Observable<any> {
-		const url = `${this.apiURL}/api/mcontratos/id/${codcon}`;
-		return this._http.get<{ data: any }>(url).pipe(map((response) => response));
+		const params = new HttpParams().set('codcon', codcon);
+		const url = `${this.apiURL}/api/mcontratos/data`;
+		return this._http.get<{ data: any }>(url, { params }).pipe(map((response) => response));
 	}
 
 	private formatDate(date: Date): string {
@@ -50,6 +51,12 @@ export class ContractService {
 	addContractrData(data: contract): Observable<ApiResponse<contract>> {
 		const url = `${this.apiURL}/api/mcontratos`;
 		return this._http.post<ApiResponse<contract>>(url, data);
+	}
+
+	stopContractrData(codcon: string, data: any): Observable<contract> {
+		const params = new HttpParams().set('codcon', codcon);
+		const url = `${this.apiURL}/api/mcontratos`;
+		return this._http.put<contract>(url, data, { params });
 	}
 
 	modContractStatus(codcon: string, idresponsable: number): Observable<contract> {

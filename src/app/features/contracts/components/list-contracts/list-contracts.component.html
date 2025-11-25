@@ -54,6 +54,7 @@
 				type="date"
 				id="dateFrom"
 				class="peer block"
+				placeholder="dd/mm/yyyy"
 				[value]="fechaIni() | date: 'yyyy-MM-dd'"
 				(input)="onFechaInicioChange($event)" />
 			<label for="dateFrom" class="floating-label">Desde</label>
@@ -64,6 +65,7 @@
 				type="date"
 				id="dateTo"
 				class="peer block"
+				placeholder="dd/mm/yyyy"
 				[value]="fechaFin() | date: 'yyyy-MM-dd'"
 				(input)="onFechaFinChange($event)" />
 			<label for="dateTo" class="floating-label">Hasta</label>
@@ -243,3 +245,4 @@
 </div>
 
 <app-add-mod-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-contract>
+<app-update-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-update-contract>

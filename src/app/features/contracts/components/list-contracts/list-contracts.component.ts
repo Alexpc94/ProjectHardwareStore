@@ -7,6 +7,7 @@ import { contract } from '../../models/contracts.model';
 import { TableRowComponent } from '../table-row/table-row.component';
 import { TableRowSonComponent } from '../table-row-son/table-row-son.component';
 import { AddModContractComponent } from '../add-mod-contract/add-mod-contract.component';
+import { UpdateContractComponent } from '../update-contract/update-contract.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
@@ -24,6 +25,7 @@ import { ContractService } from '../../services/contract.service';
 		TableRowComponent,
 		TableRowSonComponent,
 		AddModContractComponent,
+		UpdateContractComponent,
 	],
 	templateUrl: './list-contracts.component.html',
 	styleUrl: './list-contracts.component.css',
@@ -37,6 +39,7 @@ export class ListContractsComponent {
 	}
 
 	@ViewChild(AddModContractComponent) contractModal!: AddModContractComponent;
+	@ViewChild(UpdateContractComponent) contractUpdateModal!: UpdateContractComponent;
 
 	selectedID: any = null;
 	contracts = signal<contract[]>([]);
@@ -145,6 +148,11 @@ export class ListContractsComponent {
 					contracts.map((contract) => (contract.codcon === res.id ? { ...contract, stop: 1 } : contract)),
 				);
 				break;
+			case 'edit':
+				this.contracts.update((contracts) =>
+					contracts.map((contract) => (contract.codcon === res.id ? { ...contract, ...res.data } : contract)),
+				);
+				break;
 			case 'delete':
 			case 'enable':
 				const newStatus = res.action === 'enable' ? 1 : 0;
@@ -156,7 +164,6 @@ export class ListContractsComponent {
 	}
 
 	addUpdateContract(codcon?: string) {
-		console.log('llego', codcon);
-		this.contractModal.open(codcon ?? '');
+		codcon ? this.contractUpdateModal.open(codcon) : this.contractModal.open();
 	}
 }
