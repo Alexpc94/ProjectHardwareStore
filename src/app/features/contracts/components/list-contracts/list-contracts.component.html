@@ -8,8 +8,10 @@
 		</div>
 
 		<div class="inline-flex space-x-4">
-			<button class="bg-muted text-muted-foreground hover:text-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
-				Importar CSV
+			<button
+				(click)="logs()"
+				class="bg-muted text-muted-foreground hover:text-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
+				Historial
 			</button>
 			<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
 				<button
@@ -50,25 +52,13 @@
 			</div>
 		</div>
 		<div class="relative">
-			<input
-				type="date"
-				id="dateFrom"
-				class="peer block"
-				placeholder="dd/mm/yyyy"
-				[value]="fechaIni() | date: 'yyyy-MM-dd'"
-				(input)="onFechaInicioChange($event)" />
-			<label for="dateFrom" class="floating-label">Desde</label>
+			<ngx-flatpickr-wrapper [config]="configS" placeholder="dd/MM/yyyy"> </ngx-flatpickr-wrapper>
+			<label for="dateToS" class="floating-label">Desde</label>
 		</div>
 
 		<div class="relative">
-			<input
-				type="date"
-				id="dateTo"
-				class="peer block"
-				placeholder="dd/mm/yyyy"
-				[value]="fechaFin() | date: 'yyyy-MM-dd'"
-				(input)="onFechaFinChange($event)" />
-			<label for="dateTo" class="floating-label">Hasta</label>
+			<ngx-flatpickr-wrapper [config]="configF" placeholder="dd/MM/yyyy"> </ngx-flatpickr-wrapper>
+			<label for="dateToF" class="floating-label">Hasta</label>
 		</div>
 
 		<div class="inline-flex items-center space-x-2">
@@ -246,3 +236,5 @@
 
 <app-add-mod-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-contract>
 <app-update-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-update-contract>
+
+<app-contract-logs (save)="handleDataSave($event)" class="text-muted-foreground"> </app-contract-logs>

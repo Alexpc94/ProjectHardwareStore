@@ -23,16 +23,21 @@
 					<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
+
 			<div class="tooltip" [attr.data-tip]="contract.estado ? 'Modificar Contrato' : 'Contrato eliminado'">
-				<button (click)="updateContract()" class="block w-full px-1 py-1" [disabled]="!contract.estado">
+				<button
+					(click)="updateContract()"
+					class="block w-full px-1 py-1"
+					[disabled]="contract.stop || !contract.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>
-			@if(contract.estado){
+			@if(contract.estado ){
 			<div class="tooltip" data-tip="Dar de Baja">
 				<button
-					(click)="openModalToUpdateStatus(contract.codcon, contract.inquilino, contract.estado)"
-					class="block w-full px-1 py-1">
+					(click)="openModalToUpdateStatus(contract.codcon, contract.inquilino, contract.stop)"
+					class="block w-full px-1 py-1"
+					[disabled]="!contract.estado || contract.stop">
 					<svg-icon src="./assets/icons/usericons/delete-2-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
 			</div>

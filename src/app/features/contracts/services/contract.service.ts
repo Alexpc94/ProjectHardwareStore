@@ -34,6 +34,25 @@ export class ContractService {
 		};
 		return this._http.get<PaginatedResponse<contract>>(url, { params });
 	}
+	getLogs(
+		tipo_operacion: string,
+		buscar: string,
+		pageable: Pageable,
+		fechaini: Date,
+		fechafin: Date,
+	): Observable<PaginatedResponse<any>> {
+		const url = `${this.apiURL}/api/auditoria`;
+		const params = {
+			fechaini: this.formatDate(fechaini),
+			fechafin: this.formatDate(fechafin),
+			buscar,
+			tipo_operacion,
+			page: pageable.page,
+			size: pageable.size,
+			sort: pageable.sort,
+		};
+		return this._http.get<PaginatedResponse<any>>(url, { params });
+	}
 
 	getContractById(codcon: string): Observable<any> {
 		const params = new HttpParams().set('codcon', codcon);

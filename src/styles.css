@@ -5,6 +5,7 @@
 
 /** Plugins **/
 @import './assets/styles/apexchart.css';
+@import 'flatpickr/dist/flatpickr.min.css';
 
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
@@ -302,4 +303,18 @@ select {
   @apply bg-background text-muted-foreground peer-focus:text-primary absolute top-2 z-10 origin-[0] -translate-y-4 scale-95 transform px-2 text-sm duration-300
           peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100
           peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1;
+}
+
+/* Achica los selects de mes/año */
+.flatpickr-months select {
+  font-size: 0.75rem;
+  height: 1.5rem;
+  padding: 0.2rem;
+}
+
+.flatpickr-current-month {
+  font-size: 0.85rem;   
+  display: flex;        
+  align-items: center;
+  gap: 1.8rem;            
 }

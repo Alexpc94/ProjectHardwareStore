@@ -1,0 +1,45 @@
+@if (showModal) {
+<div class="modal modal-open">
+	<div class="modal-box bg-background border-border w-[85%] max-w-none border">
+		<h2 class="mb-4 text-lg font-bold">Auditoria Transacciones</h2>
+		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+		<div class="mb-4 flex flex-col space-y-4">
+			<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+				<div class="relative">
+					<label class="text-muted-foreground relative">
+						<div class="absolute left-2.5 top-2.5">
+							<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+						</div>
+						<input
+							name="search"
+							class="py-2 pl-8 pr-2"
+							placeholder="Buscar"
+							type="text"
+							value=""
+							(input)="onSearchChange($event)" />
+					</label>
+				</div>
+				<div class="relative">
+					<input
+						type="date"
+						id="dateFrom"
+						class="peer block"
+						[value]="fechaIni() | date: 'yyyy-MM-dd'"
+						(input)="onFechaInicioChange($event)" />
+					<label for="dateFrom" class="floating-label">Desde</label>
+				</div>
+
+				<div class="relative">
+					<input
+						type="date"
+						id="dateTo"
+						class="peer block"
+						[value]="fechaFin() | date: 'yyyy-MM-dd'"
+						(input)="onFechaFinChange($event)" />
+					<label for="dateTo" class="floating-label">Hasta</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+}

@@ -1,13 +1,17 @@
 import { Component, signal, effect, ViewChild } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
+
 import { DatePipe } from '@angular/common';
 
 import { contract } from '../../models/contracts.model';
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 import { TableRowComponent } from '../table-row/table-row.component';
 import { TableRowSonComponent } from '../table-row-son/table-row-son.component';
 import { AddModContractComponent } from '../add-mod-contract/add-mod-contract.component';
 import { UpdateContractComponent } from '../update-contract/update-contract.component';
+import { ContractLogsComponent } from '../contract-logs/contract-logs.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
@@ -18,6 +22,7 @@ import { ContractService } from '../../services/contract.service';
 	selector: 'app-list-contracts',
 	imports: [
 		DatePipe,
+		NgxFlatpickrWrapperComponent,
 		ToggleSwitchComponent,
 		TableFooterComponent,
 		SortHeaderComponent,
@@ -26,6 +31,7 @@ import { ContractService } from '../../services/contract.service';
 		TableRowSonComponent,
 		AddModContractComponent,
 		UpdateContractComponent,
+		ContractLogsComponent,
 	],
 	templateUrl: './list-contracts.component.html',
 	styleUrl: './list-contracts.component.css',
@@ -40,8 +46,8 @@ export class ListContractsComponent {
 
 	@ViewChild(AddModContractComponent) contractModal!: AddModContractComponent;
 	@ViewChild(UpdateContractComponent) contractUpdateModal!: UpdateContractComponent;
+	@ViewChild(ContractLogsComponent) contractLogs!: ContractLogsComponent;
 
-	selectedID: any = null;
 	contracts = signal<contract[]>([]);
 	contractDetail = signal<contract | null>(null);
 	totalContracts!: number;
@@ -74,6 +80,33 @@ export class ListContractsComponent {
 			});
 	}
 
+	configS = {
+		dateFormat: 'd/m/Y',
+		defaultDate: this.fechaIni(),
+		locale: Spanish,
+		allowInput: true,
+		onChange: (selectedDates: Date[]) => {
+			if (selectedDates.length) {
+				const date = selectedDates[0];
+				this.fechaIni.set(date);
+				this.currentPage.set(1);
+			}
+		},
+	};
+	configF = {
+		dateFormat: 'd/m/Y',
+		defaultDate: this.fechaFin(),
+		locale: Spanish,
+		allowInput: true,
+		onChange: (selectedDates: Date[]) => {
+			if (selectedDates.length) {
+				const date = selectedDates[0];
+				this.fechaFin.set(date);
+				this.currentPage.set(1);
+			}
+		},
+	};
+
 	onToggleChange(status: boolean) {
 		this.isActive.set(status);
 		this.currentPage.set(1);
@@ -83,25 +116,6 @@ export class ListContractsComponent {
 		const value = Number((event.target as HTMLInputElement).value);
 		this.isStop.set(value);
 		this.currentPage.set(1);
-	}
-
-	handleDateChange(event: Event, setter: (d: Date) => void): void {
-		const input = event.target as HTMLInputElement;
-		clearTimeout(this.DebounceTimer);
-		this.DebounceTimer = setTimeout(() => {
-			const [year, month, day] = input.value.split('-').map(Number);
-			const localDate = new Date(year, month - 1, day);
-			setter(localDate);
-			this.currentPage.set(1);
-		}, 1200);
-	}
-
-	onFechaInicioChange(event: Event): void {
-		this.handleDateChange(event, this.fechaIni.set);
-	}
-
-	onFechaFinChange(event: Event): void {
-		this.handleDateChange(event, this.fechaFin.set);
 	}
 
 	onSearchChange(event: Event) {
@@ -165,5 +179,9 @@ export class ListContractsComponent {
 
 	addUpdateContract(codcon?: string) {
 		codcon ? this.contractUpdateModal.open(codcon) : this.contractModal.open();
+	}
+
+	logs() {
+		this.contractLogs.open();
 	}
 }
