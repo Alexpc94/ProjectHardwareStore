@@ -53,8 +53,6 @@ export class AddModContractComponent implements OnInit {
 
 	showModal: boolean = false;
 	submitted: boolean = false;
-	selectedData?: contract;
-	selectedID?: string;
 	activeInput: string = '';
 
 	tenants: tenant[] = [];
@@ -93,8 +91,6 @@ export class AddModContractComponent implements OnInit {
 		});
 		this.submitted = false;
 		this.showModal = false;
-		this.selectedID = undefined;
-		this.selectedData = undefined;
 		this.activeInput = '';
 		this.filteredTenants = [...this.tenants];
 		this.filteredOwnerships = [...this.ownerships];
