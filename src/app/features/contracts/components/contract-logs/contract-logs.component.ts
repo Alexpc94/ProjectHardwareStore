@@ -1,14 +1,17 @@
 import { Component, signal, effect, ViewChild } from '@angular/core';
+import { KeyValuePipe } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { DatePipe } from '@angular/common';
+import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
+import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { contract } from '../../models/contracts.model';
 
 import { ContractService } from '../../services/contract.service';
 
 @Component({
 	selector: 'app-contract-logs',
-	imports: [DatePipe, AngularSvgIconModule],
+	imports: [KeyValuePipe, AngularSvgIconModule, NgxFlatpickrWrapperComponent, TableFooterComponent],
 	templateUrl: './contract-logs.component.html',
 	styleUrl: './contract-logs.component.css',
 })
@@ -21,6 +24,7 @@ export class ContractLogsComponent {
 	}
 
 	showModal: boolean = false;
+	totalLogs!: number;
 	logs = signal<any[]>([]);
 	fechaIni = signal<Date>(new Date());
 	fechaFin = signal<Date>(new Date());
@@ -29,14 +33,44 @@ export class ContractLogsComponent {
 	sortBy = signal<string>('id');
 	sortDirection = signal<'ASC' | 'DESC'>('ASC');
 	currentPage = signal<number>(1);
-	itemsPerPage = signal<number>(5);
+	itemsPerPage = signal<number>(1);
+
+	configS = {
+		dateFormat: 'd/m/Y',
+		defaultDate: this.fechaIni(),
+		locale: Spanish,
+		allowInput: true,
+		onChange: (selectedDates: Date[]) => {
+			if (selectedDates.length) {
+				const date = selectedDates[0];
+				this.fechaIni.set(date);
+				this.currentPage.set(1);
+			}
+		},
+	};
+
+	configF = {
+		dateFormat: 'd/m/Y',
+		defaultDate: this.fechaFin(),
+		locale: Spanish,
+		allowInput: true,
+		onChange: (selectedDates: Date[]) => {
+			if (selectedDates.length) {
+				const date = selectedDates[0];
+				this.fechaFin.set(date);
+				this.currentPage.set(1);
+			}
+		},
+	};
 
 	open(): void {
 		this.showModal = true;
+		this.loadLogs();
 	}
 
 	close() {
 		this.showModal = false;
+		this.logs.set([]);
 	}
 
 	loadLogs(): void {
@@ -52,7 +86,13 @@ export class ContractLogsComponent {
 			.getLogs(tipoOperacion, searchTerm, { page, size, sort }, fechaInicio, fechaFinal)
 			.subscribe((data) => {
 				this.logs.set(data.content);
-				console.log(this.logs());
+				const logsFormateados = this.logs().map((log: any) => ({
+					...log,
+					datos_anteriores_obj: log.datos_anteriores ? JSON.parse(log.datos_anteriores) : null,
+					datos_nuevos_obj: log.datos_nuevos ? JSON.parse(log.datos_nuevos) : null,
+				}));
+				this.logs.set(logsFormateados);
+				this.totalLogs = data.totalElements;
 			});
 	}
 
@@ -67,14 +107,6 @@ export class ContractLogsComponent {
 		}, 1200);
 	}
 
-	onFechaInicioChange(event: Event): void {
-		this.handleDateChange(event, this.fechaIni.set);
-	}
-
-	onFechaFinChange(event: Event): void {
-		this.handleDateChange(event, this.fechaFin.set);
-	}
-
 	onSearchChange(event: Event) {
 		const inputValue = (event.target as HTMLInputElement).value?.toLowerCase().trim();
 		const input = inputValue ? inputValue : ' ';
@@ -83,6 +115,15 @@ export class ContractLogsComponent {
 			this.search.set(input);
 			this.currentPage.set(1);
 		}, 500);
+		this.currentPage.set(1);
+	}
+
+	handlePageChange(page: number) {
+		this.currentPage.set(page);
+	}
+
+	handleItemsPerPageChange(count: number) {
+		this.itemsPerPage.set(count);
 		this.currentPage.set(1);
 	}
 }

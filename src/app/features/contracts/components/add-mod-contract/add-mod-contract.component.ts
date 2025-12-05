@@ -2,6 +2,8 @@ import { Component, EventEmitter, Output, ViewChild, inject, OnInit } from '@ang
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 import { contract } from '../../models/contracts.model';
 import { tenant } from '../../../tenants/models/tenant.model';
@@ -27,6 +29,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 	imports: [
 		ReactiveFormsModule,
 		SelectDropDownModule,
+		NgxFlatpickrWrapperComponent,
 		ValidationComponent,
 		ConfirmDialogComponent,
 		AngularSvgIconModule,
@@ -72,6 +75,12 @@ export class AddModContractComponent implements OnInit {
 			this.alertType = type;
 		}, 0);
 	}
+
+	configDate = {
+		dateFormat: 'd/m/Y',
+		locale: Spanish,
+		allowInput: true,
+	};
 
 	open(): void {
 		this.showModal = true;
@@ -217,13 +226,25 @@ export class AddModContractComponent implements OnInit {
 		this.confirmModal.show();
 	}
 
+	formatFlatpickrDate(dates?: Date[] | null): string | null {
+		if (!dates || !dates.length) return null;
+
+		const date = dates[0];
+		return date.toISOString().split('T')[0];
+	}
+
 	saveData(): void {
 		const { inquilino, ...values } = this.form.value;
+		const fechainiStr = this.formatFlatpickrDate(this.form.get('fechaini')?.value);
+		const fechafinStr = this.formatFlatpickrDate(this.form.get('fechafin')?.value);
+
 		const data: contract = {
 			...values,
 			codcliente: inquilino,
 			codresponsable: this.userData.otherParams.id,
 			fecha: this.userData.otherParams.fecha,
+			fechaini: fechainiStr,
+			fechafin: fechafinStr,
 			indefinido: values.indefinido ? 1 : 0,
 			dcontratos:
 				values.dcontratos?.map((item: any) => ({

@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output, ViewChild, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
+import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import { DatePipe } from '@angular/common';
 import { staff } from '../../../models/staff.model';
 import { ActionEvent } from '../../../models/Actions.model';
@@ -15,7 +17,14 @@ import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.compone
 import { StaffService } from '../../../services/staff.service';
 @Component({
 	selector: 'app-add-mod-staff',
-	imports: [ReactiveFormsModule, ValidationComponent, ConfirmDialogComponent, FileUploadComponent, AlertsComponent],
+	imports: [
+		ReactiveFormsModule,
+		NgxFlatpickrWrapperComponent,
+		ValidationComponent,
+		ConfirmDialogComponent,
+		FileUploadComponent,
+		AlertsComponent,
+	],
 	providers: [DatePipe],
 	templateUrl: './add-mod-staff.component.html',
 	styleUrl: './add-mod-staff.component.css',
@@ -45,6 +54,12 @@ export class AddModStaffComponent implements OnInit {
 			this.alertType = type;
 		}, 0);
 	}
+
+	configDate = {
+		dateFormat: 'd/m/Y',
+		locale: Spanish,
+		allowInput: true,
+	};
 
 	ngOnInit() {
 		this.buildForm();
@@ -128,12 +143,14 @@ export class AddModStaffComponent implements OnInit {
 
 	saveData(): void {
 		const { datebirth, photo, name, firstName, secondName, ...values } = this.form.value;
+		const fechaArray: Date[] = this.form.get('datebirth')?.value;
+		const fechaStr = fechaArray && fechaArray.length ? fechaArray[0].toISOString().split('T')[0] : null;
 		const data: staff = {
 			...values,
 			name: capitalizeWords(name),
 			firstName: capitalizeWords(firstName),
 			secondName: capitalizeWords(secondName),
-			dateBirth: datebirth,
+			dateBirth: fechaStr,
 			tipoper: this.selectedTipoper,
 		};
 		const formData = new FormData();

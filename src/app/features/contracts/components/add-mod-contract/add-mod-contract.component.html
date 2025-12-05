@@ -58,28 +58,27 @@
 							<app-validation [control]="f['fecha']" [submitted]="submitted"></app-validation>
 						</div>
 					</div>
+
 					<div class="mb-4 flex gap-2">
 						<div class="form__group relative w-full">
-							<input
-								type="date"
+							<ngx-flatpickr-wrapper
 								id="fechaini"
 								class="peer block"
-								placeholder=" "
+								placeholder="dd/MM/yyyy"
 								formControlName="fechaini"
-								onkeydown="return false"
-								onclick="this.showPicker && this.showPicker()" />
+								[config]="configDate">
+							</ngx-flatpickr-wrapper>
 							<label for="fechaini" class="floating-label"> Fecha Inicio</label>
 							<app-validation [control]="f['fechaini']" [submitted]="submitted"></app-validation>
 						</div>
 						<div class="form__group relative w-full">
-							<input
-								type="date"
+							<ngx-flatpickr-wrapper
 								id="fechafin"
 								class="peer block"
-								placeholder=" "
+								placeholder="dd/MM/yyyy"
 								formControlName="fechafin"
-								onkeydown="return false"
-								onclick="this.showPicker && this.showPicker()" />
+								[config]="configDate">
+							</ngx-flatpickr-wrapper>
 							<label for="fechafin" class="floating-label"> Fecha Fin</label>
 							<app-validation [control]="f['fechafin']" [submitted]="submitted"></app-validation>
 						</div>
