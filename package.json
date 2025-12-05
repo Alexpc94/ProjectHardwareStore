@@ -52,6 +52,7 @@
     "leaflet": "^1.9.4",
     "ng-apexcharts": "^1.7.1",
     "ngx-flatpickr-wrapper": "^20.0.1",
+    "ngx-mask": "^20.0.3",
     "ngx-select-dropdown": "^3.3.2",
     "ngx-select-ex": "^19.0.7",
     "ngx-sonner": "^2.0.1",

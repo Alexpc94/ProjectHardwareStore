@@ -43,14 +43,13 @@
 				</div>
 				<div class="form__group w-full">
 					<div class="relative">
-						<input
-							type="date"
+						<ngx-flatpickr-wrapper
 							id="datebirth"
 							class="peer block"
-							placeholder=" "
+							placeholder="dd/MM/yyyy"
 							formControlName="datebirth"
-							onkeydown="return false"
-							onclick="this.showPicker && this.showPicker()" />
+							[config]="configDate">
+						</ngx-flatpickr-wrapper>
 						<label for="datebirth" class="floating-label"> Fecha Nacimiento </label>
 					</div>
 					<app-validation [control]="f['datebirth']" [submitted]="submitted"></app-validation>
