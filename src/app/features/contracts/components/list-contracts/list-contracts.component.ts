@@ -180,8 +180,4 @@ export class ListContractsComponent {
 	addUpdateContract(codcon?: string) {
 		codcon ? this.contractUpdateModal.open(codcon) : this.contractModal.open();
 	}
-
-	logs() {
-		this.contractLogs.open();
-	}
 }
