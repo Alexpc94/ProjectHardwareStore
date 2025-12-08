@@ -1,17 +1,17 @@
-import { Component, signal, effect, ViewChild } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { KeyValuePipe } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
+import { DatePipe } from '@angular/common';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
-import { contract } from '../../models/contracts.model';
 
 import { ContractService } from '../../services/contract.service';
 
 @Component({
 	selector: 'app-contract-logs',
-	imports: [KeyValuePipe, AngularSvgIconModule, NgxFlatpickrWrapperComponent, TableFooterComponent],
+	imports: [KeyValuePipe, DatePipe, AngularSvgIconModule, NgxFlatpickrWrapperComponent, TableFooterComponent],
 	templateUrl: './contract-logs.component.html',
 	styleUrl: './contract-logs.component.css',
 })
@@ -23,9 +23,10 @@ export class ContractLogsComponent {
 		});
 	}
 
-	showModal: boolean = false;
+	logDescriptionModalOpen = false;
 	totalLogs!: number;
 	logs = signal<any[]>([]);
+	selectedLog = signal<any | null>(null);
 	fechaIni = signal<Date>(new Date());
 	fechaFin = signal<Date>(new Date());
 	search = signal<string>(' ');
@@ -33,7 +34,7 @@ export class ContractLogsComponent {
 	sortBy = signal<string>('id');
 	sortDirection = signal<'ASC' | 'DESC'>('ASC');
 	currentPage = signal<number>(1);
-	itemsPerPage = signal<number>(1);
+	itemsPerPage = signal<number>(10);
 
 	configS = {
 		dateFormat: 'd/m/Y',
@@ -63,16 +64,6 @@ export class ContractLogsComponent {
 		},
 	};
 
-	open(): void {
-		this.showModal = true;
-		this.loadLogs();
-	}
-
-	close() {
-		this.showModal = false;
-		this.logs.set([]);
-	}
-
 	loadLogs(): void {
 		const tipoOperacion = this.optionType();
 		const fechaInicio = this.fechaIni();
@@ -93,6 +84,7 @@ export class ContractLogsComponent {
 				}));
 				this.logs.set(logsFormateados);
 				this.totalLogs = data.totalElements;
+				//console.log(this.logs());
 			});
 	}
 
@@ -125,5 +117,27 @@ export class ContractLogsComponent {
 	handleItemsPerPageChange(count: number) {
 		this.itemsPerPage.set(count);
 		this.currentPage.set(1);
+	}
+
+	onTypeChange(event: Event) {
+		const select = event.target as HTMLSelectElement;
+		this.optionType.set(select.value);
+		this.currentPage.set(1);
+	}
+
+	ListLogsH(id: number) {
+		const logEncontrado = this.logs().find((l) => l.id === id);
+		this.selectedLog.set({
+			...logEncontrado,
+			datos_anteriores_obj: logEncontrado.datos_anteriores ? JSON.parse(logEncontrado.datos_anteriores) : null,
+			datos_nuevos_obj: logEncontrado.datos_nuevos ? JSON.parse(logEncontrado.datos_nuevos) : null,
+		});
+		//console.log(this.selectedLog());
+		this.logDescriptionModalOpen = true;
+	}
+
+	closeDescriptionModal(): void {
+		this.logDescriptionModalOpen = false;
+		this.selectedLog.set(null);
 	}
 }

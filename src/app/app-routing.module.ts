@@ -35,6 +35,13 @@ const routes: Routes = [
 				loadComponent: () => import('./core/modules/logos/logos.component').then((m) => m.LogosComponent),
 			},
 			{
+				path: 'logs',
+				loadComponent: () =>
+					import('./features/contracts/components/contract-logs/contract-logs.component').then(
+						(m) => m.ContractLogsComponent,
+					),
+			},
+			{
 				path: 'passUpdate',
 				loadComponent: () =>
 					import('./core/modules/auth/pages/update-password/update-password.component').then(

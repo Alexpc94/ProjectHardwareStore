@@ -87,6 +87,11 @@ export function generateDynamicMenu(menuData: any[], id_role: number): MenuItem[
 				route: '/logos',
 			},
 			{
+				icon: 'assets/icons/usericons/list-check-svgrepo-com.svg',
+				label: 'Historial',
+				route: '/logs',
+			},
+			{
 				icon: 'assets/icons/heroicons/outline/bell.svg',
 				label: 'Alertas',
 				route: '/gift',

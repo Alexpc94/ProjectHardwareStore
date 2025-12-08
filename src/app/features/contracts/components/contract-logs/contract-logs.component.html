@@ -1,117 +1,148 @@
-@if (showModal) {
-<div class="modal modal-open">
-	<div class="modal-box bg-background border-border w-[85%] max-w-none border">
-		<h2 class="mb-4 text-lg font-bold">Auditoria Transacciones</h2>
-
-		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-		<div class="mb-4 flex flex-col space-y-4">
-			<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
-				<div class="relative">
-					<label class="text-muted-foreground relative">
-						<div class="absolute left-2.5 top-2.5">
-							<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
-						</div>
-						<input
-							name="search"
-							class="py-2 pl-8 pr-2"
-							placeholder="Buscar"
-							type="text"
-							value=""
-							(input)="onSearchChange($event)" />
-					</label>
-				</div>
-				<div class="relative">
-					<ngx-flatpickr-wrapper class="peer block" id="dateFrom" [config]="configS" placeholder="dd/MM/yyyy">
-					</ngx-flatpickr-wrapper>
-					<label for="dateFrom" class="floating-label">Desde</label>
-				</div>
-
-				<div class="relative">
-					<ngx-flatpickr-wrapper class="peer block" id="dateTo" [config]="configS" placeholder="dd/MM/yyyy">
-					</ngx-flatpickr-wrapper>
-					<label for="dateTo" class="floating-label">Hasta</label>
-				</div>
-			</div>
+<div class="mb-4 flex flex-col space-y-4">
+	<div class="flex items-center justify-between">
+		<div class="inline-block">
+			<h3 class="text-foreground font-semibold">Auditoria Transacciones</h3>
 			<div class="text-muted-foreground space-x-1 text-xs font-medium">
-				Total Registros: <span class="text-foreground">{{ totalLogs }}</span>
+				<div class="text-muted-foreground space-x-1 text-xs font-medium">
+					Total Registros: <span class="text-foreground">{{ totalLogs }}</span>
+				</div>
 			</div>
 		</div>
+	</div>
+	<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+		<div class="inline-flex items-center space-x-2">
+			<div class="relative max-w-xs">
+				<label
+					for="type"
+					class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
+					Tipo de Operacion
+				</label>
+				<select
+					id="type"
+					name="type"
+					class="text-muted-foreground w-40! mt-2 rounded border p-2"
+					(change)="onTypeChange($event)">
+					<option value=" " selected>Todos</option>
+					<option value="UDPATE">Actualizados</option>
+					<option value="DELETE">Eliminados</option>
+					<option value="STOP">Parados</option>
+				</select>
+			</div>
+			<div class="relative">
+				<ngx-flatpickr-wrapper class="peer block" id="dateFrom" [config]="configS" placeholder="dd/MM/yyyy">
+				</ngx-flatpickr-wrapper>
+				<label for="dateFrom" class="floating-label">Desde</label>
+			</div>
 
-		<div
-			class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted mx-auto flex grow overflow-x-auto">
-			<table class="text-muted-foreground table w-full table-auto border-collapse text-left align-middle leading-5">
-				<thead class="text-muted-foreground text-xs">
-					<tr>
-						<th>Informacion</th>
-						<th>Datos Nuevos</th>
-						<th>Datos Anteriores</th>
-					</tr>
-				</thead>
-				<tbody>
-					@for (log of logs(); track $index) {
-					<tr class="border-border border-b text-xs">
-						<td>
-							<div class="card space-y-3 shadow-md">
-								<div>
-									<h3 class="font-bold">Usuario</h3>
-									<div class="mt-1 space-y-1">
-										<p>
-											<span class="font-semibold">Nombre:</span> {{ log.person.firstName }} {{ log.person.secondName }}
-											{{ log.person.name }}
-										</p>
-										<p><span class="font-semibold">CI:</span> {{ log.person.cedula }}</p>
-										<p><span class="font-semibold">Teléfono:</span> {{ log.person.telephone }}</p>
-									</div>
-								</div>
-
-								<div>
-									<h3 class="font-bold">Transacción</h3>
-									<div class="mt-1 space-y-1">
-										<p><span class="font-semibold">Tabla:</span> {{ log.nombre_tabla }}</p>
-										<p><span class="font-semibold">Momento:</span> {{ log.momento_transaccion }}</p>
-										<p><span class="font-semibold">Descripcion:</span> {{ log.descripcion }}</p>
-									</div>
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="card space-y-3 shadow-md">
-								<div class="mt-1 space-y-1">
-									@for (item of log.datos_nuevos_obj | keyvalue; track $index) {
-									<p>
-										<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
-										{{ item.value }}
-									</p>
-									}
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="card space-y-3 shadow-md">
-								<div class="mt-1 space-y-1">
-									@for (item of log.datos_anteriores_obj | keyvalue; track $index) {
-									<p>
-										<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
-										{{ item.value }}
-									</p>
-									}
-								</div>
-							</div>
-						</td>
-					</tr>
-					}
-				</tbody>
-			</table>
+			<div class="relative">
+				<ngx-flatpickr-wrapper class="peer block" id="dateTo" [config]="configS" placeholder="dd/MM/yyyy">
+				</ngx-flatpickr-wrapper>
+				<label for="dateTo" class="floating-label">Hasta</label>
+			</div>
 		</div>
-		<app-table-footer
-			[totalItems]="totalLogs"
-			[itemsPerPage]="itemsPerPage()"
-			[currentPage]="currentPage()"
-			(pageChange)="handlePageChange($event)"
-			(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
+	</div>
+</div>
+<div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
+	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
+		<h3 class="text-muted-foreground text-sm font-medium">Mostrando {{ logs().length }} de {{ totalLogs }} datos</h3>
+		<div class="flex flex-wrap gap-2">
+			<div class="flex">
+				<label class="text-muted-foreground relative">
+					<div class="absolute left-2.5 top-2.5">
+						<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+					</div>
+					<input
+						name="search"
+						class="py-2 pl-8 pr-2"
+						placeholder="Buscar"
+						type="text"
+						value=""
+						(input)="onSearchChange($event)" />
+				</label>
+			</div>
+		</div>
+	</div>
+	<div
+		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5">
+		<table class="text-muted-foreground table w-full table-auto border-collapse text-left align-middle leading-5">
+			<thead class="text-muted-foreground text-xs">
+				<tr>
+					<th>id</th>
+					<th>tipo operacion</th>
+					<th>nombre usuario</th>
+					<th>nombre tabla</th>
+					<th>Registro is</th>
+					<th>Det. transaccion</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (log of logs(); track $index) {
+				<tr class="border-border border-b text-xs">
+					<td>{{ log.registro_id }}</td>
+					<td>{{ log.tipo_operacion }}</td>
+					<td class="min-w-[200px]">
+						<div class="flex flex-col items-start">
+							<span class="text-foreground text-sm font-semibold">
+								{{ log.person.firstName }} {{ log.person.secondName }} {{ log.person.name }}</span
+							>
+							<span class="text-muted-foreground/70 text-xs font-medium"> CI: {{ log.person.cedula }} </span>
+							<span class="text-muted-foreground/70 text-xs font-medium"> Telefono: {{ log.person.telephone }} </span>
+						</div>
+					</td>
+					<td>{{ log.nombre_tabla }}</td>
+					<td>{{ log.momento_transaccion | date: 'dd/MM/yyyy' }}</td>
+					<td>
+						<button (click)="ListLogsH(log.id)" class="block w-full px-1 py-0.5">
+							<svg-icon src="./assets/icons/heroicons/outline/information-circle.svg" [svgClass]="'h-5 w-5'">
+							</svg-icon>
+						</button>
+					</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+	<app-table-footer
+		[totalItems]="totalLogs"
+		[itemsPerPage]="itemsPerPage()"
+		[currentPage]="currentPage()"
+		(pageChange)="handlePageChange($event)"
+		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
+</div>
+@if(logDescriptionModalOpen){
+<div class="modal modal-open">
+	<div class="modal-box bg-background border-border max-w-md border">
+		<button (click)="closeDescriptionModal()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-		<div class="modal-action">
-			<button type="button" class="btn" (click)="close()">Cerrar</button>
+		<div class="stats bg-base-100 border-base-300 border">
+			<div class="stat">
+				<div class="stat-title text-base font-semibold text-gray-600">Datos Actuales</div>
+				<div class="space-y-1 text-sm leading-relaxed">
+					@for (item of selectedLog().datos_nuevos_obj | keyvalue; track item.key) {
+					<p>
+						<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
+						{{ item.value }}
+					</p>
+					}
+				</div>
+			</div>
+
+			<div class="stat">
+				<div class="stat-title text-base font-semibold text-gray-600">Datos anteriores</div>
+				<div class="space-y-1 text-sm leading-relaxed">
+					@for (item of selectedLog().datos_anteriores_obj | keyvalue; track $index) {
+					<p>
+						<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
+						{{ item.value }}
+					</p>
+					}
+				</div>
+			</div>
+		</div>
+		Detalle: {{ selectedLog().descripcion }}
+
+		<div class="mt-6 flex justify-end gap-2">
+			<button class="btn" (click)="closeDescriptionModal()">Cerrar</button>
 		</div>
 	</div>
 </div>
