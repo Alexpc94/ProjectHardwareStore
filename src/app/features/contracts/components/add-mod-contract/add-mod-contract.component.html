@@ -193,19 +193,18 @@
 							</div>
 						</li>
 						<div formArrayName="dcontratos">
-							<li class="font-bold tracking-wide opacity-90">
+							<li class="font-bold tracking-wide">
 								detalles de contrato
 								<div class="tooltip" data-tip="Nuevo">
-									<button type="button" class="btn btn-success btn-sm" (click)="addDetail()">
+									<button type="button" class="btn btn-primary btn-sm" (click)="addDetail()">
 										<svg-icon src="assets/icons/heroicons/outline/plus.svg" [svgClass]="'h-5 w-5 text-foreground'">
 										</svg-icon>
 									</button>
 								</div>
 								@if(dcontratos.length > 0){
 								<div class="tooltip" data-tip="quitar">
-									<button type="button" class="btn btn-error btn-sm" (click)="removeDetail(dcontratos.length - 1)">
-										<svg-icon src="assets/icons/heroicons/outline/minus.svg" [svgClass]="'h-5 w-5 text-foreground'">
-										</svg-icon>
+									<button type="button" class="btn btn-sm" (click)="removeDetail(dcontratos.length - 1)">
+										<svg-icon src="assets/icons/heroicons/outline/minus.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 									</button>
 								</div>
 								}
