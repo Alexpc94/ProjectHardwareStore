@@ -113,25 +113,23 @@
 <div class="modal modal-open">
 	<div class="modal-box bg-background border-border max-w-md border">
 		<button (click)="closeDescriptionModal()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-
-		<div class="stats bg-base-100 border-base-300 border">
+		<div class="stats bg-card mt-4 w-full rounded-md">
 			<div class="stat">
 				<div class="stat-title text-base font-semibold text-gray-600">Datos Actuales</div>
 				<div class="space-y-1 text-sm leading-relaxed">
 					@for (item of selectedLog().datos_nuevos_obj | keyvalue; track item.key) {
-					<p>
+					<p class="text-muted-foreground">
 						<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
 						{{ item.value }}
 					</p>
 					}
 				</div>
 			</div>
-
 			<div class="stat">
 				<div class="stat-title text-base font-semibold text-gray-600">Datos anteriores</div>
 				<div class="space-y-1 text-sm leading-relaxed">
 					@for (item of selectedLog().datos_anteriores_obj | keyvalue; track $index) {
-					<p>
+					<p class="text-muted-foreground">
 						<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
 						{{ item.value }}
 					</p>
@@ -139,7 +137,7 @@
 				</div>
 			</div>
 		</div>
-		Detalle: {{ selectedLog().descripcion }}
+		<p class="text-muted-foreground">Detalle: {{ selectedLog().descripcion }}</p>
 
 		<div class="mt-6 flex justify-end gap-2">
 			<button class="btn" (click)="closeDescriptionModal()">Cerrar</button>

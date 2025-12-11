@@ -11,7 +11,7 @@ import { TableRowComponent } from '../table-row/table-row.component';
 import { TableRowSonComponent } from '../table-row-son/table-row-son.component';
 import { AddModContractComponent } from '../add-mod-contract/add-mod-contract.component';
 import { UpdateContractComponent } from '../update-contract/update-contract.component';
-import { ContractLogsComponent } from '../contract-logs/contract-logs.component';
+
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
@@ -31,7 +31,6 @@ import { ContractService } from '../../services/contract.service';
 		TableRowSonComponent,
 		AddModContractComponent,
 		UpdateContractComponent,
-		ContractLogsComponent,
 	],
 	templateUrl: './list-contracts.component.html',
 	styleUrl: './list-contracts.component.css',
@@ -46,7 +45,6 @@ export class ListContractsComponent {
 
 	@ViewChild(AddModContractComponent) contractModal!: AddModContractComponent;
 	@ViewChild(UpdateContractComponent) contractUpdateModal!: UpdateContractComponent;
-	@ViewChild(ContractLogsComponent) contractLogs!: ContractLogsComponent;
 
 	contracts = signal<contract[]>([]);
 	contractDetail = signal<contract | null>(null);
