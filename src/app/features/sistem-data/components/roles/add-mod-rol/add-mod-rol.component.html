@@ -1,0 +1,43 @@
+@if (showModal) {
+<div class="modal modal-open">
+	<div class="modal-box bg-background border-border border">
+		<h3 class="mb-4 text-lg font-bold">Detalles del Rol</h3>
+		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+		<form [formGroup]="form" >
+			
+				<div class="form__group w-full">
+					<div class="relative">
+						<input
+							type="text"
+							id="name"
+							class="peer block"
+							placeholder=" "
+							formControlName="name"
+							autocomplete="given-name" />
+						<label for="name" class="floating-label"> Nombre </label>
+					</div>
+					<app-validation [control]="f['name']" [submitted]="submitted"></app-validation>
+				</div>
+				<br>
+
+				<div class="form__group w-full">
+					<div class="relative">
+						<input type="text" id="description" class="peer block" placeholder=" " formControlName="description" />
+						<label for="description" class="floating-label"> Descripción </label>
+					</div>
+					<app-validation [control]="f['description']" [submitted]="submitted"></app-validation>
+				</div>
+				
+
+			
+
+			<div class="modal-action">
+				<button type="button" class="btn" (click)="close()">Cerrar</button>
+				<button type="button" class="btn btn-primary" (click)="onPreSubmit()">Aceptar</button>
+			</div>
+		</form>
+	</div>
+	<app-confirm-dialog #confirmModal [message]="'¿Estás seguro?'" (confirm)="saveData()"></app-confirm-dialog>
+</div>
+}

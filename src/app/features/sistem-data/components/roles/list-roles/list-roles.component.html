@@ -1,1 +1,140 @@
-<h3 class="text-foreground">list-roles works!</h3>
+<div class="mb-4 flex justify-between">
+	<div class="inline-block">
+			<h3 class="text-foreground font-semibold">Roles de Empresa</h3>
+			<div class="text-muted-foreground space-x-1 text-xs font-medium">
+				<a href="" class="hover:text-primary">Total Roles:</a>
+				<span class="text-foreground">{{ totalRoles() }}</span>
+			</div>
+	</div>
+
+	<div class="inline-flex items-center space-x-2">
+		<app-toggle-switch [checked]="isActive" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
+		<p class="text-muted-foreground font-semibold">{{ isActive ? 'Activos' : 'Inactivos' }}</p>
+
+	</div>
+
+	<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
+				<button
+					class="bg-primary text-primary-foreground flex-none rounded-md px-4 py-2.5 text-xs font-semibold"
+					(click)="addRol()">
+					Nuevo Rol
+				</button>
+	</div>
+	
+</div>
+<app-add-mod-rol (save)="addModSave($event)"> </app-add-mod-rol>
+
+
+
+<div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
+
+	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
+		<h3 class="text-muted-foreground text-sm font-medium">
+			Mostrando {{ filteredData().length }} de {{ totalRoles() }} roles
+		</h3>
+		<div class="flex flex-wrap gap-2">
+			<div class="flex">
+				<label class="text-muted-foreground relative">
+					<div class="absolute left-2.5 top-2.5">
+						<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+					</div>
+					<input
+						name="search"
+						class="py-2 pl-8 pr-2"
+						placeholder="Buscar"
+						type="text"
+						value=""
+						(input)="onSearchChange($event)" />
+				</label>
+			</div>
+		</div>
+	</div>
+
+	
+	<div
+		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5 relative z-0">
+		<table
+			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
+			<thead class="border-muted/20 text-muted-foreground border text-xs bg-gray-50">
+				<tr>
+					<th class="min-w-[300px]">
+						<app-sort-header
+							[label]="'Nombre del Rol'"
+							[sortField]="'name'"
+							[data]="roles()"
+							(sortedData)="roles.set($event)"></app-sort-header>
+					</th>
+					<th>
+						<app-sort-header
+							[label]="'Description'"
+							[sortField]="'description'"
+							[data]="roles()"
+							(sortedData)="roles.set($event)"></app-sort-header>
+					</th>
+						<th>Estado</th>
+					<th class="min-w-[100px]">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (rol of paginatedData(); track $index ) {
+					<tr class="hover:bg-card/50 border-b border-muted/20 " (save)="handleDataSave($event)" >
+              			<td>{{ rol.name }}</td>
+              			<td>{{ rol.description }}</td>
+						<td>
+							<span
+								class="rounded-[30px] px-2 py-0.5 text-xs font-medium"
+								[class]="rol.status ? 'bg-green-500/10 text-green-800' : 'bg-red-500/10 text-red-800'">
+								{{ rol.status ? 'Activo' : 'Inactivo' }}
+							</span>
+						</td>
+						<td>
+							<div class="flex">
+								<div class="tooltip" [attr.data-tip]="rol.status ? 'Modificar Rol' : 'Usuario inactivo'">
+									<button (click)="addUpdateRol(rol.id_role)" class="block w-full px-1 py-1" [disabled]="!rol.status">
+										<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+									</button>
+								</div>
+								<div class="tooltip" [attr.data-tip]="rol.status ? 'Dar de Baja' : 'Habilitar'">
+									<button class="block w-full px-1 py-1 relative z-50"
+										(click)="
+											openModalToUpdateStatus(rol.id_role, rol.name, rol.status)
+										"
+										class="block w-full px-1 py-1">
+										<svg-icon
+											[src]="
+												rol.status
+													? './assets/icons/usericons/delete-2-svgrepo-com.svg'
+													: './assets/icons/tablericons/repeat.svg'
+											"
+											[svgClass]="'h-5 w-5'">
+										</svg-icon>
+									</button>
+								</div>
+
+								
+							</div>
+						</td>
+					</tr>
+				} @empty {
+				<tr>
+					<td class="py-4 text-center text-sm" colspan="7">No hay roles</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+		<app-table-footer
+		[totalItems]="filteredData().length"
+		[itemsPerPage]="itemsPerPage()"
+		[currentPage]="currentPage()"
+		(pageChange)="handlePageChange($event)"
+		(itemsPerPageChange)="handleItemsPerPageChange($event)">
+		</app-table-footer>
+	</div>
+<app-confirm-change-status
+	#confirmDialog
+	[name]="selectedRol?.name"
+	[message]="confirmDialog.message"
+	(confirm)="changeStatus()">
+</app-confirm-change-status>
+	
+</div>
