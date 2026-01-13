@@ -36,7 +36,7 @@ export class ListRolesComponent implements OnInit {
   isActive: boolean = true;
   alertType: any;
   selectedRol: any;
-	selectedID: any = null;
+  selectedID: any = null;
   addRol(): void {
       
 		this.addUpdateRol();
@@ -59,7 +59,8 @@ export class ListRolesComponent implements OnInit {
 		const { id, status } = this.selectedRol;
 		this.rolesService.removeRole(id).subscribe({
 			next: (response) => {
-				this.save.emit({ action: status ? 'delete' : 'enable', success: true, id: id });
+				// this.save.emit({ action: status ? 'delete' : 'enable', success: true, id: id }) esta linea la borre y la cambie por loadroles porque en vez de guardar directamente lo actualizo ahi
+				this.loadRoles(this.isActive);
 				this.showAlert('success');
 			},
 			error: (err) => {
@@ -134,9 +135,12 @@ export class ListRolesComponent implements OnInit {
 				this.loadRoles(this.isActive);
 				break;
 			case 'edit':
-				this.roles.update((roles) => roles.map((rol) => (rol === res.id ? { ...rol, ...res.data } : rol)));
+				this.roles.update((roles) => roles.map((rol) => (rol.id_role === res.id ? { ...rol, ...res.data } : rol)));
 				break;
 			case 'delete':
+			case 'enable':
+				
+     			 break;
 	
 		}
 	}

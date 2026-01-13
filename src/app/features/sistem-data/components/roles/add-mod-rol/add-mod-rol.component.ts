@@ -102,12 +102,12 @@ export class AddModRolComponent implements OnInit  {
 	}
 
 	saveData(): void {
-		const {name, description, status } = this.form.value;
-		const data: roles = {
+		const {name, description } = this.form.value;
+		const data: Partial<roles> = {
 			id_role: 1, // backend lo genera usualmente
 			name: this.capitalizeWords(name),
 			description: this.capitalizeWords(description),
-			status,
+			
 			
 		};
 		
@@ -125,7 +125,14 @@ export class AddModRolComponent implements OnInit  {
 				},
 			});
 		} else {
-				this._getRoleService.createRole(data).subscribe({
+				const createData: roles = {
+				id_role: 0,
+				name: this.capitalizeWords(name),
+				description: this.capitalizeWords(description),
+				status: true
+				};
+
+				this._getRoleService.createRole(createData).subscribe({
 					next: (response) => {
 						//console.log('User added:', response);
 						this.save.emit({ action: 'add', success: true, data });
