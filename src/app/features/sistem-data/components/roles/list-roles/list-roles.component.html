@@ -22,7 +22,7 @@
 	</div>
 	
 </div>
-<app-add-mod-rol (save)="addModSave($event)"> </app-add-mod-rol>
+
 
 
 
@@ -30,7 +30,7 @@
 
 	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
 		<h3 class="text-muted-foreground text-sm font-medium">
-			Mostrando {{ filteredData().length }} de {{ totalRoles() }} roles
+			Mostrando {{ paginatedData().length }} de {{ totalRoles() }} roles
 		</h3>
 		<div class="flex flex-wrap gap-2">
 			<div class="flex">
@@ -55,7 +55,7 @@
 		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5 relative z-0">
 		<table
 			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
-			<thead class="border-muted/20 text-muted-foreground border text-xs bg-gray-50">
+			<thead class="border-muted/20 text-muted-foreground border text-xs">
 				<tr>
 					<th class="min-w-[300px]">
 						<app-sort-header
@@ -77,8 +77,8 @@
 			</thead>
 			<tbody>
 				@for (rol of paginatedData(); track $index ) {
-					<tr class="hover:bg-card/50 border-b border-muted/20 " (save)="handleDataSave($event)" >
-              			<td>{{ rol.name }}</td>
+					<tr class="hover:bg-card/50 border-b border-muted/20 " >
+              			<td class="text-foreground text-sm font-semibold">{{ rol.name }}</td>
               			<td>{{ rol.description }}</td>
 						<td>
 							<span
@@ -121,6 +121,7 @@
 				</tr>
 				}
 			</tbody>
+		
 		</table>
 		<app-table-footer
 		[totalItems]="filteredData().length"
@@ -138,3 +139,4 @@
 </app-confirm-change-status>
 	
 </div>
+<app-add-mod-rol (save)="handleDataSave($event)"></app-add-mod-rol>
