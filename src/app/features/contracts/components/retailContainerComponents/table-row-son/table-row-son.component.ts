@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { decinalFormat } from 'src/app/shared/utils/number-format';
-import { ContractDetail } from '../../models/contracts.model';
+import { reatailContainerDetail } from '../../../models/retailContainer.model';
 
 @Component({
 	selector: '[app-table-row-son]',
@@ -10,6 +10,6 @@ import { ContractDetail } from '../../models/contracts.model';
 	styleUrl: './table-row-son.component.css',
 })
 export class TableRowSonComponent {
-	@Input() contractDetail!: ContractDetail;
+	@Input() rcontainerDetail!: reatailContainerDetail;
 	decinalFormat = decinalFormat;
 }

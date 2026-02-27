@@ -3,14 +3,14 @@ import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } 
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 
-import { contract } from '../../models/contracts.model';
-import { ActionEvent } from '../../models/actions.model';
+import { contract } from '../../../models/contracts.model';
+import { ActionEvent } from '../../../models/actions.model';
 
 import { ValidationComponent } from 'src/app/shared/components/validation/validation.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
-import { ContractService } from '../../services/contract.service';
+import { ContractService } from '../../../services/contract.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
