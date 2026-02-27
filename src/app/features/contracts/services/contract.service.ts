@@ -13,6 +13,13 @@ export class ContractService {
 	private apiURL = `${environment.apiUrl}`;
 	_http = inject(HttpClient);
 
+	private formatDate(date: Date): string {
+		if (!date || isNaN(date.getTime())) {
+			return new Date().toISOString().split('T')[0];
+		}
+		return date.toISOString().split('T')[0];
+	}
+
 	getContracts(
 		estado: number,
 		stop: number,
@@ -58,13 +65,6 @@ export class ContractService {
 		const params = new HttpParams().set('codcon', codcon);
 		const url = `${this.apiURL}/api/mcontratos/data`;
 		return this._http.get<{ data: any }>(url, { params }).pipe(map((response) => response));
-	}
-
-	private formatDate(date: Date): string {
-		if (!date || isNaN(date.getTime())) {
-			return new Date().toISOString().split('T')[0];
-		}
-		return date.toISOString().split('T')[0];
 	}
 
 	addContractrData(data: contract): Observable<ApiResponse<contract>> {

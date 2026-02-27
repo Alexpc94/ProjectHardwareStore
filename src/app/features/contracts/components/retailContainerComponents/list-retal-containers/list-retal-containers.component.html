@@ -1,0 +1,212 @@
+<div class="mb-4 flex flex-col space-y-4">
+	<div class="flex items-center justify-between">
+		<div class="inline-block">
+			<h3 class="text-foreground font-semibold">Gestión contrato de acoplados</h3>
+			<div class="text-muted-foreground space-x-1 text-xs font-medium">
+				<!-- Total Registros: <span class="text-foreground">{{ totalContracts }}</span> -->
+			</div>
+		</div>
+
+		<div class="inline-flex space-x-4">
+			<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
+				<button class="bg-primary text-primary-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
+					Nuevo Contrato Acoplado
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+		<div class="inline-flex items-center space-x-2">
+			<div class="relative">
+				<label class="flex items-center gap-2" for="stopV">
+					<input
+						type="radio"
+						id="stopV"
+						name="stop"
+						value="0"
+						class="radio radio-xs"
+						[checked]="isStop() === 0"
+						(change)="onChangeStop($event)" />
+					<span class="text-muted-foreground text-sm">Cto. Vigente</span>
+				</label>
+
+				<label class="flex items-center gap-2" for="stopF">
+					<input
+						type="radio"
+						id="stopF"
+						name="stop"
+						value="1"
+						class="radio radio-xs"
+						[checked]="isStop() === 1"
+						(change)="onChangeStop($event)" />
+					<span class="text-muted-foreground text-sm">Cto. Finalizado</span>
+				</label>
+			</div>
+		</div>
+		<div class="relative">
+			<ngx-flatpickr-wrapper [config]="configS" placeholder="dd/MM/yyyy"> </ngx-flatpickr-wrapper>
+			<label for="dateToS" class="floating-label">Desde</label>
+		</div>
+
+		<div class="relative">
+			<ngx-flatpickr-wrapper [config]="configF" placeholder="dd/MM/yyyy"> </ngx-flatpickr-wrapper>
+			<label for="dateToF" class="floating-label">Hasta</label>
+		</div>
+
+		<div class="inline-flex items-center space-x-2">
+			<app-toggle-switch [checked]="isActive()" (checkedChange)="onToggleChange($event)"></app-toggle-switch>
+			<p class="text-muted-foreground font-semibold">
+				{{ isActive() ? 'Estado Activo' : 'Estado Inactivos' }}
+			</p>
+		</div>
+	</div>
+</div>
+<div class="border-muted/20 bg-background flex min-w-full flex-col rounded-xl border p-2">
+	<div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
+		<h3 class="text-muted-foreground text-sm font-medium">
+			Mostrando {{ RContainers().length }} de {{ totalRContainers }} contratos
+		</h3>
+		<div class="flex flex-wrap gap-2">
+			<div class="flex">
+				<label class="text-muted-foreground relative">
+					<div class="absolute left-2.5 top-2.5">
+						<svg-icon src="./assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+					</div>
+					<input
+						name="search"
+						class="py-2 pl-8 pr-2"
+						placeholder="Buscar"
+						type="text"
+						value=""
+						(input)="onSearchChange($event)" />
+				</label>
+			</div>
+		</div>
+	</div>
+
+	<div
+		class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted grow overflow-x-auto px-5">
+		<table
+			class="text-muted-foreground table w-full table-auto border-collapse border-0 text-left align-middle leading-5">
+			<thead class="border-muted/20 text-muted-foreground border text-xs">
+				<tr>
+					<th>
+						<app-sort-header
+							[label]="'#'"
+							[sortField]="'contador'"
+							[data]="RContainers()"
+							(sortedData)="RContainers.set($event)"></app-sort-header>
+					</th>
+					<th class="min-w-[100px]">Codigo</th>
+					<th class="min-w-[110px]">
+						<app-sort-header
+							[label]="'Fecha.'"
+							[sortField]="'fecha'"
+							[data]="RContainers()"
+							(sortedData)="RContainers.set($event)"></app-sort-header>
+					</th>
+					<th class="min-w-[200px]">
+						<app-sort-header
+							[label]="'Inquilino'"
+							[sortField]="'inquilino'"
+							[data]="RContainers()"
+							(sortedData)="RContainers.set($event)"></app-sort-header>
+					</th>
+					<th>Monto</th>
+					<th>Estado</th>
+					<th class="min-w-[100px]">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (rcontainer of RContainers(); track $index) {
+				<tr
+					class="border-border hover:bg-card/50 border-b"
+					app-table-row
+					[rcontainer]="rcontainer"
+					(save)="handleDataSave($event)"
+					(addModModal)="addUpdateContract($event)"
+					(dependencyList)="dependencyListContract($event)"></tr>
+				@if (rcontainer.coda == RContainerDetail()?.coda){
+				<tr>
+					<td colspan="8">
+						<div class="mx-auto flex w-3/4 flex-col space-y-1">
+							<div class="flex items-center justify-between">
+								<h3 class="text-foreground text-lg font-semibold">Detalle de Contratos</h3>
+							</div>
+
+							<div class="border-border bg-card text-muted-foreground rounded-xl border p-3 text-sm shadow-sm">
+								<div class="grid grid-cols-2 gap-1">
+									<div>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Inquilino <span class="text-foreground font-normal">{{ RContainerDetail()?.inquilino }}</span>
+										</p>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Monto total
+											<span class="text-foreground font-normal">{{ decinalFormat(RContainerDetail()?.monto) }}</span>
+										</p>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Obs <span class="text-foreground font-normal">{{ RContainerDetail()?.obs }}</span>
+										</p>
+									</div>
+
+									<div>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Encargado <span class="text-foreground font-normal">{{ RContainerDetail()?.persona_resp }}</span>
+										</p>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Fecha Elaboracion
+											<span class="text-foreground font-normal">{{
+												RContainerDetail()?.fechareg | date: 'dd/MM/yyyy'
+											}}</span>
+										</p>
+										<p class="text-muted-foreground/70 text-xs font-medium">
+											Fecha
+											<span class="text-foreground font-normal">{{
+												RContainerDetail()?.fecha | date: 'dd/MM/yyyy'
+											}}</span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div
+							class="scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted mx-auto flex w-3/4 grow overflow-x-auto">
+							<table
+								class="text-muted-foreground table w-full table-auto border-collapse text-left align-middle leading-5">
+								<thead class="text-muted-foreground text-xs">
+									<tr>
+										<th class="min-w-[250px]">Rubros Secundarios</th>
+										<th>Importe (Bs)</th>
+									</tr>
+								</thead>
+								<tbody>
+									@for (rcontainerDetail of RContainerDetail()?.dacoplados; track $index) {
+									<tr
+										class="border-border hover:bg-card/50 border-b text-xs"
+										app-table-row-son
+										[rcontainerDetail]="rcontainerDetail"></tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					</td>
+				</tr>
+				} } @empty {
+				<tr>
+					<td class="py-4 text-center text-sm" colspan="7">No hay usuarios</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+	<app-table-footer
+		[totalItems]="totalRContainers"
+		[itemsPerPage]="itemsPerPage()"
+		[currentPage]="currentPage()"
+		(pageChange)="handlePageChange($event)"
+		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
+</div>
+<!-- 
+<app-add-mod-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-contract>
+<app-update-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-update-contract> -->

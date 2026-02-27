@@ -4,7 +4,7 @@ import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
 
 import { DatePipe } from '@angular/common';
 
-import { contract } from '../../models/contracts.model';
+import { contract } from '../../../models/contracts.model';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 import { TableRowComponent } from '../table-row/table-row.component';
@@ -17,7 +17,7 @@ import { TableFooterComponent } from 'src/app/shared/components/table-footer/tab
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { decinalFormat } from 'src/app/shared/utils/number-format';
 
-import { ContractService } from '../../services/contract.service';
+import { ContractService } from '../../../services/contract.service';
 @Component({
 	selector: 'app-list-contracts',
 	imports: [

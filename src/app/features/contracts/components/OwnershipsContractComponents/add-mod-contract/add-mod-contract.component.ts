@@ -5,11 +5,11 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
-import { contract } from '../../models/contracts.model';
-import { tenant } from '../../../tenants/models/tenant.model';
-import { freeOwnership } from '../../../rentals/models/ownership.model';
-import { BSector } from '../../../business-sectors/models/BSectort.model';
-import { ActionEvent } from '../../models/actions.model';
+import { contract } from '../../../models/contracts.model';
+import { tenant } from '../../../../tenants/models/tenant.model';
+import { freeOwnership } from '../../../../rentals/models/ownership.model';
+import { BSector } from '../../../../business-sectors/models/BSectort.model';
+import { ActionEvent } from '../../../models/actions.model';
 
 import { capitalizeWords } from 'src/app/shared/utils/stringData';
 
@@ -18,10 +18,10 @@ import { CustomValidators } from 'src/app/shared/components/validation/custom-va
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.component';
 
-import { ContractService } from '../../services/contract.service';
-import { TenantService } from '../../../tenants/services/tenant.service';
-import { RentalService } from '../../../rentals/services/rentals.service';
-import { BusinessSectorsService } from '../../../business-sectors/services/businessSectors.service';
+import { ContractService } from '../../../services/contract.service';
+import { TenantService } from '../../../../tenants/services/tenant.service';
+import { RentalService } from '../../../../rentals/services/rentals.service';
+import { BusinessSectorsService } from '../../../../business-sectors/services/businessSectors.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
