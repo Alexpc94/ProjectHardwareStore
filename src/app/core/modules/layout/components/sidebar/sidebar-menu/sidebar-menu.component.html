@@ -9,6 +9,7 @@
 		<li *ngFor="let item of menu.items">
 			<!-- Menu List -->
 			<div
+				
 				(click)="toggleMenu(item)"
 				[ngClass]="{
 					'hover:bg-primary/10': !menuService.showSideBar && item.active,
@@ -48,6 +49,7 @@
 							class="text-muted-foreground group-hover:text-primary truncate text-xs font-semibold tracking-wide focus:outline-hidden">
 							{{ item.label }}
 						</a>
+						
 					</div>
 				</ng-template>
 
