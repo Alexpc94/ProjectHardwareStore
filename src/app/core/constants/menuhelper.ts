@@ -58,6 +58,7 @@ export function generateDynamicMenu(menuData: any[], id_role: number): MenuItem[
 				children: [
 					{ label: 'Personal', route: '/sistem/staff' },
 					{ label: 'Roles', route: '/sistem/roles' },
+					{ label: 'Menus', route: '/sistem/menus' },
 				],
 			},
 			{
