@@ -1,6 +1,6 @@
 @if (showModal) {
 <div class="modal modal-open">
-	<div class="modal-box bg-background border-border border">
+	<div class="modal-box  menu-modal-box bg-background border-border border">
 		<h3 class="mb-4 text-lg font-bold">Detalles del Menu</h3>
 		<button (click)="close()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
@@ -109,27 +109,32 @@
 						<!-- Lista desplegable -->
 						@if (iconDropdownOpen) {
 							<div
-							class="border-border bg-background text-foreground animate-fade-in-down absolute left-0 top-full z-50 max-h-60 w-full overflow-y-auto border px-2 py-1 text-xs shadow-md">
+								class="border-border bg-background text-foreground animate-fade-in-down absolute left-0 top-full z-[100] mt-1 w-full rounded-md border p-1 text-xs shadow-md">
 
-							@for (str of iconos; track str.icono) {
-								<button
-								type="button"
-								class="hover:bg-primary hover:text-primary-foreground flex w-full items-center gap-2 rounded-sm px-2 py-2 text-left transition-colors duration-150"
-								[class.bg-primary]="form.get('icono')?.value === str.icono"
-								[class.text-primary-foreground]="form.get('icono')?.value === str.icono"
-								(click)="selectIcon(str)">
+								<div
+								class="icon-options-scroll scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
 
-								<img
-									[src]="str.icono"
-									[alt]="str.name"
-									class="h-4 w-4 shrink-0 object-contain"
-								/>
+								@for (str of iconos; track str.icono) {
+									<button
+									type="button"
+									class="hover:bg-primary hover:text-primary-foreground flex h-9 w-full items-center gap-2 rounded-sm px-2 text-left transition-colors duration-150"
+									[class.bg-primary]="form.get('icono')?.value === str.icono"
+									[class.text-primary-foreground]="form.get('icono')?.value === str.icono"
+									(click)="selectIcon(str)">
 
-								<span class="truncate">
-									{{ str.name }}
-								</span>
-								</button>
-							}
+									<img
+										[src]="str.icono"
+										[alt]="str.name"
+										class="h-4 w-4 shrink-0 object-contain"
+									/>
+
+									<span class="truncate">
+										{{ str.name }}
+									</span>
+									</button>
+								}
+
+								</div>
 							</div>
 						}
 
@@ -138,7 +143,6 @@
 				</div>
 
 			
-
 			<div class="modal-action">
 				<button type="button" class="btn" (click)="close()">Cerrar</button>
 				<button type="button" class="btn btn-primary" (click)="onPreSubmit()">Aceptar</button>
