@@ -1,0 +1,10 @@
+.menu-modal-box {
+  max-height: none !important;
+  overflow: visible !important;
+}
+.icon-options-scroll {
+  /* 10 opciones de 36 px */
+  max-height: 22.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
