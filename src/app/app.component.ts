@@ -10,7 +10,7 @@ import { ResponsiveHelperComponent } from './shared/components/responsive-helper
   imports: [RouterOutlet, ResponsiveHelperComponent, NgxSonnerToaster],
 })
 export class AppComponent {
-  title = 'Angular Tailwind';
+  title = 'C.R.A.M.A. Mercado Campesino.';
 
   constructor(public themeService: ThemeService) {}
 }
