@@ -10,11 +10,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TableFilterService } from '../../../services/table-filter.service';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
+import { MenuAssignmentComponent } from '../menu-assignment/menu-assignment.component';
 
 @Component({
   selector: 'app-list-roles',
   standalone: true,
-  imports: [CommonModule, SortHeaderComponent, ToggleSwitchComponent,AddModRolComponent,AngularSvgIconModule,TableFooterComponent,ConfirmChangeStatusComponent,],
+  imports: [CommonModule, SortHeaderComponent, ToggleSwitchComponent,AddModRolComponent,AngularSvgIconModule,TableFooterComponent,ConfirmChangeStatusComponent,MenuAssignmentComponent,],
   templateUrl: './list-roles.component.html',
   styleUrl: './list-roles.component.css'
 })
@@ -28,6 +29,8 @@ export class ListRolesComponent implements OnInit {
 
 @ViewChild(AddModRolComponent) rolModal!: AddModRolComponent;
 @ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
+@ViewChild(MenuAssignmentComponent) MenuAssignmentModal!: MenuAssignmentComponent;
+
 
   roles=signal<roles[]>([]);
   totalRoles = computed(() => this.roles().length);
@@ -159,4 +162,11 @@ export class ListRolesComponent implements OnInit {
 		this.save.emit(res);
 		this.showAlert('success');
 	}
+
+	menuAssignment(rol: roles) {
+		this.MenuAssignmentModal.open(rol);
+	}
+
+	roleAssignmentUpdated(res: any) {}
+
 }
