@@ -116,6 +116,11 @@
 										<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 									</button>
 								</div>
+								<div class="tooltip" [attr.data-tip]="rol.status ? 'Asignar submenús al menú' : 'Menú inactivo'">
+									<button (click)="submenuAssignment(rol)" class="block w-full px-1 py-1" [disabled]="!rol.status">
+										<svg-icon src="assets/icons/usericons/list-check-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+									</button>
+								</div>
 								<div class="tooltip" [attr.data-tip]="rol.status ? 'Dar de Baja' : 'Habilitar'">
 									<button class="block w-full px-1 py-1 relative z-50"
 										(click)="
@@ -166,3 +171,4 @@
 (save)="handleDataSave($event)">
 
 </app-add-mod-menu>
+<app-submenu-assignment></app-submenu-assignment>
