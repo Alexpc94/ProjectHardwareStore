@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { menus } from '../models/menus.model';
+import { assignedSubmenus, submenus } from '../models/submenus.model';
 import { iconos } from '../models/iconos.model';
 
 @Injectable({
@@ -16,6 +17,26 @@ export class MenusService {
 		const url = `${this.apiURL}/api/menu/${status}`;
 		return this._http.get<{ data: menus[] }>(url).pipe(map((response) => response.data));
 	}
+	getAssignedSubmenus(idMenu: number): Observable<assignedSubmenus[]> {
+		const url = `${this.apiURL}/api/menu/submenu/siasignados/${idMenu}`;
+		return this._http.get<{ data: assignedSubmenus[] }>(url).pipe(map((response) => response.data));
+	}
+
+	getUnassignedSubmenus(idMenu: number): Observable<submenus[]> {
+		const url = `${this.apiURL}/api/menu/submenu/noasignados/${idMenu}`;
+		return this._http.get<{ data: submenus[] }>(url).pipe(map((response) => response.data));
+	}
+
+	assignSubmenu(data: { id_menu: number; id_submenu: number }): Observable<any> {
+		const url = `${this.apiURL}/api/menu/submenu/grant`;
+		return this._http.post<any>(url, data);
+	}
+
+	deleteSubmenu(idMesub: number): Observable<any> {
+		const url = `${this.apiURL}/api/menu/submenu/revoke/${idMesub}`;
+		return this._http.delete<any>(url);
+	}
+
 	getIconos(): Observable<iconos[]> {
 		const url = `${this.apiURL}/api/iconos`;
 	

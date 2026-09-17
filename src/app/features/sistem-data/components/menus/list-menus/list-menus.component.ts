@@ -6,6 +6,7 @@ import { iconos } from '../../../models/iconos.model';
 import { SortHeaderComponent } from 'src/app/shared/components/sort-header/sort-header.component';
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { AddModMenuComponent } from '../add-mod-menu/add-mod-menu.component';
+import { SubmenuAssignmentComponent } from '../submenu-assignment/submenu-assignment.component';
 import { ActionEvent } from '../../../models/Actions.model';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TableFilterService } from '../../../services/table-filter.service';
@@ -17,7 +18,7 @@ import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-list-menus',
   standalone: true,
-  imports: [CommonModule, SortHeaderComponent, ToggleSwitchComponent,AddModMenuComponent,AngularSvgIconModule,TableFooterComponent,ConfirmChangeStatusComponent,],
+  imports: [CommonModule, SortHeaderComponent, ToggleSwitchComponent,AddModMenuComponent,AngularSvgIconModule,TableFooterComponent,ConfirmChangeStatusComponent,SubmenuAssignmentComponent,],
   templateUrl: './list-menus.component.html',
   styleUrl: './list-menus.component.css'
 })
@@ -31,6 +32,7 @@ export class ListMenusComponent implements OnInit {
   @Input() icono!: iconos;
 
 @ViewChild(AddModMenuComponent) menuModal!: AddModMenuComponent;
+@ViewChild(SubmenuAssignmentComponent) submenuAssignmentModal!: SubmenuAssignmentComponent;
 @ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
   storageUrl = environment.storageUrl;
@@ -50,6 +52,10 @@ export class ListMenusComponent implements OnInit {
 		this.selectedID = menuID ?? null;
 		this.menuModal.open(this.selectedID,this.isActive);
 	}
+
+  submenuAssignment(menu: menus) {
+    this.submenuAssignmentModal.open(menu);
+  }
 
   getIcon(photo: string): string {
 	  return photo.startsWith('/') ? photo : '/' + photo;
