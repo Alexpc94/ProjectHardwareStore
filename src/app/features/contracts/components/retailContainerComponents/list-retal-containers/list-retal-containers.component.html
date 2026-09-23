@@ -9,7 +9,9 @@
 
 		<div class="inline-flex space-x-4">
 			<div class="tooltip tooltip-bottom" data-tip="Agregar Usuario">
-				<button class="bg-primary text-primary-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
+				<button
+					(click)="addUpdateContract()"
+					class="bg-primary text-primary-foreground rounded-md px-4 py-2.5 text-xs font-semibold">
 					Nuevo Contrato Acoplado
 				</button>
 			</div>
@@ -207,6 +209,6 @@
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
-<!-- 
-<app-add-mod-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-add-mod-contract>
-<app-update-contract (save)="handleDataSave($event)" class="text-muted-foreground"> </app-update-contract> -->
+
+<app-add-mod-rcontainer-contract (save)="handleDataSave($event)" class="text-muted-foreground">
+</app-add-mod-rcontainer-contract>

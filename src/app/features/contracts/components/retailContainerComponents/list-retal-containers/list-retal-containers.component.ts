@@ -4,11 +4,12 @@ import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
 
 import { DatePipe } from '@angular/common';
 
-import { reatailContainer } from '../../../models/retailContainer.model';
+import { retailContainer } from '../../../models/retailContainer.model';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 import { TableRowComponent } from '../table-row/table-row.component';
 import { TableRowSonComponent } from '../table-row-son/table-row-son.component';
+import { AddModRContainerContractComponent } from '../add-mod-rcontainer-contract/add-mod-rcontainer-contract.component';
 
 import { ToggleSwitchComponent } from 'src/app/shared/components/toggle-switch/toggle-switch.component';
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
@@ -28,6 +29,7 @@ import { retailContainerService } from '../../../services/retailContainer.servic
 		AngularSvgIconModule,
 		TableRowComponent,
 		TableRowSonComponent,
+		AddModRContainerContractComponent,
 	],
 	templateUrl: './list-retal-containers.component.html',
 	styleUrl: './list-retal-containers.component.css',
@@ -40,8 +42,11 @@ export class ListRetalContainersComponent {
 		});
 	}
 
-	RContainers = signal<reatailContainer[]>([]);
-	RContainerDetail = signal<reatailContainer | null>(null);
+	@ViewChild(AddModRContainerContractComponent) containerContractModal!: AddModRContainerContractComponent;
+
+	selectedID?: string;
+	RContainers = signal<retailContainer[]>([]);
+	RContainerDetail = signal<retailContainer | null>(null);
 	totalRContainers!: number;
 	isActive = signal<boolean>(true);
 	isStop = signal<number>(0);
@@ -140,7 +145,7 @@ export class ListRetalContainersComponent {
 		this.currentPage.set(1);
 	}
 
-	dependencyListContract(reatailContainer: reatailContainer) {
+	dependencyListContract(reatailContainer: retailContainer) {
 		this.RContainerDetail.set(this.RContainerDetail()?.coda === reatailContainer.coda ? null : reatailContainer);
 	}
 
@@ -171,7 +176,8 @@ export class ListRetalContainersComponent {
 		}
 	}
 
-	addUpdateContract(codcon?: string) {
-		// codcon ? this.contractUpdateModal.open(codcon) : this.contractModal.open();
+	addUpdateContract(coda?: string) {
+		this.selectedID = coda ?? '';
+		this.containerContractModal.open(this.selectedID);
 	}
 }

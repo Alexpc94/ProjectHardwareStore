@@ -87,7 +87,14 @@ export class AddModContractComponent implements OnInit {
 	}
 
 	toggleInput(type: string) {
-		this.activeInput = this.activeInput === type ? '' : type;
+		const isClosing = this.activeInput === type;
+
+		this.activeInput = isClosing ? '' : type;
+
+		if (isClosing && type.startsWith('codc-')) {
+			const index = Number(type.split('-')[1]);
+			this.searchTerms[index] = '';
+		}
 		this.filteredTenants = [...this.tenants];
 		this.filteredOwnerships = [...this.ownerships];
 		this.filteredBsector = [...this.bSector];
@@ -98,6 +105,7 @@ export class AddModContractComponent implements OnInit {
 		this.form.patchValue({
 			fecha: this.userData.otherParams.fecha,
 		});
+		this.dcontratos.clear();
 		this.submitted = false;
 		this.showModal = false;
 		this.activeInput = '';

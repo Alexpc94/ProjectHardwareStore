@@ -23,14 +23,15 @@
 				</button>
 			</div>
 
-			<!-- <div class="tooltip" [attr.data-tip]="rcontainer.estado ? 'Modificar Contrato' : 'Contrato eliminado'">
+			<div class="tooltip" [attr.data-tip]="rcontainer.estado ? 'Modificar Contrato' : 'Contrato eliminado'">
 				<button
-					(click)="updateContract()"
+					(click)="updateContainerContract()"
 					class="block w-full px-1 py-1"
-					[disabled]="contract.stop || !contract.estado">
+					[disabled]="rcontainer.stop || !rcontainer.estado">
 					<svg-icon src="./assets/icons/usericons/add-svgrepo-com.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
 				</button>
-			</div> -->
+			</div>
+
 			@if(rcontainer.estado ){
 			<div class="tooltip" data-tip="Dar de Baja">
 				<button

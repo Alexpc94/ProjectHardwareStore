@@ -7,7 +7,7 @@ import { AlertsComponent } from 'src/app/shared/components/alerts/alerts.compone
 import { ConfirmChangeStatusComponent } from 'src/app/shared/components/confirm-change-status/confirm-change-status.component';
 import { decinalFormat } from 'src/app/shared/utils/number-format';
 
-import { reatailContainer } from './../../../models/retailContainer.model';
+import { retailContainer } from './../../../models/retailContainer.model';
 import { ActionEvent } from './../../../models/actions.model';
 
 import { retailContainerService } from '../../../services/retailContainer.service';
@@ -32,10 +32,10 @@ export class TableRowComponent {
 	_loginAccessService = inject(AuthService);
 	public userData: any = {};
 
-	@Input() rcontainer!: reatailContainer;
+	@Input() rcontainer!: retailContainer;
 	@Output() save = new EventEmitter<ActionEvent>();
 	@Output() addModModal = new EventEmitter<string>();
-	@Output() dependencyList = new EventEmitter<reatailContainer>();
+	@Output() dependencyList = new EventEmitter<retailContainer>();
 
 	@ViewChild('confirmDialog') confirmDialog!: ConfirmChangeStatusComponent;
 
@@ -77,11 +77,11 @@ export class TableRowComponent {
 		this.selectedUser = null;
 	}
 
-	// updateContract() {
-	// 	this.addModModal.emit(this.contract.codcon);
-	// }
+	updateContainerContract() {
+		this.addModModal.emit(this.rcontainer.coda);
+	}
 
-	selectRecursiveData(rcontainer: reatailContainer) {
+	selectRecursiveData(rcontainer: retailContainer) {
 		console.log('Selected rcontainer for dependencies:', rcontainer);
 		this.dependencyList.emit(rcontainer);
 	}

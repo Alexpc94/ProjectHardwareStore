@@ -5,7 +5,7 @@ export interface reatailContainerDetail {
 	estado: number;
 }
 
-export interface reatailContainer {
+export interface retailContainer {
 	coda: string;
 	gestion: number;
 	estado: number;
