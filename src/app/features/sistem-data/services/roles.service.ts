@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { roles } from '../models/roles.model';
+import { menus } from '../models/menus.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -23,6 +24,26 @@ export class RolesService {
 
 	deleteRole(idPerson: number, idRol: number): Observable<any> {
 		const url = `${this.apiURL}/api/role/revoke/${idRol}/${idPerson}`;
+		return this._http.delete<any>(url);
+	}
+
+	getAssignedMenus(idRol: number): Observable<menus[]> {
+		const url = `${this.apiURL}/api/role/menu/siasignados/${idRol}`;
+		return this._http.get<{ data: menus[] }>(url).pipe(map((response) => response.data));
+	}
+
+	getUnassignedMenus(idRol: number): Observable<menus[]> {
+		const url = `${this.apiURL}/api/role/menu/noasignados/${idRol}`;
+		return this._http.get<{ data: menus[] }>(url).pipe(map((response) => response.data));
+	}
+
+	assignMenu(data: { id_role: number; id_menu: number }): Observable<any> {
+		const url = `${this.apiURL}/api/role/menu/grant`;
+		return this._http.post<any>(url, data);
+	}
+
+	deleteMenu(idRol: number, idMenu: number): Observable<any> {
+		const url = `${this.apiURL}/api/role/menu/revoke/${idRol}/${idMenu}`;
 		return this._http.delete<any>(url);
 	}
 
