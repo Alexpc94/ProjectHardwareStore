@@ -44,7 +44,7 @@ export class retailContainerService {
 
 	getRContainersById(coda: string): Observable<any> {
 		const params = new HttpParams().set('coda', coda);
-		const url = `${this.apiURL}/api/mcontratos/data`;
+		const url = `${this.apiURL}/api/macoplados/data`;
 		return this._http.get<{ data: any }>(url, { params }).pipe(map((response) => response));
 	}
 
@@ -62,6 +62,12 @@ export class retailContainerService {
 	stopContainerContract(coda: string, data: any): Observable<retailContainer> {
 		const params = new HttpParams().set('coda', coda);
 		const url = `${this.apiURL}/api/macoplados/stop`;
+		return this._http.put<retailContainer>(url, data, { params });
+	}
+
+	stopRContainerData(coda: string, data: any): Observable<retailContainer> {
+		const params = new HttpParams().set('coda', coda);
+		const url = `${this.apiURL}/api/macoplados`;
 		return this._http.put<retailContainer>(url, data, { params });
 	}
 }
