@@ -160,9 +160,7 @@ export class ListRetalContainersComponent {
 				);
 				break;
 			case 'edit':
-				this.RContainers.update((RContainers) =>
-					RContainers.map((RContainer) => (RContainer.coda === res.id ? { ...RContainer, ...res.data } : RContainer)),
-				);
+				this.loadRContainers();
 				break;
 			case 'delete':
 			case 'enable':
