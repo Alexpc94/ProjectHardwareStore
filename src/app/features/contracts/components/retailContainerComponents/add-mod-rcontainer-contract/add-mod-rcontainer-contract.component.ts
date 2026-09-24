@@ -53,6 +53,7 @@ export class AddModRContainerContractComponent {
 	showModal: boolean = false;
 	activeInput: string = '';
 	submitted: boolean = false;
+	selectedID?: string;
 
 	tenants: tenant[] = [];
 	filteredTenants: tenant[] = [];
@@ -75,17 +76,18 @@ export class AddModRContainerContractComponent {
 		allowInput: true,
 	};
 
-	open(selectedID: string): void {
-		this.isEditing = !!selectedID;
-		if (selectedID) {
-			this._getRetailContainerService.getRContainersById(selectedID).subscribe((data) => {
+	open(rcontainerID: string): void {
+		this.isEditing = !!rcontainerID;
+		if (rcontainerID) {
+			this._getRetailContainerService.getRContainersById(rcontainerID).subscribe((data) => {
 				this.selectedRCData = data.data;
-				console.log(this.selectedRCData);
+				this.selectedID = rcontainerID;
 				this.patchForm();
 			});
 		}
 		this.showModal = true;
 	}
+
 	close() {
 		this.form.reset();
 		this.form.patchValue({
@@ -94,9 +96,9 @@ export class AddModRContainerContractComponent {
 		this.dacoplados.clear();
 		this.submitted = false;
 		this.showModal = false;
+		this.selectedID = undefined;
 		this.activeInput = '';
 		this.filteredTenants = [...this.tenants];
-		//this.filteredOwnerships = [...this.ownerships];
 		this.filteredBsector = [...this.bSector];
 		this.searchTerms = [];
 	}
@@ -122,6 +124,29 @@ export class AddModRContainerContractComponent {
 		this.getTenants();
 		// this.getFreeOwnerships();
 		this.getBusinessSectorFiltered();
+	}
+
+	patchForm(): void {
+		if (!this.selectedRCData) {
+			return;
+		}
+
+		this.form.patchValue({
+			fecha: this.selectedRCData.fecha,
+			obs: this.selectedRCData.obs,
+			inquilino: Number((this.selectedRCData.inquilino as any).id),
+		});
+
+		this.dacoplados.clear();
+
+		this.selectedRCData.dacoplados?.forEach((item: any) => {
+			this.dacoplados.push(
+				this._formBuilder.group({
+					codc: [item.codc, Validators.required],
+					importe: [item.importe, [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+				}),
+			);
+		});
 	}
 
 	getTenants(): void {
@@ -184,7 +209,7 @@ export class AddModRContainerContractComponent {
 
 	buildForm(): void {
 		this.form = this._formBuilder.group({
-			gestion: new FormControl('', [Validators.required]),
+			//gestion: new FormControl('', [Validators.required]),
 			fecha: new FormControl(this.userData.otherParams.fecha),
 			obs: new FormControl(''),
 			inquilino: new FormControl('', [Validators.required]), //codcliente
@@ -227,21 +252,33 @@ export class AddModRContainerContractComponent {
 					...item,
 				})) || [],
 		};
-		this._getRetailContainerService.addRContainerData(data).subscribe({
-			next: () => {
-				this.save.emit({ action: 'add', success: true, data });
-				this.close();
-				this.showAlert('success');
-			},
-			error: (error) => {
-				// if (this.handleNombreError(error)) return;
-				// if (this.handleCodpreError(error)) return;
-				this.save.emit({ action: 'add', success: false });
-				this.showAlert('error');
-			},
-		});
+
+		if (this.isEditing) {
+			this._getRetailContainerService.stopRContainerData(this.selectedID!, data).subscribe({
+				next: () => {
+					this.save.emit({ action: 'edit', success: true, data, id: this.selectedID });
+					this.close();
+					this.showAlert('success');
+				},
+				error: (error) => {
+					this.save.emit({ action: 'edit', success: false });
+					this.showAlert('error');
+				},
+			});
+		} else {
+			this._getRetailContainerService.addRContainerData(data).subscribe({
+				next: () => {
+					this.save.emit({ action: 'add', success: true, data });
+					this.close();
+					this.showAlert('success');
+				},
+				error: (error) => {
+					this.save.emit({ action: 'add', success: false });
+					this.showAlert('error');
+				},
+			});
+		}
+
 		console.log('shego esto', data);
 	}
-
-	patchForm(): void {}
 }
