@@ -10,7 +10,7 @@
 		</div>
 	</div>
 	<div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
-		<div class="inline-flex items-center space-x-2">
+		<div class="flex flex-wrap items-center gap-2">
 			<div class="relative max-w-xs">
 				<label
 					for="type"
@@ -21,9 +21,11 @@
 					id="type"
 					name="type"
 					class="text-muted-foreground w-40! mt-2 rounded border p-2"
+					[value]="optionType()"
 					(change)="onTypeChange($event)">
-					<option value=" " selected>Todos</option>
-					<option value="UDPATE">Actualizados</option>
+					<option value=" ">Todos</option>
+					<option value="INSERT">Insertados</option>
+					<option value="UPDATE">Actualizados</option>
 					<option value="DELETE">Eliminados</option>
 					<option value="STOP">Parados</option>
 				</select>
@@ -35,7 +37,7 @@
 			</div>
 
 			<div class="relative">
-				<ngx-flatpickr-wrapper class="peer block" id="dateTo" [config]="configS" placeholder="dd/MM/yyyy">
+				<ngx-flatpickr-wrapper class="peer block" id="dateTo" [config]="configF" placeholder="dd/MM/yyyy">
 				</ngx-flatpickr-wrapper>
 				<label for="dateTo" class="floating-label">Hasta</label>
 			</div>
@@ -67,36 +69,70 @@
 		<table class="text-muted-foreground table w-full table-auto border-collapse text-left align-middle leading-5">
 			<thead class="text-muted-foreground text-xs">
 				<tr>
-					<th>id</th>
-					<th>tipo operacion</th>
-					<th>nombre usuario</th>
-					<th>nombre tabla</th>
-					<th>Registro is</th>
-					<th>Det. transaccion</th>
+					<th>Fecha</th>
+					<th>Usuario</th>
+					<th>Tipo de operacion</th>
+					<th>Registro afectado</th>
+					<th>Descripcion</th>
+					<th>Dat. anterior</th>
+					<th>Dat. posterior</th>
+					<th>Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
 				@for (log of logs(); track $index) {
 				<tr class="border-border border-b text-xs">
-					<td>{{ log.registro_id }}</td>
-					<td>{{ log.tipo_operacion }}</td>
+					<td class="min-w-[140px]">{{ log.momento_transaccion | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
 					<td class="min-w-[200px]">
 						<div class="flex flex-col items-start">
 							<span class="text-foreground text-sm font-semibold">
-								{{ log.person.firstName }} {{ log.person.secondName }} {{ log.person.name }}</span
+								{{ log.person?.firstName }} {{ log.person?.secondName }} {{ log.person?.name }}</span
 							>
-							<span class="text-muted-foreground/70 text-xs font-medium"> CI: {{ log.person.cedula }} </span>
-							<span class="text-muted-foreground/70 text-xs font-medium"> Telefono: {{ log.person.telephone }} </span>
+							<span class="text-muted-foreground/70 text-xs font-medium">CI: {{ log.person?.cedula }}</span>
+							<span class="text-muted-foreground/70 text-xs font-medium">Telefono: {{ log.person?.telephone }}</span>
 						</div>
 					</td>
-					<td>{{ log.nombre_tabla }}</td>
-					<td>{{ log.momento_transaccion | date: 'dd/MM/yyyy' }}</td>
+					<td>{{ log.tipo_operacion }}</td>
+					<td>{{ log.nombre_tabla }}: {{ log.registro_id }}</td>
 					<td>
-						<button (click)="ListLogsH(log.id)" class="block w-full px-1 py-0.5">
-							<svg-icon src="./assets/icons/heroicons/outline/information-circle.svg" [svgClass]="'h-5 w-5'">
-							</svg-icon>
+						<button
+							(click)="ListLogsH(log.id)"
+							class="block max-w-xs truncate text-left"
+							title="Ver descripcion completa">
+							{{ log.descripcion || 'Sin descripcion' }}
 						</button>
 					</td>
+					<td>
+						<button
+							(click)="ListLogsH(log.id, 'previous')"
+							class="block w-full px-1 py-0.5"
+							aria-label="Ver datos anteriores"
+							title="Ver datos anteriores">
+							<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-5 w-5'"></svg-icon>
+						</button>
+					</td>
+					<td>
+						<button
+							(click)="ListLogsH(log.id, 'current')"
+							class="block w-full px-1 py-0.5"
+							aria-label="Ver datos posteriores"
+							title="Ver datos posteriores">
+							<svg-icon src="./assets/icons/heroicons/outline/eye.svg" [svgClass]="'h-5 w-5'"></svg-icon>
+						</button>
+					</td>
+					<td>
+						<button
+							(click)="ListLogsH(log.id)"
+							class="block w-full px-1 py-0.5"
+							aria-label="Ver detalle de transaccion"
+							title="Ver detalle de transaccion">
+							<svg-icon src="./assets/icons/heroicons/outline/information-circle.svg" [svgClass]="'h-5 w-5'"></svg-icon>
+						</button>
+					</td>
+				</tr>
+				} @empty {
+				<tr>
+					<td colspan="8" class="py-4 text-center text-sm">No hay transacciones</td>
 				</tr>
 				}
 			</tbody>
@@ -109,39 +145,77 @@
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
-@if(logDescriptionModalOpen){
-<div class="modal modal-open">
-	<div class="modal-box bg-background border-border max-w-md border">
-		<button (click)="closeDescriptionModal()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-		<div class="stats bg-card mt-4 w-full rounded-md">
-			<div class="stat">
-				<div class="stat-title text-base font-semibold text-gray-600">Datos Actuales</div>
-				<div class="space-y-1 text-sm leading-relaxed">
-					@for (item of selectedLog().datos_nuevos_obj | keyvalue; track item.key) {
-					<p class="text-muted-foreground">
-						<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
-						{{ item.value }}
-					</p>
-					}
-				</div>
-			</div>
-			<div class="stat">
-				<div class="stat-title text-base font-semibold text-gray-600">Datos anteriores</div>
-				<div class="space-y-1 text-sm leading-relaxed">
-					@for (item of selectedLog().datos_anteriores_obj | keyvalue; track $index) {
-					<p class="text-muted-foreground">
-						<span class="font-semibold capitalize"> {{ $any(item.key).replace('_', ' ') }}: </span>
-						{{ item.value }}
-					</p>
-					}
-				</div>
-			</div>
-		</div>
-		<p class="text-muted-foreground">Detalle: {{ selectedLog().descripcion }}</p>
+@if (logDescriptionModalOpen && selectedLog()) {
+<div class="modal modal-open" role="dialog" aria-modal="true" aria-labelledby="logModalTitle">
+	<div class="modal-box bg-background border-border border">
+		<h3 id="logModalTitle" class="mb-4 pr-6 text-lg font-semibold text-gray-900 dark:text-white">
+			{{
+				modalType === 'previous'
+					? 'Datos anteriores'
+					: modalType === 'current'
+					? 'Datos posteriores'
+					: 'Detalle de la Transaccion'
+			}}
+		</h3>
+		<button
+			(click)="closeDescriptionModal()"
+			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+			aria-label="Cerrar">
+			&#10005;
+		</button>
 
-		<div class="mt-6 flex justify-end gap-2">
-			<button class="btn" (click)="closeDescriptionModal()">Cerrar</button>
+		<div class="mb-4 space-y-4 text-sm text-gray-500 dark:text-gray-400">
+			@if (modalType === 'detail') {
+			<div class="space-y-1 break-words">
+				<p><span class="font-medium dark:text-white">Id:</span> {{ selectedLog().id }}</p>
+				<p>
+					<span class="font-medium dark:text-white">Fecha:</span>
+					{{ selectedLog().momento_transaccion | date: 'dd/MM/yyyy HH:mm:ss' }}
+				</p>
+				<p>
+					<span class="font-medium dark:text-white">Usuario:</span> {{ selectedLog().person?.firstName }}
+					{{ selectedLog().person?.secondName }} {{ selectedLog().person?.name }}
+				</p>
+				<p>
+					<span class="font-medium dark:text-white">Id usuario:</span>
+					{{ selectedLog().usuario_id ?? selectedLog().person?.id }}
+				</p>
+				<p><span class="font-medium dark:text-white">CI:</span> {{ selectedLog().person?.cedula }}</p>
+				<p><span class="font-medium dark:text-white">Telefono:</span> {{ selectedLog().person?.telephone }}</p>
+				<p><span class="font-medium dark:text-white">Tipo de operacion:</span> {{ selectedLog().tipo_operacion }}</p>
+				<p>
+					<span class="font-medium dark:text-white">Registro afectado:</span> {{ selectedLog().nombre_tabla }}:
+					{{ selectedLog().registro_id }}
+				</p>
+				<p class="whitespace-pre-wrap">
+					<span class="font-medium dark:text-white">Descripcion:</span>
+					{{ selectedLog().descripcion || 'Sin descripcion' }}
+				</p>
+			</div>
+			} @if (modalType === 'previous' || modalType === 'detail') {
+			<div>
+				<h4 class="mb-2 font-medium dark:text-white">Datos anteriores</h4>
+				<ng-container
+					[ngTemplateOutlet]="logData"
+					[ngTemplateOutletContext]="{ $implicit: selectedLog().datos_anteriores_obj }"></ng-container>
+			</div>
+			} @if (modalType === 'current' || modalType === 'detail') {
+			<div>
+				<h4 class="mb-2 font-medium dark:text-white">Datos posteriores</h4>
+				<ng-container
+					[ngTemplateOutlet]="logData"
+					[ngTemplateOutletContext]="{ $implicit: selectedLog().datos_nuevos_obj }"></ng-container>
+			</div>
+			}
 		</div>
 	</div>
 </div>
 }
+
+<ng-template #logData let-data>
+	@if (data !== null && data !== undefined && data !== '') {
+	<pre class="bg-card whitespace-pre-wrap break-words rounded-md p-3 text-sm">{{ data | json }}</pre>
+	} @else {
+	<p>Sin datos registrados</p>
+	}
+</ng-template>
