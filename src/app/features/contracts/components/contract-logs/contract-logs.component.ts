@@ -1,5 +1,5 @@
 import { Component, signal, effect } from '@angular/core';
-import { KeyValuePipe } from '@angular/common';
+import { JsonPipe, NgTemplateOutlet } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
 import { DatePipe } from '@angular/common';
@@ -11,7 +11,14 @@ import { ContractService } from '../../services/contract.service';
 
 @Component({
 	selector: 'app-contract-logs',
-	imports: [KeyValuePipe, DatePipe, AngularSvgIconModule, NgxFlatpickrWrapperComponent, TableFooterComponent],
+	imports: [
+		JsonPipe,
+		NgTemplateOutlet,
+		DatePipe,
+		AngularSvgIconModule,
+		NgxFlatpickrWrapperComponent,
+		TableFooterComponent,
+	],
 	templateUrl: './contract-logs.component.html',
 	styleUrl: './contract-logs.component.css',
 })
@@ -24,6 +31,7 @@ export class ContractLogsComponent {
 	}
 
 	logDescriptionModalOpen = false;
+	modalType: 'previous' | 'current' | 'detail' = 'detail';
 	totalLogs!: number;
 	logs = signal<any[]>([]);
 	selectedLog = signal<any | null>(null);
@@ -76,11 +84,10 @@ export class ContractLogsComponent {
 		this._getContractService
 			.getLogs(tipoOperacion, searchTerm, { page, size, sort }, fechaInicio, fechaFinal)
 			.subscribe((data) => {
-				this.logs.set(data.content);
-				const logsFormateados = this.logs().map((log: any) => ({
+				const logsFormateados = data.content.map((log: any) => ({
 					...log,
-					datos_anteriores_obj: log.datos_anteriores ? JSON.parse(log.datos_anteriores) : null,
-					datos_nuevos_obj: log.datos_nuevos ? JSON.parse(log.datos_nuevos) : null,
+					datos_anteriores_obj: this.parseLogData(log.datos_anteriores),
+					datos_nuevos_obj: this.parseLogData(log.datos_nuevos),
 				}));
 				this.logs.set(logsFormateados);
 				this.totalLogs = data.totalElements;
@@ -125,14 +132,24 @@ export class ContractLogsComponent {
 		this.currentPage.set(1);
 	}
 
-	ListLogsH(id: number) {
+	parseLogData(data: any): any {
+		if (typeof data !== 'string') {
+			return data ?? null;
+		}
+		try {
+			return JSON.parse(data);
+		} catch {
+			return data;
+		}
+	}
+
+	ListLogsH(id: number, type: 'previous' | 'current' | 'detail' = 'detail') {
 		const logEncontrado = this.logs().find((l) => l.id === id);
-		this.selectedLog.set({
-			...logEncontrado,
-			datos_anteriores_obj: logEncontrado.datos_anteriores ? JSON.parse(logEncontrado.datos_anteriores) : null,
-			datos_nuevos_obj: logEncontrado.datos_nuevos ? JSON.parse(logEncontrado.datos_nuevos) : null,
-		});
-		//console.log(this.selectedLog());
+		if (!logEncontrado) {
+			return;
+		}
+		this.selectedLog.set(logEncontrado);
+		this.modalType = type;
 		this.logDescriptionModalOpen = true;
 	}
 
