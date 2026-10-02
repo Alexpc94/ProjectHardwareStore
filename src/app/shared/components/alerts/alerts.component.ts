@@ -10,9 +10,14 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 	styleUrls: ['./alerts.component.css'],
 })
 export class AlertsComponent implements OnChanges {
-	@Input() type: 'success' | 'error' | 'login-error' | 'info' | '' = '';
+	@Input() type: 'success' | 'error' | 'info' | '' = '';
+
+	@Input() customMessage: string = '';
+
 	message: string = '';
+
 	iconPath: string = '';
+
 	visible = false;
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -26,32 +31,23 @@ export class AlertsComponent implements OnChanges {
 		}
 	}
 
-	private setMessageByType(type: string) {
+	private setMessageByType(type: string): void {
 		switch (type) {
 			case 'success':
-				this.message = 'Operación realizada con éxito.';
+				this.message = this.customMessage || 'Operación realizada con éxito.';
 				this.iconPath = 'assets/icons/usericons/check-circle-svgrepo-com.svg';
 				break;
-			case 'dependency-error':
-				this.message = 'Se debe Eliminar datos dependientes primero.';
-				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
-				break;
-			case 'dependency-data-error':
-				this.message = 'Existe duplicidad en el dato.';
-				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
-				break;
+
 			case 'error':
-				this.message = 'Ha ocurrido un error inesperado.';
+				this.message = this.customMessage || 'Ha ocurrido un error inesperado.';
 				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
 				break;
-			case 'login-error':
-				this.message = 'Error al iniciar sesión. Verifica tus datos.';
-				this.iconPath = 'assets/icons/usericons/warning-circle-svgrepo-com.svg';
-				break;
+
 			case 'info':
-				this.message = 'Información general.';
+				this.message = this.customMessage || 'Información general.';
 				this.iconPath = 'assets/icons/heroicons/outline/information-circle.svg';
 				break;
+
 			default:
 				this.message = '';
 				this.iconPath = 'assets/icons/heroicons/outline/information-circle.svg';

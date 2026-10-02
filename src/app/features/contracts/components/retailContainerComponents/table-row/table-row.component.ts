@@ -43,8 +43,11 @@ export class TableRowComponent {
 	decinalFormat = decinalFormat;
 	selectedUser: any;
 	alertType: any;
-	showAlert(type: 'success' | 'error' | 'info') {
+	alertMessage: string = '';
+	showAlert(type: 'success' | 'error' | 'info', message?: string): void {
 		this.alertType = '';
+		this.alertMessage = message || '';
+
 		setTimeout(() => {
 			this.alertType = type;
 		}, 0);
@@ -70,8 +73,8 @@ export class TableRowComponent {
 				this.showAlert('success');
 			},
 			error: (err) => {
-				console.error('Error:', err);
-				this.showAlert('error');
+				// console.error('Error:', err);
+				this.showAlert('error', err.error?.errorMessage);
 			},
 		});
 		this.selectedUser = null;
@@ -82,7 +85,7 @@ export class TableRowComponent {
 	}
 
 	selectRecursiveData(rcontainer: retailContainer) {
-		console.log('Selected rcontainer for dependencies:', rcontainer);
+		// console.log('Selected rcontainer for dependencies:', rcontainer);
 		this.dependencyList.emit(rcontainer);
 	}
 
