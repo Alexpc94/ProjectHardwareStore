@@ -76,7 +76,7 @@ describe('ContractLogsComponent', () => {
 		modal.querySelector<HTMLButtonElement>('[aria-label="Cerrar"]')!.click();
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
-		expect(component.selectedLog()).toBeNull();
+		expect(component.contractLogViewModal.selectedData).toBeNull();
 		fixture.nativeElement.querySelector('[aria-label="Ver datos posteriores"]').click();
 		fixture.detectChanges();
 		modal = fixture.nativeElement.querySelector('[role="dialog"]');
@@ -84,11 +84,25 @@ describe('ContractLogsComponent', () => {
 		expect(JSON.parse(modal.querySelector('pre')!.textContent!)).toEqual(log.datos_nuevos);
 	});
 
+	it('opens only the full description from the truncated table text', () => {
+		const button: HTMLButtonElement = fixture.nativeElement.querySelector('[title="Ver descripcion completa"]');
+		expect(button.textContent?.trim()).toBe('Cambio de monto del ...');
+		button.click();
+		fixture.detectChanges();
+		const modal: HTMLElement = fixture.nativeElement.querySelector('[role="dialog"]');
+		expect(modal.querySelector('p')?.textContent?.trim()).toBe(log.descripcion);
+		expect(modal.querySelectorAll('p').length).toBe(1);
+		expect(modal.querySelectorAll('pre').length).toBe(0);
+		modal.querySelector<HTMLButtonElement>('[aria-label="Cerrar"]')!.click();
+		fixture.detectChanges();
+		expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
+	});
+
 	it('shows the complete transaction and both snapshots from actions', () => {
 		fixture.nativeElement.querySelector('[aria-label="Ver detalle de transaccion"]').click();
 		fixture.detectChanges();
 		const modal: HTMLElement = fixture.nativeElement.querySelector('[role="dialog"]');
-		for (const value of ['22/09/2026 10:30:00', 'Ana', 'UPDATE', 'mcontratos', 'C-10', log.descripcion]) {
+		for (const value of ['22/09/2026', 'Ana', 'UPDATE', 'mcontratos', 'C-10', log.descripcion]) {
 			expect(modal.textContent).toContain(value);
 		}
 		expect(modal.querySelectorAll('pre').length).toBe(2);

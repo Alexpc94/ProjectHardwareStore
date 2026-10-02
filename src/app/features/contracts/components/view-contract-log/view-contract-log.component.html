@@ -1,0 +1,78 @@
+@if (selectedData && showModal) {
+<div class="modal modal-open" role="dialog" aria-modal="true" aria-labelledby="logModalTitle">
+	<div class="modal-box bg-background border-border border">
+		<h3 id="logModalTitle" class="mb-4 pr-6 text-lg font-semibold text-gray-900 dark:text-white">
+			{{
+				modalType === 'previous'
+					? 'Datos anteriores'
+					: modalType === 'current'
+					? 'Datos posteriores'
+					: modalType === 'description'
+					? 'Descripción'
+					: 'Detalle de la Transaccion'
+			}}
+		</h3>
+		<button
+			(click)="close()"
+			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+			aria-label="Cerrar">
+			&#10005;
+		</button>
+
+		<div class="mb-4 space-y-4 text-sm text-gray-500 dark:text-gray-400">
+			@if (modalType === 'description') {
+			<p class="whitespace-pre-wrap break-words">{{ selectedData.descripcion || 'Sin descripcion' }}</p>
+			} @if (modalType === 'detail') {
+			<div class="space-y-1 break-words">
+				<p><span class="font-medium dark:text-white">Id:</span> {{ selectedData.id }}</p>
+				<p>
+					<span class="font-medium dark:text-white">Fecha:</span>
+					{{ selectedData.momento_transaccion | date: 'dd/MM/yyyy ' }}
+				</p>
+				<p>
+					<span class="font-medium dark:text-white">Usuario:</span> {{ selectedData.person?.firstName }}
+					{{ selectedData.person?.secondName }} {{ selectedData.person?.name }}
+				</p>
+				<p>
+					<span class="font-medium dark:text-white">Id usuario:</span>
+					{{ selectedData.usuario_id ?? selectedData.person?.id }}
+				</p>
+				<p><span class="font-medium dark:text-white">CI:</span> {{ selectedData.person?.cedula }}</p>
+				<p><span class="font-medium dark:text-white">Telefono:</span> {{ selectedData.person?.telephone }}</p>
+				<p><span class="font-medium dark:text-white">Tipo de operacion:</span> {{ selectedData.tipo_operacion }}</p>
+				<p>
+					<span class="font-medium dark:text-white">Registro afectado:</span> {{ selectedData.nombre_tabla }}:
+					{{ selectedData.registro_id }}
+				</p>
+				<p class="whitespace-pre-wrap">
+					<span class="font-medium dark:text-white">Descripcion:</span>
+					{{ selectedData.descripcion || 'Sin descripcion' }}
+				</p>
+			</div>
+			} @if (modalType === 'previous' || modalType === 'detail') {
+			<div>
+				<h4 class="mb-2 font-medium dark:text-white">Datos anteriores</h4>
+				<ng-container
+					[ngTemplateOutlet]="logData"
+					[ngTemplateOutletContext]="{ $implicit: selectedData.datos_anteriores_obj }"></ng-container>
+			</div>
+			} @if (modalType === 'current' || modalType === 'detail') {
+			<div>
+				<h4 class="mb-2 font-medium dark:text-white">Datos posteriores</h4>
+				<ng-container
+					[ngTemplateOutlet]="logData"
+					[ngTemplateOutletContext]="{ $implicit: selectedData.datos_nuevos_obj }"></ng-container>
+			</div>
+			}
+		</div>
+	</div>
+</div>
+}
+
+<ng-template #logData let-data>
+	@if (data !== null && data !== undefined && data !== '') {
+	<pre class="bg-card whitespace-pre-wrap break-words rounded-md p-3 text-sm">{{ data | json }}</pre>
+	} @else {
+	<p>Sin datos registrados</p>
+	}
+</ng-template>
