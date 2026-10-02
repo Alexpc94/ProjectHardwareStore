@@ -52,7 +52,7 @@
 		</div>
 	</td>
 </ng-container>
-<app-alerts [type]="alertType"></app-alerts>
+<app-alerts [type]="alertType" [customMessage]="alertMessage"> </app-alerts>
 <app-confirm-change-status
 	#confirmDialog
 	[name]="selectedUser?.name"

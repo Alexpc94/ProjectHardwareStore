@@ -36,9 +36,11 @@ export class SignInComponent implements OnInit {
 	isLoading = false;
 	passwordTextType!: boolean;
 	alertType: any;
+	alertMessage: string = '';
+	showAlert(type: 'success' | 'error' | 'info', message?: string): void {
+		this.alertType = '';
+		this.alertMessage = message || '';
 
-	showAlert(type: 'success' | 'error' | 'login-error' | 'info') {
-		this.alertType = ''; // Reiniciar para forzar cambio
 		setTimeout(() => {
 			this.alertType = type;
 		}, 0);
@@ -78,13 +80,13 @@ export class SignInComponent implements OnInit {
 					this._loginAccessService.setCurrentSession('currentUser', data);
 					this._router.navigate(['/']);
 				} else {
-					this.showAlert('login-error');
+					this.showAlert('error', 'Revisar datos de acceso.');
 				}
 			},
 			error: (error: any) => {
 				this.isLoading = false;
 				if (error.error && error.error.errors) {
-					console.error('error detail:', error.error.errors);
+					// console.error('error detail:', error.error.errors);
 				}
 			},
 		});

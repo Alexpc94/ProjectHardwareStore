@@ -81,7 +81,7 @@
 		<app-button full impact="bold" tone="primary" shape="rounded" size="medium">Ingresar</app-button>
 	</div>
 </form>
-<app-alerts [type]="alertType"></app-alerts>
+<app-alerts [type]="alertType" [customMessage]="alertMessage"> </app-alerts>
 <div *ngIf="isLoading" class="fixed inset-0 z-50 flex items-center justify-center">
 	<div class="rounded-lg bg-white p-3 text-center shadow-lg">
 		<span class="loading loading-ring loading-xl"></span>
