@@ -1,5 +1,4 @@
-import { Component, signal, effect } from '@angular/core';
-import { JsonPipe, NgTemplateOutlet } from '@angular/common';
+import { Component, signal, effect, ViewChild } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxFlatpickrWrapperComponent } from 'ngx-flatpickr-wrapper';
 import { DatePipe } from '@angular/common';
@@ -7,17 +6,18 @@ import { Spanish } from 'flatpickr/dist/l10n/es.js';
 
 import { TableFooterComponent } from 'src/app/shared/components/table-footer/table-footer.component';
 
+import { ViewContractLogComponent } from '../view-contract-log/view-contract-log.component';
+
 import { ContractService } from '../../services/contract.service';
 
 @Component({
 	selector: 'app-contract-logs',
 	imports: [
-		JsonPipe,
-		NgTemplateOutlet,
 		DatePipe,
 		AngularSvgIconModule,
 		NgxFlatpickrWrapperComponent,
 		TableFooterComponent,
+		ViewContractLogComponent,
 	],
 	templateUrl: './contract-logs.component.html',
 	styleUrl: './contract-logs.component.css',
@@ -30,11 +30,10 @@ export class ContractLogsComponent {
 		});
 	}
 
-	logDescriptionModalOpen = false;
-	modalType: 'previous' | 'current' | 'detail' = 'detail';
+	@ViewChild(ViewContractLogComponent) contractLogViewModal!: ViewContractLogComponent;
+
 	totalLogs!: number;
 	logs = signal<any[]>([]);
-	selectedLog = signal<any | null>(null);
 	fechaIni = signal<Date>(new Date());
 	fechaFin = signal<Date>(new Date());
 	search = signal<string>(' ');
@@ -143,18 +142,11 @@ export class ContractLogsComponent {
 		}
 	}
 
-	ListLogsH(id: number, type: 'previous' | 'current' | 'detail' = 'detail') {
+	ListLogsH(id: number, type: 'previous' | 'current' | 'detail' | 'description' = 'detail') {
 		const logEncontrado = this.logs().find((l) => l.id === id);
 		if (!logEncontrado) {
 			return;
 		}
-		this.selectedLog.set(logEncontrado);
-		this.modalType = type;
-		this.logDescriptionModalOpen = true;
-	}
-
-	closeDescriptionModal(): void {
-		this.logDescriptionModalOpen = false;
-		this.selectedLog.set(null);
+		this.contractLogViewModal.open(logEncontrado, type);
 	}
 }

@@ -1,7 +1,7 @@
 <div class="mb-4 flex flex-col space-y-4">
 	<div class="flex items-center justify-between">
 		<div class="inline-block">
-			<h3 class="text-foreground font-semibold">Auditoria Transacciones</h3>
+			<h3 class="text-foreground font-semibold">Auditoría Transacciones</h3>
 			<div class="text-muted-foreground space-x-1 text-xs font-medium">
 				<div class="text-muted-foreground space-x-1 text-xs font-medium">
 					Total Registros: <span class="text-foreground">{{ totalLogs }}</span>
@@ -15,7 +15,7 @@
 				<label
 					for="type"
 					class="bg-background text-muted-foreground peer-focus:text-primary scale-85 absolute origin-[0] transform px-2 text-sm duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:scale-95 peer-focus:px-2 ltr:left-1 rtl:right-1">
-					Tipo de Operacion
+					Tipo de Operación
 				</label>
 				<select
 					id="type"
@@ -27,7 +27,7 @@
 					<option value="INSERT">Insertados</option>
 					<option value="UPDATE">Actualizados</option>
 					<option value="DELETE">Eliminados</option>
-					<option value="STOP">Parados</option>
+					<option value="STOP">Detenidos</option>
 				</select>
 			</div>
 			<div class="relative">
@@ -71,9 +71,9 @@
 				<tr>
 					<th>Fecha</th>
 					<th>Usuario</th>
-					<th>Tipo de operacion</th>
+					<th>Tipo de operación</th>
 					<th>Registro afectado</th>
-					<th>Descripcion</th>
+					<th>Descripción</th>
 					<th>Dat. anterior</th>
 					<th>Dat. posterior</th>
 					<th>Acciones</th>
@@ -82,24 +82,27 @@
 			<tbody>
 				@for (log of logs(); track $index) {
 				<tr class="border-border border-b text-xs">
-					<td class="min-w-[140px]">{{ log.momento_transaccion | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+					<td class="min-w-[140px]">{{ log.momento_transaccion | date: 'dd/MM/yyyy' }}</td>
 					<td class="min-w-[200px]">
-						<div class="flex flex-col items-start">
+						
 							<span class="text-foreground text-sm font-semibold">
 								{{ log.person?.firstName }} {{ log.person?.secondName }} {{ log.person?.name }}</span
 							>
-							<span class="text-muted-foreground/70 text-xs font-medium">CI: {{ log.person?.cedula }}</span>
-							<span class="text-muted-foreground/70 text-xs font-medium">Telefono: {{ log.person?.telephone }}</span>
-						</div>
+							
+						
 					</td>
 					<td>{{ log.tipo_operacion }}</td>
 					<td>{{ log.nombre_tabla }}: {{ log.registro_id }}</td>
 					<td>
 						<button
-							(click)="ListLogsH(log.id)"
-							class="block max-w-xs truncate text-left"
+							(click)="ListLogsH(log.id, 'description')"
+							class="block text-left"
 							title="Ver descripcion completa">
-							{{ log.descripcion || 'Sin descripcion' }}
+							{{
+								log.descripcion?.length > 20
+									? log.descripcion.slice(0, 20) + '...'
+									: log.descripcion || 'Sin descripcion'
+							}}
 						</button>
 					</td>
 					<td>
@@ -145,77 +148,5 @@
 		(pageChange)="handlePageChange($event)"
 		(itemsPerPageChange)="handleItemsPerPageChange($event)"></app-table-footer>
 </div>
-@if (logDescriptionModalOpen && selectedLog()) {
-<div class="modal modal-open" role="dialog" aria-modal="true" aria-labelledby="logModalTitle">
-	<div class="modal-box bg-background border-border border">
-		<h3 id="logModalTitle" class="mb-4 pr-6 text-lg font-semibold text-gray-900 dark:text-white">
-			{{
-				modalType === 'previous'
-					? 'Datos anteriores'
-					: modalType === 'current'
-					? 'Datos posteriores'
-					: 'Detalle de la Transaccion'
-			}}
-		</h3>
-		<button
-			(click)="closeDescriptionModal()"
-			class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-			aria-label="Cerrar">
-			&#10005;
-		</button>
 
-		<div class="mb-4 space-y-4 text-sm text-gray-500 dark:text-gray-400">
-			@if (modalType === 'detail') {
-			<div class="space-y-1 break-words">
-				<p><span class="font-medium dark:text-white">Id:</span> {{ selectedLog().id }}</p>
-				<p>
-					<span class="font-medium dark:text-white">Fecha:</span>
-					{{ selectedLog().momento_transaccion | date: 'dd/MM/yyyy HH:mm:ss' }}
-				</p>
-				<p>
-					<span class="font-medium dark:text-white">Usuario:</span> {{ selectedLog().person?.firstName }}
-					{{ selectedLog().person?.secondName }} {{ selectedLog().person?.name }}
-				</p>
-				<p>
-					<span class="font-medium dark:text-white">Id usuario:</span>
-					{{ selectedLog().usuario_id ?? selectedLog().person?.id }}
-				</p>
-				<p><span class="font-medium dark:text-white">CI:</span> {{ selectedLog().person?.cedula }}</p>
-				<p><span class="font-medium dark:text-white">Telefono:</span> {{ selectedLog().person?.telephone }}</p>
-				<p><span class="font-medium dark:text-white">Tipo de operacion:</span> {{ selectedLog().tipo_operacion }}</p>
-				<p>
-					<span class="font-medium dark:text-white">Registro afectado:</span> {{ selectedLog().nombre_tabla }}:
-					{{ selectedLog().registro_id }}
-				</p>
-				<p class="whitespace-pre-wrap">
-					<span class="font-medium dark:text-white">Descripcion:</span>
-					{{ selectedLog().descripcion || 'Sin descripcion' }}
-				</p>
-			</div>
-			} @if (modalType === 'previous' || modalType === 'detail') {
-			<div>
-				<h4 class="mb-2 font-medium dark:text-white">Datos anteriores</h4>
-				<ng-container
-					[ngTemplateOutlet]="logData"
-					[ngTemplateOutletContext]="{ $implicit: selectedLog().datos_anteriores_obj }"></ng-container>
-			</div>
-			} @if (modalType === 'current' || modalType === 'detail') {
-			<div>
-				<h4 class="mb-2 font-medium dark:text-white">Datos posteriores</h4>
-				<ng-container
-					[ngTemplateOutlet]="logData"
-					[ngTemplateOutletContext]="{ $implicit: selectedLog().datos_nuevos_obj }"></ng-container>
-			</div>
-			}
-		</div>
-	</div>
-</div>
-}
-
-<ng-template #logData let-data>
-	@if (data !== null && data !== undefined && data !== '') {
-	<pre class="bg-card whitespace-pre-wrap break-words rounded-md p-3 text-sm">{{ data | json }}</pre>
-	} @else {
-	<p>Sin datos registrados</p>
-	}
-</ng-template>
+<app-view-contract-log> </app-view-contract-log>
