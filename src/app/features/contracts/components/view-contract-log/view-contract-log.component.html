@@ -9,7 +9,7 @@
 					? 'Datos posteriores'
 					: modalType === 'description'
 					? 'Descripción'
-					: 'Detalle de la Transaccion'
+					: 'Detalle de la Transacción'
 			}}
 		</h3>
 		<button
@@ -21,7 +21,7 @@
 
 		<div class="mb-4 space-y-4 text-sm text-gray-500 dark:text-gray-400">
 			@if (modalType === 'description') {
-			<p class="whitespace-pre-wrap break-words">{{ selectedData.descripcion || 'Sin descripcion' }}</p>
+			<p class="whitespace-pre-wrap break-words">{{ selectedData.descripcion || 'Sin descripción' }}</p>
 			} @if (modalType === 'detail') {
 			<div class="space-y-1 break-words">
 				<p><span class="font-medium dark:text-white">Id:</span> {{ selectedData.id }}</p>
@@ -38,14 +38,14 @@
 					{{ selectedData.usuario_id ?? selectedData.person?.id }}
 				</p>
 				<p><span class="font-medium dark:text-white">CI:</span> {{ selectedData.person?.cedula }}</p>
-				<p><span class="font-medium dark:text-white">Telefono:</span> {{ selectedData.person?.telephone }}</p>
-				<p><span class="font-medium dark:text-white">Tipo de operacion:</span> {{ selectedData.tipo_operacion }}</p>
+				<p><span class="font-medium dark:text-white">Teléfono:</span> {{ selectedData.person?.telephone }}</p>
+				<p><span class="font-medium dark:text-white">Tipo de operación:</span> {{ selectedData.tipo_operacion }}</p>
 				<p>
 					<span class="font-medium dark:text-white">Registro afectado:</span> {{ selectedData.nombre_tabla }}:
 					{{ selectedData.registro_id }}
 				</p>
 				<p class="whitespace-pre-wrap">
-					<span class="font-medium dark:text-white">Descripcion:</span>
+					<span class="font-medium dark:text-white">Descripción:</span>
 					{{ selectedData.descripcion || 'Sin descripcion' }}
 				</p>
 			</div>
